@@ -1,0 +1,118 @@
+\chapter{Introduction \protect{\estimatedpagecount{16}}}\estimatedpagecount{16}
+\epigraph{How do we get people to understand programming?}{Bret Victor}
+
+\section{Problem, Background and Motivation}
+Despite a lot of companies' marketing efforts, developing software is not easy and no silver bullet was yet found.
+A common effort in finding this silver bullet over the last decades is tightening the \emph{feedback loop}.
+This term describes the time and work that needs to be done between writing a line of code and actually being able to see or test its effect \cite{Aguiar.etal:2019}.
+\citet{Aguiar.etal:2019} created the visual analogy of adapting one's aim while shooting with a bow and arrow vs. using a hose to target a goal.
+A tighter feedback loop offers an easier (not an easy) development model \cite{Church.etal:2010}.
+
+In a very simplistic view, programming can be seen as the act of converting requirements to source code.
+With this task being carried out by people, one could look at psychology's research field of complex problem-solving and apply it to programming.
+There is not a lot of active research being conducted in this area, but Weinberg \cite{Weinberg:1971} and Naur \cite{Naur:1985} did some fundamental research combining psychology's complex problem solving and the act of programming.
+In his essay \emph{Programming as Theory Building} \citet{Naur:1985} hypothesized that programs are more than just their textual artifacts.
+Instead, individuals, as well as teams create a shared understanding of the problem they have to solve.
+Programming is about creating this understanding, hence improving programming is about improving the creation of this understanding, thus improving communication.
+
+Communication does not only happen in teams.
+Someone, developing something that can not be accomplished in a few minutes, needs to communicate with oneself as well as the computer.
+Decomposing requirements, keeping track of them, discovering bugs, and transforming code changes are just some of the tasks that might need some form of communication.
+Quite a lot of this communication happens via code comments \cite{Ying.etal:2005}.
+Comments are not only used for documentation purposes, but as well to make notes of things that have to be changed or considered.
+In contrast to the parts of source code that are actually run, comments are informal and not bound to any syntax rules, making them hard to parse and interpret for machines.
+This leads to comments being forgotten quite frequently \cite{Nie.etal:2019}.
+Preventing their forgetting and actually making use of them for the act of programming is the main motivation for this research.
+
+Another motivational factor for making comments executable is the author's involvement in the StateML\footnote{\url{https://www.stateml.org/}} project, which aims at providing a shared visual language for modeling event-driven behavior based on Statecharts \cite{Harel:1987}.
+This multi-modal (visual, textual, $\dotsc$) language enables the cooperative definition and development of behavior by providing live-visualizations for non-developers.
+StateML artifacts can be simulated, but the language itself is not executable, it must be embedded in a host programming language which executes all side effects.
+To fully utilize the potential of Statecharts and improve stakeholder collaboration in agile and incremental software development processes, it is necessary to partially execute those models of behavior.
+% During simulation mode, hole-driven comments can act as simulated side-effects while providing the base for future implementation via their textual description.
+
+This work represents a proof of concept for applying the concept of hole-driven development to general-purpose programming languages, in this case \CS.
+
+
+
+\todo[inline]{provide an introduction via shortening the feedback loop with the arrow\&bow vs. fire hose analogy}
+\todo[inline]{tightening the feedback loop has the huge advantage of not being specific to one of the possible applications, instead the feedback loop can be tightened for a specific developer, in a team or with the customer}
+\todo[inline]{faster results foster happiness}\addref
+\section{Context}\estimatedpagecount{4}
+\todo[inline]{explain the differences between programming and software development, especially targeting its psychology}
+- psychology of programming vs. psychology of software development
+\subsection{Agile Movement (2)}
+- software has to be delivered faster, requirements are defined more dynamically
+- leading to the usage of prototypes
+- tactical programming vs. strategic programming (Osterhout, Psy BA)
+- \todo{look into rapid application development}
+\subsection{Prototyping (2)}
+- evolutionary prototyping
+- leads to evolutionary architectures, misses the whole point of proto typos (\todo{bring in the ethymological approach)}
+- prototypes get released to production, see Tesla, Spotify, Apple, ...
+- customer-facing testing
+- Wizard of Oz Prototyping
+- agile should lead to products of higher-quality, but leads to half-baked products and higher pressure on developers, because of not having enough time to actually craft products
+\subsection{Interactive Programming}
+\todo[inline]{combine https://elm-lang.org/news/interactive-programming and http://worrydream.com/LearnableProgramming/ to list motivations on why interactive programming might be beneficial, also referring back to the agile movement, prototyping and the psychology of programming}
+
+\section{Problem Statement (6)}
+\subsection{Programming as seen as Complex Problem Solving (4)}
+\subsubsection{Top-Down vs. Bottom Up (1.5)}
+\autoref{Kung.etal:2013}
+\url{https://en.wikipedia.org/wiki/Bottom%E2%80%93up_and_top%E2%80%93down_design}
+\url{https://www.geeksforgeeks.org/difference-between-bottom-up-model-and-top-down-model/}
+Quote(To use the bottom up method you need to be able to efficiently determine what the "bottom" is, which usually means you need a heavily constrained problem space.)\todo[inline]{\url{https://cs.stackexchange.com/questions/2644/is-there-a-difference-between-top-down-and-bottom-up-dynamic-programming}}
+
+\subsubsection{Programming as Theory Building (1.5)}
+\subsubsection{Conversational Lens regarding Complex Problem Solving in Development (1)}
+
+\subsection{Mental Load (2.5)}
+- \todo{Check what Code that fits in your Head can attribute to this section}
+- working memory capacity
+- offloading stuff to an extended working memory (like post-its\todo{literature on post-its})
+- psychological impliciations like stress, anxiety, disorders, ... -> leading to therapy\addref
+
+
+\section{Hypothesis (4)}
+\subsection{About Todo-Comments (2.5)}
+\todo[inline]{write about people's questions on stackexchange}
+- https://softwareengineering.stackexchange.com/questions/175719/can-notes-to-dos-in-code-comments-sent-to-code-reviews-result-in-an-effective-re
+- \url{https://softwareengineering.stackexchange.com/questions/323498/why-is-having-a-notimplementedexception-a-good-thing#comment687389_323498}
+- https://softwareengineering.stackexchange.com/questions/125320/do-todo-comments-make-sense
+- https://stackoverflow.com/questions/1989177/how-to-manage-todo-programming-stuff
+- https://stackoverflow.com/questions/16913055/how-can-i-mark-to-do-comments-in-xcode
+- https://stackoverflow.com/questions/335378/how-do-you-flag-code-so-that-you-can-come-back-later-and-work-on-it
+
+% Example for beautiful enumerations
+\begin{enumerate}
+	\item \textbf{Introduction and motivation}: What is the problem statement or
+	task at hand, and why should someone be interested in it?
+	\item \textbf{Speficiation of the topic in greater detail}: Here, the
+	current state of the art of the technology or science is described, and
+	existing deficits or open questions are pointed out. The direction of one's
+	work is developed from this.
+	\item \textbf{Own approach}: This is, of course, the core of the thesis.
+	Here it is shown how the previously described task is solved and
+	implemented, often in the form of a prototype. Illustrative examples
+	supplement this part.
+	\item \textbf{Summary}: What has been achieved, and what goals remain open?
+	Which parts of the thesis are possible origins for further work?
+\end{enumerate}
+
+
+\todo[inline]{if I manage to find, maybe include some statistics on todo comments}
+\url{https://www.petermorlion.com/the-lifetime-of-todo-comments-the-results/}
+\autoref{Nie.etal:2018}
+\autoref{Sridhara:2016}
+\autoref{Storey.etal:2009}
+\autoref{Storey.etal:2008}
+
+\subsection{Introducing Hole-Driven Development (1.5)}
+\todo{reference related work section, but show the Idris example}
+\todo{fill in the blank exercise}
+
+\section{Research Question and Methodology (1.5)}
+- Requirements based on Literature
+- Validation against the Requirements (PoC)
+- Which aspects of existing Hole Implementations can be transferred to general-purpose (mainstream) programming languages? With the requirements being laid in Sec 2.4 out after analyzing those in Sec 2.
+\section{Structure of the Thesis (.5)}
