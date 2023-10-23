@@ -1,118 +1,152 @@
-\chapter{Introduction \protect{\estimatedpagecount{16}}}\estimatedpagecount{16}
+\chapter[Introduction]{Introduction \protect{\estimatedpagecount{16}}}
 \epigraph{How do we get people to understand programming?}{Bret Victor}
 
-\section{Problem, Background and Motivation}
-Despite a lot of companies' marketing efforts, developing software is not easy and no silver bullet was yet found.
-A common effort in finding this silver bullet over the last decades is tightening the \emph{feedback loop}.
-This term describes the time and work that needs to be done between writing a line of code and actually being able to see or test its effect \cite{Aguiar.etal:2019}.
-\citet{Aguiar.etal:2019} created the visual analogy of adapting one's aim while shooting with a bow and arrow vs. using a hose to target a goal.
-A tighter feedback loop offers an easier (not an easy) development model \cite{Church.etal:2010}.
+The idea of learnable programming \cite{victor_inventing_2012} goes back to the early days of Smalltalk \cite{kay_early_1993}.
+In his essay \emph{The Early History of Smalltalk}, Alan Kay looks back at the events that led to the creation of Smalltalk.
+More importantly, he gives insight about the context of why Smalltalk turned out how it did.
+Smalltalk was intended to be a learning environment for children, side-effects like its strong object orientation were merely artifacts of this main idea \cite{kay_early_1993}.
+Objects, message passing and compositionality allowed people (not only children) using Smalltalk, to align their ways of thinking with the way their programs were structured.
+Applying the conversational lens of programming environments (see Section~\ref{sec:conversational-lens}) to Smalltalk one could argue that speaking the same language results in a shared mental model between the program and the programmer.
 
-In a very simplistic view, programming can be seen as the act of converting requirements to source code.
-With this task being carried out by people, one could look at psychology's research field of complex problem-solving and apply it to programming.
-There is not a lot of active research being conducted in this area, but Weinberg \cite{Weinberg:1971} and Naur \cite{Naur:1985} did some fundamental research combining psychology's complex problem solving and the act of programming.
-In his essay \emph{Programming as Theory Building} \citet{Naur:1985} hypothesized that programs are more than just their textual artifacts.
-Instead, individuals, as well as teams create a shared understanding of the problem they have to solve.
-Programming is about creating this understanding, hence improving programming is about improving the creation of this understanding, thus improving communication.
+Programming environments that foster this style of communication are usually called live programming\cite{aguiar_live_2019, church_liveness_2010} or interactive programming \cite{czaplicki_interactive_2013, mccabe_towards_2023}.
+Usually, such systems possess the following properties \cite{burg_1st_2013}:
+\begin{description}
+    \item[Live] They give the programmer immediate feedback, while the program is edited. This feedback can target its output, structure or both.
+    \item[Structured] Environments which are aware of a program's structure, understand and preserve this structure. They operate at the level of structure, not on raw text.
+    \item[Tangible] Normally, program execution happens behind the scenes and provides little to no capabilities for live inspection. Tangible programming makes the execution transparent, tangible and explorable.
+    \item[Concrete] It is way easier for people to start with concrete examples and generalize later on.
+\end{description}
 
-Communication does not only happen in teams.
-Someone, developing something that can not be accomplished in a few minutes, needs to communicate with oneself as well as the computer.
-Decomposing requirements, keeping track of them, discovering bugs, and transforming code changes are just some of the tasks that might need some form of communication.
-Quite a lot of this communication happens via code comments \cite{Ying.etal:2005}.
-Comments are not only used for documentation purposes, but as well to make notes of things that have to be changed or considered.
-In contrast to the parts of source code that are actually run, comments are informal and not bound to any syntax rules, making them hard to parse and interpret for machines.
-This leads to comments being forgotten quite frequently \cite{Nie.etal:2019}.
-Preventing their forgetting and actually making use of them for the act of programming is the main motivation for this research.
+\todo[inline]{Transition to the arrow and bow vs. firehose analogy from Chris Hancock (explained by \cite{aguiar_live_2019}) and explain the difference between aiming. Delta-Time between action and feedback, vs. consistent re-aiming}.
+\todo[inline]{This feedback-loop metaphor can be applied to a specific developer, a team or even with customer-interaction.}
+\todo[inline,color=blue!40]{Maybe cross-reference to Psychology of Programming and explain that faster feedback fosters happiness.}
 
-Another motivational factor for making comments executable is the author's involvement in the StateML\footnote{\url{https://www.stateml.org/}} project, which aims at providing a shared visual language for modeling event-driven behavior based on Statecharts \cite{Harel:1987}.
-This multi-modal (visual, textual, $\dotsc$) language enables the cooperative definition and development of behavior by providing live-visualizations for non-developers.
-StateML artifacts can be simulated, but the language itself is not executable, it must be embedded in a host programming language which executes all side effects.
-To fully utilize the potential of Statecharts and improve stakeholder collaboration in agile and incremental software development processes, it is necessary to partially execute those models of behavior.
-% During simulation mode, hole-driven comments can act as simulated side-effects while providing the base for future implementation via their textual description.
+\begin{figure}[h]
+\centering
+\includesvg[width=0.75\textwidth]{images/arrow-bow}
+\caption{When trying to hit a target with bow and arrow one can only re-aim based on the previous shot. Feedback is provided only after the arrow reaches the target. Image source~\cite{aguiar_live_2019}.}
+\label{fig:visual-studio-error-list}
+\end{figure}
 
-This work represents a proof of concept for applying the concept of hole-driven development to general-purpose programming languages, in this case \CS.
+\begin{figure}[h]
+\centering
+\includesvg[width=0.6\textwidth]{images/firehose}
+\caption{Aiming with a hose is much easier. Continuous feedback allows the person using the hose to constantly re-adapt to the target, without having to stop aiming at all. Image source~\cite{aguiar_live_2019}.}
+\label{fig:visual-studio-error-list}
+\end{figure}
 
+\todo[inline]{Explain that industry is slowly adopting these ideas (based on [Kubelka.etal:2018]).}
+\todo[inline]{Argue that there is much better we can do, and this is the content of this thesis. Then transition to the context of the thesis.}
 
-
-\todo[inline]{provide an introduction via shortening the feedback loop with the arrow\&bow vs. fire hose analogy}
-\todo[inline]{tightening the feedback loop has the huge advantage of not being specific to one of the possible applications, instead the feedback loop can be tightened for a specific developer, in a team or with the customer}
-\todo[inline]{faster results foster happiness}\addref
-\section{Context}\estimatedpagecount{4}
-\todo[inline]{explain the differences between programming and software development, especially targeting its psychology}
-- psychology of programming vs. psychology of software development
-\subsection{Agile Movement (2)}
-- software has to be delivered faster, requirements are defined more dynamically
-- leading to the usage of prototypes
-- tactical programming vs. strategic programming (Osterhout, Psy BA)
-- \todo{look into rapid application development}
-\subsection{Prototyping (2)}
-- evolutionary prototyping
-- leads to evolutionary architectures, misses the whole point of proto typos (\todo{bring in the ethymological approach)}
-- prototypes get released to production, see Tesla, Spotify, Apple, ...
-- customer-facing testing
-- Wizard of Oz Prototyping
-- agile should lead to products of higher-quality, but leads to half-baked products and higher pressure on developers, because of not having enough time to actually craft products
-\subsection{Interactive Programming}
-\todo[inline]{combine https://elm-lang.org/news/interactive-programming and http://worrydream.com/LearnableProgramming/ to list motivations on why interactive programming might be beneficial, also referring back to the agile movement, prototyping and the psychology of programming}
-
-\section{Problem Statement (6)}
-\subsection{Programming as seen as Complex Problem Solving (4)}
-\subsubsection{Top-Down vs. Bottom Up (1.5)}
-\autoref{Kung.etal:2013}
-\url{https://en.wikipedia.org/wiki/Bottom%E2%80%93up_and_top%E2%80%93down_design}
-\url{https://www.geeksforgeeks.org/difference-between-bottom-up-model-and-top-down-model/}
-Quote(To use the bottom up method you need to be able to efficiently determine what the "bottom" is, which usually means you need a heavily constrained problem space.)\todo[inline]{\url{https://cs.stackexchange.com/questions/2644/is-there-a-difference-between-top-down-and-bottom-up-dynamic-programming}}
-
-\subsubsection{Programming as Theory Building (1.5)}
-\subsubsection{Conversational Lens regarding Complex Problem Solving in Development (1)}
-
-\subsection{Mental Load (2.5)}
-- \todo{Check what Code that fits in your Head can attribute to this section}
-- working memory capacity
-- offloading stuff to an extended working memory (like post-its\todo{literature on post-its})
-- psychological impliciations like stress, anxiety, disorders, ... -> leading to therapy\addref
+% Liveness in practice. Several frameworks and tools nowadays add ways to integrate immediate feedback, particularly on the web. The Chrome web development tools [ 4] allow changes to web pages and JavaScript code without reloading a webpage. Modern, popular JavaScript frameworks including Facebook’s React.js support Live Programming in live code editors [3]. \cite{kubelka_road_2018}
+% Mainstream languages also take steps in this direction: Java supports a limited replacement of application parts while it is running through the Java Platform Debugger Architecture [24 ]. Apple’s new language Swift supports Live Programming with interactive playgrounds [1 ]. Finally, Microsoft’s Visual Studio 2015 supports interactive programming for \CS and F\# with REPLs [25 , 26 ]. Microsoft also recently acquired the CodeConnect startup, which developed the Alive extension for Visual Studio [2].
 
 
-\section{Hypothesis (4)}
-\subsection{About Todo-Comments (2.5)}
-\todo[inline]{write about people's questions on stackexchange}
-- https://softwareengineering.stackexchange.com/questions/175719/can-notes-to-dos-in-code-comments-sent-to-code-reviews-result-in-an-effective-re
-- \url{https://softwareengineering.stackexchange.com/questions/323498/why-is-having-a-notimplementedexception-a-good-thing#comment687389_323498}
-- https://softwareengineering.stackexchange.com/questions/125320/do-todo-comments-make-sense
-- https://stackoverflow.com/questions/1989177/how-to-manage-todo-programming-stuff
-- https://stackoverflow.com/questions/16913055/how-can-i-mark-to-do-comments-in-xcode
-- https://stackoverflow.com/questions/335378/how-do-you-flag-code-so-that-you-can-come-back-later-and-work-on-it
 
-% Example for beautiful enumerations
-\begin{enumerate}
-	\item \textbf{Introduction and motivation}: What is the problem statement or
-	task at hand, and why should someone be interested in it?
-	\item \textbf{Speficiation of the topic in greater detail}: Here, the
-	current state of the art of the technology or science is described, and
-	existing deficits or open questions are pointed out. The direction of one's
-	work is developed from this.
-	\item \textbf{Own approach}: This is, of course, the core of the thesis.
-	Here it is shown how the previously described task is solved and
-	implemented, often in the form of a prototype. Illustrative examples
-	supplement this part.
-	\item \textbf{Summary}: What has been achieved, and what goals remain open?
-	Which parts of the thesis are possible origins for further work?
-\end{enumerate}
+\section[Context]{Context \protect{\estimatedpagecount{3.5}}}
+\todo[inline]{In the introduction I did not differentiate between programming and software development, but it is a huge differentiation.}
+\todo[inline]{Explain the differences between psychology of programming and psychology of software development and what it has to do with requirements to code and idea to code.}
+
+\subsection[Agile Movement]{Agile Movement \protect{\estimatedpagecount{1.5}}}
+\todo[inline]{Give an overview on the development of agile ideas and how it has changed the tasks of software developers.}
+\todo[inline]{Use the arrow/firehose analogy to mentally visualize the faster iteration cycles leading to tighter feedback loops}
+\todo[inline]{Software has to be developed faster, the requirements are defined more dynamically - mention theory vs. reality}
+\todo[inline]{Bring the concept of tactical programming vs. strategic programming into play (based on Osterhout as described in my Psychology BA)}
+\todo[inline]{Transition to the next chapter by highlighting the importance of prototypes in agile development.}
+\todo[inline,color=blue!40]{Maybe look into Rapid Application Development and its approach on Prototyping}
+
+\subsection[Prototyping]{Prototyping \protect{\estimatedpagecount{1.5}}}
+\todo[inline]{Start with the etymology of the word prototype, based on greek proto + typos.}
+\todo[inline]{Explain how prototyping works in reality and what evolutionary prototyping is. (with the figure from my AmA talk)}
+\todo[inline]{Mention that prototypes get released to production (Tesla, Spotify, Apple) and that customers do the testing.}
+\todo[inline]{Show this contradiction with the etymological approach.}
+\todo[inline,color=blue!40]{Maybe bring in a little bit of capitalism criticism in the form of market fit vs. high-quality products, just show the contradiction.}
+\todo[inline]{Transition to wizard of oz prototyping and how this is actually prototyping, but show its complexity and the difference between the prototype and the actual product.}
+
+\subsection[Interactive Programming]{Interactive Programming \protect{\estimatedpagecount{.5}}}
+\todo[inline]{Bridge the gap between prototyping and interactive/live programming as described in the introduction. Mention how this might align with agile methodologies, the psychology of programming and customer-centered approaches.}
 
 
-\todo[inline]{if I manage to find, maybe include some statistics on todo comments}
-\url{https://www.petermorlion.com/the-lifetime-of-todo-comments-the-results/}
-\autoref{Nie.etal:2018}
-\autoref{Sridhara:2016}
-\autoref{Storey.etal:2009}
-\autoref{Storey.etal:2008}
 
-\subsection{Introducing Hole-Driven Development (1.5)}
-\todo{reference related work section, but show the Idris example}
-\todo{fill in the blank exercise}
+\section[Problem Statement]{Problem Statement \protect{\estimatedpagecount{6}}}
+\todo[inline]{Based on the context, explain the contradictions once more and re-phrase them as the problem statement of this thesis.}
 
-\section{Research Question and Methodology (1.5)}
-- Requirements based on Literature
-- Validation against the Requirements (PoC)
-- Which aspects of existing Hole Implementations can be transferred to general-purpose (mainstream) programming languages? With the requirements being laid in Sec 2.4 out after analyzing those in Sec 2.
-\section{Structure of the Thesis (.5)}
+\subsection[Programming as Complex Problem Solving]{Programming as Complex Problem Solving \protect{\estimatedpagecount{4}}}
+\todo[inline]{Use material from the Psychology BA to show similarities between research on complex problem solving and programming.}
+
+\subsubsection[Top-Down vs. Bottom Up]{Top-Down vs. Bottom Up \protect{\estimatedpagecount{1.5}}}
+\todo[inline]{Explain top down and bottom up processes and how they problem solving applies to it via functional (de-)composition.}
+\todo[inline]{Create figures that look like fractal pyramides, one approaching from top, one approaching from bottom.}
+\todo[inline]{"To use the bottom up method you need to be able to efficiently determine what the "bottom" is, which usually means you need a heavily constrained problem space."}
+\todo[inline,color=green!40]{relevant literature: \cite{kung_comparing_2013}}
+% \url{https://en.wikipedia.org/wiki/Bottom%E2%80%93up_and_top%E2%80%93down_design}
+% \url{https://www.geeksforgeeks.org/difference-between-bottom-up-model-and-top-down-model/}
+
+\subsubsection[Programming as Theory Building]{Programming as Theory Building \protect{\estimatedpagecount{1.5}}}
+\label{sec:programming-as-theory-building}
+\todo[inline]{Deep dive into Peter Naur's perspective on programming and why theory building explains why software is hard to maintain.}
+\todo[inline]{Maybe bring the example of the Compiler for showing how communication is such an important aspect of software development.}
+\todo[inline]{\textbf{Basically sum up his paper in one and a half pages, cause it is so fundamental to this research.}}
+\todo[inline,color=green!40]{relevant literature: \cite{naur_programming_1985}}
+
+% In a very simplistic view, programming can be seen as the act of converting requirements to source code.
+% With this task being carried out by people, one could look at psychology's research field of complex problem-solving and apply it to programming.
+% There is not a lot of active research being conducted in this area, but Weinberg \cite{Weinberg:1971} and Naur \cite{Naur:1985} did some fundamental research combining psychology's complex problem solving and the act of programming.
+% In his essay \emph{Programming as Theory Building} \citet{Naur:1985} hypothesized that programs are more than just their textual artifacts.
+% Instead, individuals, as well as teams create a shared understanding of the problem they have to solve.
+% Programming is about creating this understanding, hence improving programming is about improving the creation of this understanding, thus improving communication.
+
+% Communication does not only happen in teams.
+% Someone, developing something that can not be accomplished in a few minutes, needs to communicate with oneself as well as the computer.
+% Decomposing requirements, keeping track of them, discovering bugs, and transforming code changes are just some of the tasks that might need some form of communication.
+% Quite a lot of this communication happens via code comments \cite{Ying.etal:2005}.
+% Comments are not only used for documentation purposes, but as well to make notes of things that have to be changed or considered.
+% In contrast to the parts of source code that are actually run, comments are informal and not bound to any syntax rules, making them hard to parse and interpret for machines.
+% This leads to comments being forgotten quite frequently \cite{Nie.etal:2019}.
+% Preventing their forgetting and actually making use of them for the act of programming is the main motivation for this research.
+
+\subsubsection[Conversational Lens regarding Complex Problem Solving in Development]{Conversational Lens regarding Complex Problem Solving in Development \protect{\estimatedpagecount{1}}}
+\label{sec:conversational-lens}
+\todo[inline]{Sum up Alan's ideas regarding looking at programming through the conversational lens and how the idea of communication can be applied to IDEs.}
+\todo[inline]{Also put this conversational lens idea into perspective regarding conversations between people, like already done in the MuC paper and described in \ref{sec:programming-as-theory-building}.}
+\todo[inline,color=green!40]{relevant literature: \cite{mccabe_towards_2023}}
+
+\subsection[Mental Load]{Mental Load \protect{\estimatedpagecount{2.5}}}
+\todo[inline]{Check what "Code that fits in your Head" can attribute to this section}
+\todo[inline]{Dive a bit into the psychology of programming and its research on \emph{working memory capacity}}
+\todo[inline]{Present the research about Post-Its}
+\todo[inline,color=blue!40]{Maybe look into the psychological implications like stress, anxiety and other disorders}
+\todo[inline,color=green!40]{relevant literature: \cite{digiano_learning_nodate, seemann_code_2021}}
+
+
+
+\section[Hypothesis]{Hypothesis \protect{\estimatedpagecount{4}}}
+\todo[inline]{Transition to the hypothesis section of this paper, because of it being a Proof of Concept}
+
+\subsection[About Todo-Comments]{About Todo-Comments \protect{\estimatedpagecount{2.5}}}
+\todo[inline]{Start with an introduction on scientific results regarding Todo comments}
+\todo[inline]{Do a short qualitative analysis regarding the various stackexchange posts on Todo-Comments}
+\todo[inline,color=blue!40]{If I manage to find, I intend to include some statistics on Todo-Comments}
+% - \url{https://www.petermorlion.com/the-lifetime-of-todo-comments-the-results/}
+% - Tickgit
+\todo[inline,color=blue!40]{Maybe try to group and order these into separate categories/quantitites, or report them by stackexchange question/discussion}
+% - https://softwareengineering.stackexchange.com/questions/175719/can-notes-to-dos-in-code-comments-sent-to-code-reviews-result-in-an-effective-re
+% - \url{https://softwareengineering.stackexchange.com/questions/323498/why-is-having-a-notimplementedexception-a-good-thing#comment687389_323498}
+% - https://softwareengineering.stackexchange.com/questions/125320/do-todo-comments-make-sense
+% - https://stackoverflow.com/questions/1989177/how-to-manage-todo-programming-stuff
+% - https://stackoverflow.com/questions/16913055/how-can-i-mark-to-do-comments-in-xcode
+% - https://stackoverflow.com/questions/335378/how-do-you-flag-code-so-that-you-can-come-back-later-and-work-on-it
+\todo[inline,color=green!40]{relevant literature: \cite{nie_natural_2018, ying_source_2005, nie_framework_2019, sridhara_automatically_2016, storey_todo_2008, storey_how_2009}}
+
+\subsection[Introducing Hole-Driven Development]{Introducing Hole-Driven Development \protect{\estimatedpagecount{1.5}}}
+\todo[inline]{Start with the \emph{Fill in the Blank Exercise} analogy, then continue with an example}
+\todo[inline]{Quickly show the Idris example, but mainly reference the related work section}
+
+\section[Research Question and Methodology]{Research Question and Methodology \protect{\estimatedpagecount{1.5}}}
+\todo[inline]{Lay out the process of approaching this thesis}
+\todo[inline]{It mainly consists of deducing the requirements based on literature (reference the according chapter in related work), and validating the results according to the already supported concepts of Hole-Driven Development}
+\todo[inline]{\emph{This work represents a proof of concept for applying the concept of hole-driven development to general-purpose programming languages, in this case \CS.}}
+\todo[inline]{\emph{Which aspects of existing Hole Implementations can be transferred to general-purpose (mainstream) programming languages? With the requirements being laid in Sec 2.4 out after analyzing those in Sec 2.}}
+
+\section[Structure of the Thesis]{Structure of the Thesis \protect{\estimatedpagecount{.5}}}
+\todo[inline]{Quickly describe the structure of the thesis.}

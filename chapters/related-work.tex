@@ -1,0 +1,91 @@
+\chapter[Related Work]{Related Work \protect{\estimatedpagecount{15}}}
+\epigraph{We should think of the compiler as being our lab assistant.}{Edwin Brady}
+
+\section[Tackling Todo-Comments]{Tackling Todo-Comments \protect{\estimatedpagecount{4}}}
+\todo[inline,color=blue!40]{Mention again that Todo-Comments tend to rot}
+\todo[inline]{Shortly explain the usage of Todo-Comments again, before mentioning that there are a couple of other tools as well that tackle the problem of Todo comments}
+\todo[inline]{Hightlight PEP--350 Codetags and TrigIt, because of their novel approaches regarding Todo-Comments}
+
+\subsection{PEP--350 Codetags}
+% - \url{https://medium.com/hackernoon/never-forget-anything-before-after-and-while-coding-98d187ae4cf1#.czqio0b4x}
+\subsection{TrigIt}
+\subsection{Others}
+\subsubsection{Tickgit}
+\subsubsection{Catana}
+\subsubsection{imdone}
+\subsubsection{Editor Integrations}
+\subsubsection{Editor Plugins}
+
+
+
+\section[Languages with native Holes support]{Languages with native Holes support \protect{\estimatedpagecount{6}}}
+\todo[inline]{Mention that a couple of languages natively support the concept of Holes}
+\todo[inline]{\textbf{make sure that those are sorted by invention date}}
+
+\subsection{Coq}
+
+\subsection{Agda}
+
+\subsection{Haskell}
+\todo[inline,color=blue!40]{maybe do some research regarding Liquid Haskell}
+
+\subsection{Hazel}
+%https://www.youtube.com/watch?v=UkDSL0U9ndQ
+%the gap problem
+%what you start with is a hole
+%what should we fill this hole with (in-class)
+%regarding machine learning: having a theory of incomplete programs allows us to do it this way
+%splicing: putting holes inside text
+
+\subsection{Idris}
+
+\section[Simulating Holes in other Languages]{Simulating Holes in other Languages \protect{\estimatedpagecount{5}}}
+\subsection{\CS}
+\todo[inline]{NotImplementedException}
+\todo[inline]{dynamic}
+\todo[inline,color=green!40]{relevant literature: \cite{microsoft_notimplementedexception_2020}}
+
+\subsection{Java}
+\todo[inline,color=green!40]{relevant literature: \cite{omar_active_2012}}
+
+\subsection{Scala}
+\todo[inline]{???}
+\todo[inline,color=green!40]{relevant literature: \cite{odersky_adding_2011}}
+
+\subsection{Swift}
+\todo[inline]{do some research on this}
+
+\subsection{Rust}
+\todo[inline]{!todo}
+\todo[inline]{!unimplemented}
+
+\subsection{TypeScript}
+\todo[inline]{Mention that the difference here is that we apply Holes at the type level}
+\todo[inline]{Explain the idea of gradial refinement}
+\todo[inline]{any + NoImplicitAny}
+\todo[inline]{unknown}
+\todo[inline]{eslint}
+
+\subsection{\LaTeX}
+\todo[inline]{explain how todo comments can be used while writing a \LaTeX document}
+\todo[inline]{Mention the properties of a couple of \LaTeX-packages: todonotes, easy-todo, fixmetodonotes, todo, fixme}
+\todo[inline]{Highlight the comments on ctan (for the todonotes-package) of how useful todos are when collaborating on a document}
+%- https://ctan.org/pkg/todonotes
+%- https://ctan.org/pkg/easy-todo
+%- https://ctan.org/pkg/fixmetodonotes
+%- https://ctan.org/pkg/todo
+%- https://ctan.org/pkg/fixme
+%  - \#Controlling the behavior of FiXme shows the idea of Release/Debug mode
+
+\section{Properties of Holes}
+\todo[inline]{Refer to Cyrus Omar's talk about Hazel regarding the properties of Holes as a basis}
+\todo[inline]{Then cautiously add the other properties of Holes discovered in the literature research}
+\begin{description}
+   \item[Holes DSL] A \CS-internal domain specific language to construct holes, which is loosely based on PEP 350 -- Codetags \cite{elliott_pep_2005}, \textsc{TrigIt} \cite{nie_framework_2019} and the comment types identified in \cite{ying_source_2005}.
+   \item[Executability] The main promise of hole-driven comments is their executability. One should be able to already run an under-specified program and choose some of the unspecified behavior at runtime.
+   \item[Hole Reporting] To provide value to the programmer, the holes need to be reported. Roslyn Analyzers provide capabilities to analyze the source code and report errors independent of the used editor. These can be used to detect and report the holes.
+   \item[Build Differentiation] Enabling simulation capabilities can be implemented by supporting different configurations in different build variants. As an example, users might want to simulate holes in a debug build while breaking the release build due to under-specified behavior.
+   \item[Support Mocking Libraries] Providing data at run-time might not always be the best solution (e.g. timing issues, no user interface, $\dotsc$), so users should be able to integrate external mocking libraries that provide the data.
+   \item[Refactoring Integrations] Based on Roslyn's analyzers and code fixes, certain refactoring operations could be offered to developers. This should work like \textsc{TrigIt}'s code manipulations \cite{nie_framework_2019} or Idris' heuristics \cite{brady_type-driven_2017}.
+   \item[Comment Transformation] Again, Roslyn should make it possible to analyze an existing project and transform existing TODO-comments into holes.
+\end{description}

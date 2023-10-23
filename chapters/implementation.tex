@@ -1,0 +1,42 @@
+\chapter[Implementation]{Implementation \protect{\estimatedpagecount{20}}}
+\epigraph{What runs, the code or the comments?}{Brian Kernighan}
+- using idiomatic C\#, so that legacy projects can be supported + path to this decision
+\section{Types of Holes}
+\subsection{Todo-Comment}
+\subsection{Hole-Comment}
+\subsection{Missing Implementation}
+- https://softwareengineering.stackexchange.com/a/323503
+\subsection{Side-Effect}
+\section{Architecture (2)}
+\subsection{Architecture Overview}
+- maybe include a C4-Diagram of the packages
+\subsection{Bridging static Contexts and DI}
+\subsection{Supporting Logging}
+\subsection{Language Independence}
+\todo{mention what is needed for other languages to adopt holes}
+\section{Providing IDE Support}
+\subsection{Analyzers (3)}
+- how analyzers work, and in-depth description of implemented analyzers
+- debug vs. release
+- TreatWarningsAsErrors
+- vs linting
+\subsection{Code Fixes}
+- testing Code Fixes + Analyzers
+\section{Bridging Compile- and Runtime}
+\subsection{Stacktraces}
+\subsection{Compiler Generated Attributes}
+- mention downside of having to specify generics when using strings
+\subsection{Source Generators}
+- source generators
+- run-time vs. compile-time + stacktrace vs. [Attributes]
+- lifting compile time information to runtime information
+\section{static contexts + DI}
+\section{Supporting Logging + Reporting}
+\section{Extensibility}
+\subsection{Reporting}
+\subsection{Mocking}
+\todo{Abstract I/O}
+\todo{Reference the Sidecar Application}
+\subsection{Sidecar Application}
+\subsubsection{Communication}
+\subsubsection{Dynamic Form Generation}
