@@ -1,31 +1,37 @@
-\chapter{Summary (7)}
+\chapter[Summary]{Summary \protect{\estimatedpagecount{7}}}
 \epigraph{Isn't that reverse hot-reloading?}{Stefan Baumgartner}
+
 \section{Discussion}
 \section{Contributions}
-- new way of interacting with programs: reverse hot-reloading
-- tightening the feedback loop
-- applying HDD to general purpose PLs
+\todo[inline]{Explain the new way of providing program interaction: reverse hot-reloading}
+\todo[inline]{Refer back to the tighter feedback loops and how Holey might accomplish this}
+\todo[inline]{The novelty is applying Hole-Driven Development concept to general purpose/mainstream programming languages.}
+\todo[inline]{Cyrus Omar's research could be extended by providing certain values at runtime.}
+
 \section{Applications}
-- educational setting
-- company setting (like described by Angie)
-- dev2dev communication
-- pontential customer involvement
+\todo[inline]{Educational Settings might be appropriate, where tasks are provided in the form of holes, students just have to be able to run the application in release mode (which is the same as having filled all holes. This provides the benefit, that they can already experiment with the program and do not suffer from blank-page angst.}
+\todo[inline]{Another application might be the applicability of Holey to full-fledged programming languages like Python, which would enable building a Debug-UI for certain departments inside a (dev-heavy) company. As an example, data scientists could provide in-house clients parametrizable queries.}
+\todo[inline]{Holey might be used in traditional pair-programming scenarios, or for fostering dev2dev-communication by allowing them to iterate over more abstract ideas.}
+\todo[inline]{In my theory, Holey could also be applied to ideation sessions with tech-interested customers, by giving them the a preconfigured Sidecar application which allows them to directly influence the running prototype.}
+\todo[inline]{Of course Holey should be used for Wizard of Oz Prototyping}
+
 \section{Limitations}
-- vs. Test-Driven Development (\todo{Papa sein Input dazu finden und anwenden})
-- vs. Linting
+\todo[inline]{vs. Test-Driven Development - Holey is for exploring problem spaces, TDD is for constraining problem spaces}
+\todo[inline]{Difference between Holey and Linting}
+\todo[inline]{The idea might be too abstract}
+\todo[inline]{Absolutely no user studies have been conducted}
+
 \section{Future Ideas}
-- vueflow like Angie described
-- CodeLLMs
-- additional languages
-- Sidecar with multiple applications
-\section{Future Work}
-\subsection{Ideas}
-- LLMs
-- Record and Replay
-- Language
-- tree-sitter
-- Support .sarif Files
-\subsection{Research}
-- qualitative research regarding usability and applicability
-- additional languages
-- applicability in Data Science
+\todo[inline]{One could build an observable application parametrization on top of Holey and something like vue-flow for visualization}
+\todo[inline]{CodeLLMs could be used to synthesize functions (maybe even with example test cases supplied)}
+\todo[inline]{Improve Extensibility, especially in terms of Analyzers and compile-time information}
+\todo[inline]{Improve the Sidecar application with Record and Replay Features}
+\todo[inline]{Enable the Sidecar application to be integrated using iFrames}
+\todo[inline]{Build language independent tools upon tree-sitter}
+\todo[inline]{Support the sarif file standard}
+
+\section{Future Research}
+\todo[inline]{Conduct mixed-methods research regarding usability and applicability}
+\todo[inline]{Address performance concerns}
+\todo[inline]{Check whether Holey's ideas can be transferred to other languages}
+\todo[inline]{Research ways of introducing Hole Driven Development into the highly experimental/prototype-driven research space of data science}

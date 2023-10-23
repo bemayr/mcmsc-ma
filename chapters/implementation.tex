@@ -1,42 +1,89 @@
 \chapter[Implementation]{Implementation \protect{\estimatedpagecount{20}}}
 \epigraph{What runs, the code or the comments?}{Brian Kernighan}
-- using idiomatic C\#, so that legacy projects can be supported + path to this decision
+
+\todo[inline]{Mention the idea of using idiomatic \CS, so that legacy projects can be supported}
+\todo[inline]{Show the pathway on how this developed...}
+
 \section{Types of Holes}
 \subsection{Todo-Comment}
+\todo[inline]{Explain the necessity of Todo-Comments, how they can look like and why it makes sense to support them in their purest way}
+
 \subsection{Hole-Comment}
+\todo[inline]{Explain the difference between Hole-Comments and Todo-Comments and what lifts a Todo-Comment in the Hole-Comment state}
+
 \subsection{Missing Implementation}
-- https://softwareengineering.stackexchange.com/a/323503
+\todo[inline]{Reference the opening quote of this chapter}
+% - https://softwareengineering.stackexchange.com/a/323503
+\todo[inline]{Explain the concept of stub-generation by the IDE, why it makes sense, but why it is scary that those NotImplementedExceptions are only discovered at runtime}
+\todo[inline,color=blue!40]{Maybe do a small excursion into the land of checked exceptions and the difference between \CS and Java}
+
 \subsection{Side-Effect}
-\section{Architecture (2)}
+\todo[inline]{Show the missing piece of runtime holes and which power they provide.}
+\todo[inline,color=blue!40]{Maybe already dive into the idea of abstract I/O and that getters and setters are enough to model side-effects}
+
+
+\section{Architecture \protect{\estimatedpagecount{2}}}
+\todo[inline]{Explain the overall architecture of the combination of a library, the analyzers and the VS Plugin}
+\todo[inline]{Explain the difficulties in building a DSL in \CS, no functions, only static methods on classes}
+
 \subsection{Architecture Overview}
-- maybe include a C4-Diagram of the packages
+\todo[inline,color=blue!40]{Maybe include a C4 diagram of the packages}
+
 \subsection{Bridging static Contexts and DI}
+\todo[inline]{Explain the difficulties of bridging the static context and DI}
+
 \subsection{Supporting Logging}
+\todo[inline]{Dive into .NET's mess of ILogger, ILogger<T> and ILoggerFactory and their usage in libraries}
+\todo[inline]{Explain how this could be solved using StashBox}
+
 \subsection{Language Independence}
-\todo{mention what is needed for other languages to adopt holes}
+\todo[inline]{Explain the modularity and how the \CS-solution might be transferred to other languages (e.g. Python, Java, TS)}
+\todo[inline]{mention what is needed for other languages to adopt holes}
+
 \section{Providing IDE Support}
-\subsection{Analyzers (3)}
-- how analyzers work, and in-depth description of implemented analyzers
-- debug vs. release
-- TreatWarningsAsErrors
-- vs linting
+\todo[inline]{Give a quick introduction into Roslyn Analyzers}
+\todo[inline]{Explain how Roslyn Analyzers offer IDE-independent support}
+
+\subsection[Analyzers]{Analyzers \protect{\estimatedpagecount{3}}}
+\todo[inline]{Explain the implemented Analyzers}
+\todo[inline]{Explain why it makes sense that debug and release mode are handled separately and how this was accomplished}
+\todo[inline]{Connect this to TreatWarningsAsErrors}
+\todo[inline]{Explain the difference to simple linters}
+
 \subsection{Code Fixes}
-- testing Code Fixes + Analyzers
+\todo[inline]{Show the power and usability improvements that Code Fixes in combination with Analyzers provide}
+
 \section{Bridging Compile- and Runtime}
+\todo[inline]{Explain why it is necessary to bridge between compile- and runtime}
+
 \subsection{Stacktraces}
+\todo[inline]{Dig into the concept of Stacktraces and why they might be (but in reality can't) be used to get information about the running code}
+
 \subsection{Compiler Generated Attributes}
-- mention downside of having to specify generics when using strings
+\todo[inline]{Explain the usage of .NET's compiler generated attributes}
+\todo[inline]{Also mention the downside of having to specify generics when strings are used}
+
 \subsection{Source Generators}
-- source generators
-- run-time vs. compile-time + stacktrace vs. [Attributes]
-- lifting compile time information to runtime information
-\section{static contexts + DI}
-\section{Supporting Logging + Reporting}
+\todo[inline]{Briefly explain \CS's version of source generators vs. T4 templates}
+\todo[inline]{Explain how compile-time information can be lifted into runtime}
+
 \section{Extensibility}
+\todo[inline]{Focus on the importance of Extensibility for such an abstract concept/library}
+
 \subsection{Reporting}
+\todo[inline]{Explain how custom reporters can be utilized}
+
 \subsection{Mocking}
-\todo{Abstract I/O}
-\todo{Reference the Sidecar Application}
+\todo[inline]{Explain the pathway to prototype-mocking as well as why custom packages aren't necessary anymore}
+\todo[inline]{Once again mention the concept of abstract I/O and how powerful this is}
+\todo[inline]{Transition to the Sidecar Application}
+
 \subsection{Sidecar Application}
+\todo[inline]{Briefly explain that the Sidecar Application is no fundamental part of Holey, but it can be created solely on Holey's extensibility options}
+
 \subsubsection{Communication}
+\todo[inline]{Explain the abstracted communication channels and that they are not tied to anything else}
+
 \subsubsection{Dynamic Form Generation}
+\todo[inline]{Quickly dive into dynamic form generation and show all the code (because it is just one line per application)}
+\todo[inline,color=blue!40]{Maybe also mention that the JSON Schema adapter can be switched to a custom one}
