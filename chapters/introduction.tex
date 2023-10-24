@@ -1,12 +1,14 @@
 \chapter[Introduction]{Introduction \protect{\estimatedpagecount{16}}}
 \epigraph{How do we get people to understand programming?}{Bret Victor}
 
-The idea of learnable programming \cite{victor_inventing_2012} goes back to the early days of Smalltalk \cite{kay_early_1993}.
+The idea of learnable programming \cite{victor_learnable_2012} goes back to the early days of Smalltalk \cite{kay_early_1993}.
 In his essay \emph{The Early History of Smalltalk}, Alan Kay looks back at the events that led to the creation of Smalltalk.
 More importantly, he gives insight about the context of why Smalltalk turned out how it did.
 Smalltalk was intended to be a learning environment for children, side-effects like its strong object orientation were merely artifacts of this main idea \cite{kay_early_1993}.
 Objects, message passing and compositionality allowed people (not only children) using Smalltalk, to align their ways of thinking with the way their programs were structured.
-Applying the conversational lens of programming environments (see Section~\ref{sec:conversational-lens}) to Smalltalk one could argue that speaking the same language results in a shared mental model between the program and the programmer.
+Applying the conversational lens of programming environments (see Section~\ref{sec:conversational-lens}) to Smalltalk, one could argue that speaking the same language results in a shared mental model between the program and the programmer.
+Or as Weinberg \cite{weinberg_psychology_1971} described the status quo (in 1971): "When we talk to our computers, unhappily, we are usually speaking in different tongues."
+Unfortunately, not a lot of effort has been put into aligning those tongues over the last 50 years.
 
 Programming environments that foster this style of communication are usually called live programming\cite{aguiar_live_2019, church_liveness_2010} or interactive programming \cite{czaplicki_interactive_2013, mccabe_towards_2023}.
 Usually, such systems possess the following properties \cite{burg_1st_2013}:
@@ -17,33 +19,50 @@ Usually, such systems possess the following properties \cite{burg_1st_2013}:
     \item[Concrete] It is way easier for people to start with concrete examples and generalize later on.
 \end{description}
 
-\todo[inline]{Transition to the arrow and bow vs. firehose analogy from Chris Hancock (explained by \cite{aguiar_live_2019}) and explain the difference between aiming. Delta-Time between action and feedback, vs. consistent re-aiming}.
-\todo[inline]{This feedback-loop metaphor can be applied to a specific developer, a team or even with customer-interaction.}
-\todo[inline,color=blue!40]{Maybe cross-reference to Psychology of Programming and explain that faster feedback fosters happiness.}
-
+Live programming systems lead to tighter feedback loops.
+This outcome was described by Chris Hancock \cite{hancock_real-time_2003} and illustrated in \cite{aguiar_live_2019} as shown in Figure~\ref{fig:bow-arrow} and Figure~\ref{fig:waterhose}.
+%
 \begin{figure}[h]
 \centering
 \includesvg[width=0.75\textwidth]{images/arrow-bow}
 \caption{When trying to hit a target with bow and arrow one can only re-aim based on the previous shot. Feedback is provided only after the arrow reaches the target. Image source~\cite{aguiar_live_2019}.}
-\label{fig:visual-studio-error-list}
+\label{fig:bow-arrow}
 \end{figure}
+%
+There are multiple differences in trying to hit a target with bow and arrow vs. with a hose.
+The most obvious one is the constant stream of information that is provided by observing where the water hits the target in the second analogy.
+But is this uninterrupted stream of information really the reason why it is easier to hit a target with a hose?
+Hancock \cite{hancock_real-time_2003} argues that this is only a fraction of the reason, according to his interpretation the main difference is that the waterer \emph{never stops aiming}.
+While the archer's actions consist of a series of distinct actions (while having to re-aim after each shot), the waterer does not have to "reload".
+Hence the waterer does not need to switch contexts, while at the same time being supported by continuous feedback.
+One can also visually perceive the shortened feedback loop between Figure~\ref{fig:bow-arrow} and Figure~\ref{fig:waterhose}.
 
 \begin{figure}[h]
 \centering
-\includesvg[width=0.6\textwidth]{images/firehose}
+\includesvg[width=0.6\textwidth]{images/waterhose}
 \caption{Aiming with a hose is much easier. Continuous feedback allows the person using the hose to constantly re-adapt to the target, without having to stop aiming at all. Image source~\cite{aguiar_live_2019}.}
-\label{fig:visual-studio-error-list}
+\label{fig:waterhose}
 \end{figure}
 
+In contrast to the previously described problem of speaking the same tongue, several frameworks and programming tools are actively trying to shorten the feedback loop \cite{kubelka_road_2018}.
+Web development tools in major browsers support direct page editing \addref, Vitest, a testing framework for JavaScript supports an instant watch mode \addref, all major web frameworks support hot-module reloading \addref, qwik lets developers click at components which takes them directly to the source code \addref. Redux allows developers to travel through their application state by providing time-travelling debugging \addref.
+REPLs are kind of standard for newly developed languages \addref, Java and .NET support hot-reloading under certain circumstances \addref and Apple's Swift programming language supports live programming with interactive playgrounds \addref.
+Although this list is by far not exhaustive and there is a clearly visible trend towards live programming, comparing tools used in industry to the properties of live programming, there is still a huge gap.
+The next section portraits the concept of interactive programming in the broader context of software development, compared to "just" programming.
+
+
+
+\todo[inline,color=blue!40]{Maybe cross-reference to Psychology of Programming and explain that faster feedback fosters happiness.}
 \todo[inline]{Explain that industry is slowly adopting these ideas (based on [Kubelka.etal:2018]).}
 \todo[inline]{Argue that there is much better we can do, and this is the content of this thesis. Then transition to the context of the thesis.}
 
-% Liveness in practice. Several frameworks and tools nowadays add ways to integrate immediate feedback, particularly on the web. The Chrome web development tools [ 4] allow changes to web pages and JavaScript code without reloading a webpage. Modern, popular JavaScript frameworks including Facebook’s React.js support Live Programming in live code editors [3]. \cite{kubelka_road_2018}
-% Mainstream languages also take steps in this direction: Java supports a limited replacement of application parts while it is running through the Java Platform Debugger Architecture [24 ]. Apple’s new language Swift supports Live Programming with interactive playgrounds [1 ]. Finally, Microsoft’s Visual Studio 2015 supports interactive programming for \CS and F\# with REPLs [25 , 26 ]. Microsoft also recently acquired the CodeConnect startup, which developed the Alive extension for Visual Studio [2].
 
+15 checklists
+111 memory
 
 
 \section[Context]{Context \protect{\estimatedpagecount{3.5}}}
+\todo[inline]{This feedback-loop metaphor can be applied to a specific developer, a team or even with customer-interaction.}
 \todo[inline]{In the introduction I did not differentiate between programming and software development, but it is a huge differentiation.}
 \todo[inline]{Explain the differences between psychology of programming and psychology of software development and what it has to do with requirements to code and idea to code.}
 
@@ -107,6 +126,7 @@ Usually, such systems possess the following properties \cite{burg_1st_2013}:
 
 \subsubsection[Conversational Lens regarding Complex Problem Solving in Development]{Conversational Lens regarding Complex Problem Solving in Development \protect{\estimatedpagecount{1}}}
 \label{sec:conversational-lens}
+\todo[inline,color=purple!40]{"Programs are used not only for man-machine communication, but for man-man communication as well."}
 \todo[inline]{Sum up Alan's ideas regarding looking at programming through the conversational lens and how the idea of communication can be applied to IDEs.}
 \todo[inline]{Also put this conversational lens idea into perspective regarding conversations between people, like already done in the MuC paper and described in \ref{sec:programming-as-theory-building}.}
 \todo[inline,color=green!40]{relevant literature: \cite{mccabe_towards_2023}}
