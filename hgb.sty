@@ -34,7 +34,7 @@
 \RequirePackage{lmodern}				% use Latin Modern Fonts
 \RequirePackage{cmap}						% make generated PDF files "searchable and copyable"
 \RequirePackage[utf8]{inputenc}
-\RequirePackage[T1]{fontenc}		% T1 font encoding for improved hyphenation
+\RequirePackage[LGR,T1]{fontenc}		% T1 font encoding for improved hyphenation
 
 % Set main language by selectively loading babel with the 'main' parameter (babel 3.9+)
 \ifthenelse{\equal{\hgb@MainLanguage}{german}}%
@@ -223,7 +223,7 @@
 \setcounter{bottomnumber}{2}			% previously: 1
 \setcounter{totalnumber}{5}				% previously: 3
 
-\RequirePackage{enumitem}				% fix excessive vertical spacing in lists
+\RequirePackage[inline]{enumitem}				% fix excessive vertical spacing in lists
 \setlist{%
 	partopsep = .0ex plus .1ex, 
 	topsep = .6ex plus .3ex, 

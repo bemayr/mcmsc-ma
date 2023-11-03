@@ -1,9 +1,9 @@
-\chapter[Introduction]{Introduction \protect{\estimatedpagecount{16}}}
+\chapter{Introduction}
 \epigraph{How do we get people to understand programming?}{Bret Victor}
 
 The idea of learnable programming \cite{victor_learnable_2012} goes back to the early days of Smalltalk \cite{kay_early_1993}.
 In his essay \emph{The Early History of Smalltalk}, Alan Kay looks back at the events that led to the creation of Smalltalk.
-More importantly, he gives insight about the context of why Smalltalk turned out how it did.
+More importantly, he gives insight into the context of why Smalltalk turned out how it did.
 Smalltalk was intended to be a learning environment for children, side-effects like its strong object orientation were merely artifacts of this main idea \cite{kay_early_1993}.
 Objects, message passing and compositionality allowed people (not only children) using Smalltalk, to align their ways of thinking with the way their programs were structured.
 Applying the conversational lens of programming environments (see Section~\ref{sec:conversational-lens}) to Smalltalk, one could argue that speaking the same language results in a shared mental model between the program and the programmer.
@@ -13,23 +13,23 @@ Unfortunately, not a lot of effort has been put into aligning those tongues over
 Programming environments that foster this style of communication are usually called live programming\cite{aguiar_live_2019, church_liveness_2010} or interactive programming \cite{czaplicki_interactive_2013, mccabe_towards_2023}.
 Usually, such systems possess the following properties \cite{burg_1st_2013}:
 \begin{description}
-    \item[Live] They give the programmer immediate feedback, while the program is edited. This feedback can target its output, structure or both.
-    \item[Structured] Environments which are aware of a program's structure, understand and preserve this structure. They operate at the level of structure, not on raw text.
-    \item[Tangible] Normally, program execution happens behind the scenes and provides little to no capabilities for live inspection. Tangible programming makes the execution transparent, tangible and explorable.
+    \item[Live] They give the programmer immediate feedback, while the program is edited. This feedback can target its output, structure, or both.
+    \item[Structured] Environments that are aware of a program's structure, understand and preserve this structure. They operate at the level of structure, not on raw text.
+    \item[Tangible] Normally, program execution happens behind the scenes and provides little to no capabilities for live inspection. Tangible programming makes the execution transparent, tangible, and explorable.
     \item[Concrete] It is way easier for people to start with concrete examples and generalize later on.
 \end{description}
 
 Live programming systems lead to tighter feedback loops.
-This outcome was described by Chris Hancock \cite{hancock_real-time_2003} and illustrated in \cite{aguiar_live_2019} as shown in Figure~\ref{fig:bow-arrow} and Figure~\ref{fig:waterhose}.
+This outcome was described by \citeauthor{hancock_real-time_2003} \cite{hancock_real-time_2003} and illustrated in \cite{aguiar_live_2019} as shown in Figure~\ref{fig:bow-arrow} and Figure~\ref{fig:waterhose}.
 %
 \begin{figure}[h]
 \centering
 \includesvg[width=0.75\textwidth]{images/arrow-bow}
-\caption{When trying to hit a target with bow and arrow one can only re-aim based on the previous shot. Feedback is provided only after the arrow reaches the target. Image source~\cite{aguiar_live_2019}.}
+\caption{When trying to hit a target with a bow and arrow, one can only re-aim based on the previous shot. Feedback is provided only after the arrow reaches the target. Image source~\cite{aguiar_live_2019}.}
 \label{fig:bow-arrow}
 \end{figure}
 %
-There are multiple differences in trying to hit a target with bow and arrow vs. with a hose.
+There are multiple differences in trying to hit a target with a bow and arrow vs. with a hose.
 The most obvious one is the constant stream of information that is provided by observing where the water hits the target in the second analogy.
 But is this uninterrupted stream of information really the reason why it is easier to hit a target with a hose?
 Hancock \cite{hancock_real-time_2003} argues that this is only a fraction of the reason, according to his interpretation the main difference is that the waterer \emph{never stops aiming}.
@@ -45,68 +45,353 @@ One can also visually perceive the shortened feedback loop between Figure~\ref{f
 \end{figure}
 
 In contrast to the previously described problem of speaking the same tongue, several frameworks and programming tools are actively trying to shorten the feedback loop \cite{kubelka_road_2018}.
-Web development tools in major browsers support direct page editing \addref, Vitest, a testing framework for JavaScript supports an instant watch mode \addref, all major web frameworks support hot-module reloading \addref, qwik lets developers click at components which takes them directly to the source code \addref. Redux allows developers to travel through their application state by providing time-travelling debugging \addref.
+Web development tools in major browsers support direct page editing \addref, Vitest, a testing framework for JavaScript supports an instant watch mode \addref, all major web frameworks support hot-module reloading \addref, qwik lets developers click at components which takes them directly to the source code \addref. Redux allows developers to travel through their application state by providing time-traveling debugging \addref.
 REPLs are kind of standard for newly developed languages \addref, Java and .NET support hot-reloading under certain circumstances \addref and Apple's Swift programming language supports live programming with interactive playgrounds \addref.
 Although this list is by far not exhaustive and there is a clearly visible trend towards live programming, comparing tools used in industry to the properties of live programming, there is still a huge gap.
-The next section portraits the concept of interactive programming in the broader context of software development, compared to "just" programming.
+The next section portrays the concept of interactive programming in the broader context of software development, compared to "just" programming.
+
+% \todo[inline,color=blue!40]{Maybe cross-reference to Psychology of Programming and explain that faster feedback fosters happiness.}
 
 
 
-\todo[inline,color=blue!40]{Maybe cross-reference to Psychology of Programming and explain that faster feedback fosters happiness.}
-\todo[inline]{Explain that industry is slowly adopting these ideas (based on [Kubelka.etal:2018]).}
-\todo[inline]{Argue that there is much better we can do, and this is the content of this thesis. Then transition to the context of the thesis.}
+\section{Context}
+\label{sec:context}
+Continuing this idea of comparing programming and software development it becomes clear that programming is just a fraction of the whole software development process \cite{yang_phase_2008}.
+A common view on the software development phases is \begin{enumerate*}[label=(\roman*)]
+\item planning,
+\item requirements analysis,
+\item designing,
+\item coding,
+\item testing,
+\item delivery and
+\item maintenance
+\end{enumerate*}
+revealing that programming is indeed mainly part of coding and maintenance.
+Although code-driven approaches targeting requirements analysis \addref, designing \addref, testing \addref, and delivery (continuous delivery) are becoming more and more popular, creating software is still more than coding.
+People researching the psychology of programming came to the same conclusion \cite{curtis_psychology_1990}: "The fact that this field is usually referred to as the `psychology of programming' rather than the 'psychology of software development' reflects its primary orientation to the coding phenomena."
+Successfully applying ideas of live programming to more aspects of the software development process than programming requires a closer look at them as well as their history.
+
+% \todo[inline]{This feedback-loop metaphor can be applied to a specific developer, a team or even with customer-interaction.}
+% \todo[inline]{In the introduction I did not differentiate between programming and software development, but it is a huge differentiation.}
+% \todo[inline]{Explain the differences between psychology of programming and psychology of software development and what it has to do with requirements to code and idea to code.}
+
+\subsection{Agile Software Development}
+\label{sec:agile-movement}
+The aforementioned feedback loops are applicable to a wide range of problems.
+As such, software development or software engineering approaches might be considered.
+Viewing their history through the lens of tightening feedback loops provides an additional perspective on why people adopted agile software development practices.
+
+Working on projects, especially in teams, always follows a structure.
+In software engineering, this structure is defined by software development methods.
+When software engineering came up, practitioners adapted already existing project management methodologies to it, leading to highly rigid methods in the beginning \cite{misra_agile_2012}.
+Those now called \emph{traditional software development methods} were focused on following well-defined plans and detailed documentation.
+According to \citeauthor{misra_agile_2012}'s overview of the history of agile software development practices \cite{misra_agile_2012}, these rigid methods worked well for compilers and operating systems, but their heavy focus on well-defined plans was not flexible enough for developing small business applications as well as spreadsheets.
+Although, being formalized in 2001 by \citeauthor{beck_manifesto_2001}, the origins of the agile software manifesto's ideas \cite{beck_manifesto_2001} date back to the early software development methods \cite{van_der_aalst_historical_2008}.
+The core idea of the agile manifesto is defined as below:
+%
+\begin{quote}
+    We are uncovering better ways of developing software by doing it and helping others do it.
+    Through this work we have come to value:
+    %
+    \begin{itemize}
+        \item \emph{Individuals and interactions} over processes and tools.
+        \item \emph{Working software} over comprehensive documentation.
+        \item \emph{Customer collaboration} over contract negotiation.
+        \item \emph{Responding to change} over following a plan.
+    \end{itemize}
+    %
+    That is, while there is value in the items on the right, we value the items on the left more.
+\end{quote}
+%
+
+Alongside their manifesto, \citeauthor{beck_manifesto_2001} published twelve principles for developing software in an agile way.
+Table~\ref{tab:agile-principles} lists these principles.
+Based on the agile manifesto and the ideas of interactive programming, each of the principles is interpreted in how it might align with the fundamental idea of tightening the feedback loop.
+If applicable, the interpretation also draws comparisons to how interactive programming might be beneficial for this specific principle.
+
+\begin{block}
+%\setlength{\tabcolsep}{10pt}     % separator between columns (standard = 6pt)
+%\renewcommand{\arraystretch}{1.50} % vertical stretch factor (standard = 1.0)
+%\caption{Applying the lens of tightening feedback loops through live programming to the agile principles \cite{beck_manifesto_2001}.}
+%\label{tab:agile-principles}
+%\centering
+%\newcommand{\RR}{\rightskip=0pt plus1em \spaceskip=.3333em \xspaceskip=.5em\relax}
+\renewcommand{\arraystretch}{1.30}
+\small
+%    \begin{english}
+%    \begin{tabular}{@{}p{0.4\textwidth}p{0.55\textwidth}}
+\begin{longtable}{@{}cp{0.35\textwidth}p{0.5\textwidth}@{}}
+    % -------------------------- first header ----------------------------
+    \caption{Applying the lens of tightening feedback loops through live programming to the agile principles \cite{beck_manifesto_2001}.} 
+    \label{tab:agile-principles}																						 \\
+    \toprule
+    \# & Agile Principle & Interpretation \\
+    \midrule
+    \endfirsthead
+    % ---------------------- subsequent headers ---------------------------
+    \caption*{\textbf{Table \getcurrentlabel} (\emph{continued})}				 \\
+    \toprule
+    \# & Agile Principle & Interpretation \\
+    \midrule
+    \endhead
+    % --------------------------------------------------------------------
+    \toprule
+    \# & Agile Principle & Interpretation \\
+    \midrule
+		\endhead
+    (1) &
+    Highest priority is given to satisfying the customer through early and continuous delivery of valuable software. &
+    A clear example for tightening the feedback loop between the customer and development team.
+    Continuously delivering software gives the customer the feeling of "being in the loop".
+    \\
+    (2) &
+    Changing requirements are welcome, even late in development. Agile processes harness change for the customer’s competitive advantage. &
+    According to \cite{van_der_aalst_historical_2008}, customers might not know their full problem space.
+    Iterating on potential solutions, while close communication between development teams and customers is emphasized, leads to a co-exploration of the problem, as well as the solution space, enabled by tighter feedback loops.
+    \\
+    (3) &
+    Working software is delivered frequently, from a couple of weeks to a couple of months, with a preference to the shorter timescale. &
+    A perfect example for tightening the feedback loop between different versions of software.
+    One should note the emphasis on "with a preference to the shorter timescale" which actively promotes shorter feedback loops.
+    \\
+    (4) &
+    Business people and developers work together daily throughout the project. &
+    Working together on a daily basis actively reduces the amount documentation overhead, hence shortening feedback loops.
+    Although one has to be aware of the side-effects imposed by this (see \ref{sec:programming-as-theory-building} for an alternative take on the topic of documentation in software projects).
+    \\
+    (5) &
+    Projects are built around motivated individuals.
+    They are given the environment and support they need, and trusted to get the job done. &
+    ---
+    \\
+    (6) &
+    It is believed that the most efficient and effective method of conveying information to and within a development team is face-to-face conversation. &
+    Again, face-to-face conversation is as short as a feedback loop can get.
+    Applying interactive programming in a way that fosters face-to-face conversation about certain solutions would enhance this even more.
+    \\
+    (7) &
+    It is believed that working software is the primary measure of progress.&
+    ---
+    \\
+    (8) &
+    It is believed that agile processes promote sustainable development.
+    The sponsors, developers, and users should be able to maintain a constant pace indefinitely.&
+    ---
+    \\
+    (9) &
+    It is believed that continuous attention to technical excellence and good design enhances agility.&
+    ---
+    \\
+    (10) &
+    It is believed that simplicity – the art of maximizing the amount of work not done – is essential.&
+    This principle can be approached in at least two ways.
+    First, "maximizing the amount of work not done" could be applied to feedback loops in a way that no need for a feedback loop is even faster than a very tight one.
+    Secondly, certain ideas of live programming could be utilized to prevent unnecessary features from being developed, thus contributing to simplicity.
+    \\
+    (11) &
+    It is believed that the best architectures, requirements, and designs emerge from self-organizing teams.&
+    The advantage of self-organizing teams could be caused by tighter feedback loops, leading to less feedback that gets mis-transferred.
+    \\
+    (12)&
+    It is believed that success is achieved when at regular intervals the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly.&
+    Retrospectives perfectly showcase what happens when tighter feedback loops (in this case about the internal workings of teams) are applied to software development.
+    \\
+    \bottomrule
+\end{longtable}
+\end{block}
+
+\todo[inline]{Add --- note to the table.}
+
+Summing up those principles, agile software development encourages lean development using iterative and evolutionary approaches.
+Close collaboration between software development and business teams should lead to higher customer satisfaction by actually incorporating their (possibly changing) needs, instead of emphasizing processes and documentation.
+Face-to-face communication, frequent deliveries, adapting and properly managing changing requirements, as well as having those organizational capabilities are necessary premises for implementing agile software development processes successfully \cite{misra_agile_2012}.
+These original ideas were more and more commercialized with various frameworks being created based on the agile philosophy \cite{hohl_back_2018}.
+According to \citeauthor{hohl_back_2018}, Scrum is often seen as the only agile practice.
+Because managers and developers mainly apply frameworks, the initial diversity as well as the underlying principles of the agile manifesto get lost.
 
 
-15 checklists
-111 memory
+%\todo[inline]{somehow incorporate: Therefore, it is important for the business, and the development teams to work hand-in-hand throughout the entire duration of the project.}
+
+Interestingly, already the waterfall method\addref, classified as a traditional software development method, defines feedback loops between successive stages of the software engineering process, introducing the stage of prototyping, intended for improving the phase of requirements analysis and design as early as possible.
+Combining these feedback loops with the core idea of the spiral model\addref, namely it introducing the idea of an iterative approach in contrast to sequentially approaching the phases of software development, reveals the origins of agile practices \cite{misra_agile_2012}.
+In the next section, we are gonna take a brief look on the topic of prototyping and how agile ideas have been applied to different types of prototyping.
 
 
-\section[Context]{Context \protect{\estimatedpagecount{3.5}}}
-\todo[inline]{This feedback-loop metaphor can be applied to a specific developer, a team or even with customer-interaction.}
-\todo[inline]{In the introduction I did not differentiate between programming and software development, but it is a huge differentiation.}
-\todo[inline]{Explain the differences between psychology of programming and psychology of software development and what it has to do with requirements to code and idea to code.}
+\subsection{Prototyping}
+In his essay \citetitle{gladden_stop_1982} about the shortcomings of the waterfall model, \citeauthor{gladden_stop_1982} argues that sequential software development processes leads to missed schedules and the creation of unsuccessful products in a sense that the produced software \begin{enumerate*}[label=(\roman*)]
+\item does not perform the function intended, or
+\item does not satisfy the customer's needs
+\end{enumerate*}
+and calls for a different form of collaboration between the involved parties \cite{gladden_stop_1982}.
+His argumentation consists of the inherent complexity of communicating requirements between different parties, the huge impact of changing requirements and the elapsed time between specifying requirements and actually seeing their outcome.
+Introducing the \emph{Non-Cyclical (Hollywood) Model}, he proposes that: "Nothing conveys more meaning or serves to congeal a system concept better than the system itself" \cite{gladden_stop_1982}.
+Instead of defining (textual) requirements, customers should present their objectives and work together with the development team on agreeing upon them.
+One of his described techniques for achieving objectives is \emph{rapid prototyping}.
+For properly understanding prototyping it might make sense to take a look at the etymological origin of said word: \emph{prototype} is analyzable as \texttt{proto-} and \texttt{type}.
+The word's origin goes back to Ancient Greek \emph{\textgreek{πρωτότυπος}} (original; prototype), with the conjunction of \emph{\textgreek{πρῶτος}}, (first; earliest) and \emph{\textgreek{τῠ́πος}} (pressing; sort; type).
 
-\subsection[Agile Movement]{Agile Movement \protect{\estimatedpagecount{1.5}}}
-\todo[inline]{Give an overview on the development of agile ideas and how it has changed the tasks of software developers.}
-\todo[inline]{Use the arrow/firehose analogy to mentally visualize the faster iteration cycles leading to tighter feedback loops}
-\todo[inline]{Software has to be developed faster, the requirements are defined more dynamically - mention theory vs. reality}
-\todo[inline]{Bring the concept of tactical programming vs. strategic programming into play (based on Osterhout as described in my Psychology BA)}
-\todo[inline]{Transition to the next chapter by highlighting the importance of prototypes in agile development.}
-\todo[inline,color=blue!40]{Maybe look into Rapid Application Development and its approach on Prototyping}
+This is mainly how the concept of a prototype is understood in software development \cite{budde_what_1992}, with slight differences in interpretation.
+Although these interpretation differences are not big, their effects do not really align with the original concept of a prototype.
+We will refer back to the etymological origin of the word \meph{prototype} to depict some of those contradictions.
 
-\subsection[Prototyping]{Prototyping \protect{\estimatedpagecount{1.5}}}
-\todo[inline]{Start with the etymology of the word prototype, based on greek proto + typos.}
-\todo[inline]{Explain how prototyping works in reality and what evolutionary prototyping is. (with the figure from my AmA talk)}
-\todo[inline]{Mention that prototypes get released to production (Tesla, Spotify, Apple) and that customers do the testing.}
-\todo[inline]{Show this contradiction with the etymological approach.}
-\todo[inline,color=blue!40]{Maybe bring in a little bit of capitalism criticism in the form of market fit vs. high-quality products, just show the contradiction.}
-\todo[inline]{Transition to wizard of oz prototyping and how this is actually prototyping, but show its complexity and the difference between the prototype and the actual product.}
+Prototypes are used to create a shared understanding between developers, users, and management \cite{budde_what_1992}.
+They are used to identify difficulties, clarify problems and misunderstandings, and help in making design decisions.
+If necessary, they are complemented with written system specifications.
+According to \cite{budde_what_1992} a prototype that "is used for more than experimental testing of an idea for illustrative purposes, but rather is employed in the core of the application" is known as a pilot system.
+A pilot system requires a much more elaborate design than a prototype.
+Applying the etymological perspective, a "first type" of some program does not have to be as stable or as mature as if it is part of the finished product.
+Although \citeauthor{budde_what_1992} clearly distinguish prototypes from pilot systems, this looks very different in practice.
+They already present this contradiction in their article when explaining different goals of prototyping \cite{budde_what_1992}.
+\begin{enumerate*}[label=(\roman*)]
+\item \emph{Exploratory Prototyping} is used when the problem to solve is unclear or underspecified. In this case, prototyping is used to evaluate different solutions and clarify requirements.
+\item \emph{Experimental Prototyping} can be seen as a technical feasibility study. Developers experiment with the help of prototypes to find out whether existing requirements can be fulfilled.
+\item \emph{Evolutionary Prototyping} emphasizes the nominalized verb \emph{prototyping} over the noun \emph{prototype}. The focus lies on the process of creating one prototype after another, leading to prototypes being converted to pilot systems, being converted to the actual product. This interpretation contradicts the ancient Greek understanding of the word prototype. Visualizing processes involving the progress of time is easier when shown graphically, thus Figure~\ref{fig:throw-away-prototyping} and Figure~\ref{fig:evolutionary-prototyping} show these differences.
+\end{enumerate*}
 
-\subsection[Interactive Programming]{Interactive Programming \protect{\estimatedpagecount{.5}}}
-\todo[inline]{Bridge the gap between prototyping and interactive/live programming as described in the introduction. Mention how this might align with agile methodologies, the psychology of programming and customer-centered approaches.}
+Matching the meaning of the word prototype, throw-away prototyping (as shown in Figure~\ref{fig:throw-away-prototyping}) treats prototypes as artifacts from ideation phases.
+The source code of these prototypes is \emph{not} reused later when the application itself is developed.
+Knowing that the source code will not be reused creates a mindset where software engineers focus on creating the functionality that should be prototyped and do not focus on code style and maintainability.
+Sketching and prototyping are usually two different things.
+Sketching is focused on the user interface and user experience and does not concern the technical implementation of a piece of software.
+The phases (depicted as arrows) in Figure~\ref{fig:throw-away-prototyping} highlight that developing features starts after their respective sketching or prototyping phases.
+%
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{images/throw-away-prototyping}
+\caption{Throw-away prototyping and sketching: prototypes help gather early feedback before starting to develop the actual feature. Image source~\cite{mourzenko_answer_2014}.}
+\label{fig:throw-away-prototyping}
+\end{figure}
+%
+In contrast to throw-away prototyping, the concept of evolutionary prototyping (as shown in Figure~\ref{fig:evolutionary-prototyping}) incorporates customer feedback iteratively and incrementally over the whole process of product development.
+As described in \cite{mourzenko_answer_2014}, code style, maintainability, design patterns, and testing count from the beginning of development, because starting with an early prototype the actual product is an evolution of it.
+As depicted in Figure~\ref{fig:evolutionary-prototyping}, based on feedback and requirements new features are added as well as existing ones are adapted or removed, leading to the final product.
+This evolutionary approach clearly contradicts the original definition of prototype being a \emph{first type}.
+Furthermore, if a project is started with the premise of developing a prototype, developers should write code that adheres to the philosophy of prototyping, which intentionally excludes proper code style as well as software architecture.
+If such a prototype should then be evolved into an evolutionary one, this basis is missing, making it exponentially harder to properly introduce a solid, scalable architecture that supports the requirements of a long-living product.
+%
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{images/evolutionary-prototyping.png}
+\caption{Evolutionary prototyping: features are aggregated to the prototype to build the final product. Image source~\cite{mourzenko_answer_2014}.}
+\label{fig:evolutionary-prototyping}
+\end{figure}
+
+\subsubsection{Wizard of Oz Prototyping}
+\label{subsub:wizard-of-oz-prototyping}
+One other interesting type of prototyping for the context of this thesis might be \emph{Wizard of Oz Prototyping} \cite{dow_wizard_2005}.
+The Wizard of Oz Methodology has its origins in human-computer interaction research, specifically in the area of "exploring user interfaces for pervasive, ubiquitous,
+or mixed-reality systems that combine complex sensing and intelligent control logic" \cite{dow_wizard_2005}.
+It would take an immense amount of resources to create such an interface, but if one is able to draw a sensible line between the user interface and its actual implementation, this implementation can be simulated by humans.
+This enables the system to be tested, without the need for it to be implemented, which again aligns with the original meaning of the word prototype.
+The etymological origin of the Wizard of Oz methodology can be traced back to the "American children's book \emph{The Wonderful Wizard of Oz} by Frank Baum, in which the characters meet a giant head, that appears to be a powerful wizard, only to learn that it’s just an ordinary man pulling levers behind a screen" \cite{ramaswamy_wizard_2022}.
+
+%\todo[inline,color=blue!40]{Maybe look into Rapid Application Development and its approach on Prototyping}
+%\todo[inline]{Bring the concept of tactical programming vs. strategic programming into play (based on Osterhout as described in my Psychology BA)}
+%\todo[inline]{Mention that prototypes get released to production (Tesla, Spotify, Apple) and that customers do the testing.}
+%\todo[inline,color=blue!40]{Maybe bring in a little bit of capitalism criticism in the form of market fit vs. high-quality products, just show the contradiction.}
 
 
+%\subsection[Interactive Programming]{Interactive Programming \protect{\estimatedpagecount{.5}}}
+%\todo[inline]{Bridge the gap between prototyping and interactive/live programming as described in the introduction. Mention how this might align with agile methodologies, the psychology of programming and customer-centered approaches.}
 
-\section[Problem Statement]{Problem Statement \protect{\estimatedpagecount{6}}}
-\todo[inline]{Based on the context, explain the contradictions once more and re-phrase them as the problem statement of this thesis.}
 
-\subsection[Programming as Complex Problem Solving]{Programming as Complex Problem Solving \protect{\estimatedpagecount{4}}}
-\todo[inline]{Use material from the Psychology BA to show similarities between research on complex problem solving and programming.}
+\section{Problem Statement}
+As stated in \citetitle{anonymous_what_1967}, programming is a communication process \cite{anonymous_what_1967}.
+Even if programming is not seen as a mainly human-centered activity, translating thoughts into a language understood by machines is a form of communication, namely \emph{Human Computer Interaction} (HCI) \cite{myers_past_2009}.
+As already described in Section~\ref{sec:context} analyzing the broader context of programming, namely software development emphasizes the relevance of communication as well.
+Whether they are called requirements or objects, the users' needs have to be identified and translated into working code.
+Agile development practices foster the creation of successful applications by bringing stakeholders together and allowing them to iterate on proposed solutions.
+Prototyping is one such tool that enables the co-creation of software, but if it is applied incorrectly (often times because of tight schedules) it leads to brittle and unstable products.
+Live-Programming can also be interpreted as a tool to enable the co-creation of software, but it is mainly aimed at helping a specific developer understand how and why some code works.
+One could argue now, that programming tools (frameworks, environments, languages, ...) are not optimized for the agile co-creation of software while still emphasizing technical scalability and longetivity.
+This section is aimed at clarifying this problem statement, as well as provide deeper insights into the social as well as psychological insights of developing software.
 
-\subsubsection[Top-Down vs. Bottom Up]{Top-Down vs. Bottom Up \protect{\estimatedpagecount{1.5}}}
+%As stated in \textcite{curtis_psychology_1990} mainly organizational processes characterize software development.
+
+\subsection{Programming as Complex Problem Solving}
+Complex problem solving is a research discipline in psychology that is concerned with how humans solve complex problems.
+There are a lot of arguments about the definition of \emph{a complex problem}, with an overview presented in \cite{dorner_complex_2017}.
+As defined by \citeauthor{funke_complex_2012} a complex problem is defined by
+\begin{enumerate*}[label=(\roman*)]
+\item its immense amount of involved variables,
+\item a lot of dependencies between those variables,
+\item the dynamics of the situation
+\item (partial) intransparency of those variables and their connections, and
+\item \emph{polytely} (the greek term for “many goals”), resulting in goal conflicts \cite{funke_complex_2012}.
+\end{enumerate*}
+Complex problems can further be divided into the categories well-defined and ill-defined.
+\emph{Well-defined problems} do have a fixed problem space as well as a fixed solution space.
+Their problem state and goal state are both well known.
+An example for a well-defined problem is the assignment to write a program that prints some text $n$ times.
+As a solution one could either copy and paste the print-statement $n$ times or create a loop that prints said text $n$ times.
+\emph{Ill-defined problems} do not have a clear problem definition, desired goal and there is no obvious and clear way of reaching the goal.
+Most programming problems that are more complex than printing some text $n$ times are ill-defined problems.
+It becomes even more clear, if one takes a more holistic view at software development, compared to "just" programming.
+Usually a group of people has to create some product that fits some needs, resulting in a partially open problem as well as solution space with many potential ways of getting to this solution.
+
+Multiple studies have been conducted on the programming part of complex problem solving \cite{lawan_what_2019, gibson_software_2005, robertson_role_2008, taheri_evaluating_2015}, whereas the research area of complex problem solving applied to actual software development was researched quire sparsely \cite{wingo_using_2015}.
+\citeauthor{curtis_psychology_1990} pointed this out as early as 1990 \cite{curtis_psychology_1990}: "The fact that this field is usually referred to as the `psychology of programming' rather than the `psychology of software development' reflects its primary orientation to the coding phenomena."
+This research problem gets multiplied by the fact that conducting experimental research regarding complex problem solving is hard to closely align to reality.
+Although a lot of variables can be introduced as well as controlled in a lab situation, complex problems are also defined by the dynamics of their situation, complicating experimental designs and making their results less applicable to real-world scenarios \cite{lawan_what_2019}.
+
+
+\subsubsection{Top-Down vs. Bottom Up}
+
+\todo[inline]{explain the meaning of color and pattern in the figures}
+
+%
+\begin{figure}[h]
+\centering
+\hspace*{0.15\linewidth}
+\includesvg[width=0.75\textwidth]{images/top-down}
+\caption{top down}
+\label{fig:top-down}
+\end{figure}
+%
+
+%
+\begin{figure}[h]
+\centering
+\hspace*{0.15\linewidth}
+\includesvg[width=0.75\textwidth]{images/bottom-up}
+\caption{bottom up}
+\label{fig:bottom-up}
+\end{figure}
+%
+
+\cite{kung_comparing_2013}
+Top-down approaches stress an initial focus on knowledge of higher-level constructs, such as identification of populations and collections of things and entity types, membership rules, and relationships between such populations. Adoption of a top-down approach will generally start with a set of high-level requirements, such as a narrative. These requirements start a process of identifying the types of things needed to represent data with as well as the attributes of those things, which may become attributes in tables.
+the analyst attempts to construct a domain ontology
+In many cases, an initial conceptual data model is drafted that does not include all data attributes.
+In contrast, bottom-up approaches view database design as proceeding from an initial analysis of lower-level conceptual units, such as attributes and functional dependencies and then moving towards an acceptable logical data model through logical groupings of associated attributes.
+synthesis in this context relates to its philosophical meaning: “logical deduction”
+Choice of technique would depend on “several factors such as the nature of the problem domain, previous modeling efforts, and personal preference.”
+
+\cite{jones_answer_2011}
+To use the bottom up method you need to be able to efficiently determine what the "bottom" is, which usually means you need a heavily constrained problem space. If you know what the lowest level calculations are going to be and the dependency order going upward, it makes sense to iteratively do them in the proper order and store those results. Factorials, naive Fibonacci and the Euler recurrence relation for partitions are all good examples of problems suited to this approach.
+
+Some problems don't have an easily determined bottom or dependency order for the calculations. Chess positions evaluations, for example, are usefully memoized by position, with the evaluation score stored so it need not be recalculated. Positions can recur at multiple levels of the search tree due to move transposition and repetition so saving evaluation results is worthwhile. But there's no way to know what the positions at the lowest levels of the tree are going to be without recursively descending (and taking into account intermediate pruning) so top down is really the only feasible approach.
+
+
 \todo[inline]{Explain top down and bottom up processes and how they problem solving applies to it via functional (de-)composition.}
-\todo[inline]{Create figures that look like fractal pyramides, one approaching from top, one approaching from bottom.}
 \todo[inline]{"To use the bottom up method you need to be able to efficiently determine what the "bottom" is, which usually means you need a heavily constrained problem space."}
-\todo[inline,color=green!40]{relevant literature: \cite{kung_comparing_2013}}
-% \url{https://en.wikipedia.org/wiki/Bottom%E2%80%93up_and_top%E2%80%93down_design}
-% \url{https://www.geeksforgeeks.org/difference-between-bottom-up-model-and-top-down-model/}
 
-\subsubsection[Programming as Theory Building]{Programming as Theory Building \protect{\estimatedpagecount{1.5}}}
+
+\subsubsection{Programming as Theory Building}
 \label{sec:programming-as-theory-building}
 \todo[inline]{Deep dive into Peter Naur's perspective on programming and why theory building explains why software is hard to maintain.}
 \todo[inline]{Maybe bring the example of the Compiler for showing how communication is such an important aspect of software development.}
 \todo[inline]{\textbf{Basically sum up his paper in one and a half pages, cause it is so fundamental to this research.}}
+\todo[inline]{use \cite{northover_agile_2007}'s metaphor of the formula to explain a developer's theory and how it evolves over time}
 \todo[inline,color=green!40]{relevant literature: \cite{naur_programming_1985}}
+
+
+\[P_1 \rightarrow TS \rightarrow EE \rightarrow P_2\]
+
+%\cite{northover_agile_2007}
+%P1 is the initial problem, TS the proposed trial solution, EE the process of error elimination applied to TS, and P2 the resulting solution with new problems [16]. These four stages can be seen as a single development iteration in the iterative incremental methodological approach of XP
+%TS is equivalent to the solution proposed by the developer (the developer’s “theory”)
+
 
 % In a very simplistic view, programming can be seen as the act of converting requirements to source code.
 % With this task being carried out by people, one could look at psychology's research field of complex problem-solving and apply it to programming.
@@ -132,7 +417,7 @@ The next section portraits the concept of interactive programming in the broader
 \todo[inline,color=green!40]{relevant literature: \cite{mccabe_towards_2023}}
 
 \subsection[Mental Load]{Mental Load \protect{\estimatedpagecount{2.5}}}
-\todo[inline]{Check what "Code that fits in your Head" can attribute to this section}
+\todo[inline]{Check what "Code that fits in your Head" can attribute to this section: p. 15: checklists; p. 111: memory}
 \todo[inline]{Dive a bit into the psychology of programming and its research on \emph{working memory capacity}}
 \todo[inline]{Present the research about Post-Its}
 \todo[inline,color=blue!40]{Maybe look into the psychological implications like stress, anxiety and other disorders}
@@ -140,7 +425,10 @@ The next section portraits the concept of interactive programming in the broader
 
 
 
+
+
 \section[Hypothesis]{Hypothesis \protect{\estimatedpagecount{4}}}
+\todo[inline]{Create the interactive manifesto as the basis for researching incomplete programs, programs in agile are consistently in an incomplete state (refer to Seeman for this) and as such, we should not lie to ourselves, that it is not like that, rather embrace this and strive for solutions that help us developing incomplete programs.}
 \todo[inline]{Transition to the hypothesis section of this paper, because of it being a Proof of Concept}
 
 \subsection[About Todo-Comments]{About Todo-Comments \protect{\estimatedpagecount{2.5}}}
@@ -161,6 +449,60 @@ The next section portraits the concept of interactive programming in the broader
 \subsection[Introducing Hole-Driven Development]{Introducing Hole-Driven Development \protect{\estimatedpagecount{1.5}}}
 \todo[inline]{Start with the \emph{Fill in the Blank Exercise} analogy, then continue with an example}
 \todo[inline]{Quickly show the Idris example, but mainly reference the related work section}
+
+\label{sec:hole-driven-development}
+The term \emph{Hole-Driven Development} is not yet scientifically defined, but based on other programming concepts like \emph{Type-Driven Development} \autocite{brady_type-driven_2017} or \emph{Test-Driven Development} \autocite{mccracken_digital_1957}.
+The main idea stems from the \emph{Agda} programming language\footnote{\url{https://wiki.portal.chalmers.se/agda/pmwiki.php}} where \emph{holes} are called \emph{goals}.
+Apart from Agda, other languages such as Haskell\footnote{\url{https://www.haskell.org/}} and Idris\footnote{\url{https://www.idris-lang.org/}} feature the concept of holes.
+The common properties of those languages is their functional nature and a very sophisticated type system.
+These two aspects lay the foundation for Hole-Driven Development as currently understood.
+
+Simply said, a \emph{hole} declares a missing part in an application.
+\textcite{gamari_haskell_2019} contains the up to now most comprehensive description of the concept of holes, while \textcite{brady_type-driven_2017} created the example shown in the following section.
+
+\subsection{Example in Idris}
+\label{sub:hole-driven-development-in-idris}
+The Idris program in \cref{fig:idris-program-hole} demonstrates the simplest possible hole.
+In Line \verb|2| the function \verb|main| is defined that should print something (using the standard library function \verb|putStrLn|) to the console.
+The ``hole'' part of this program is \verb|?greeting|.
+Signaling a hole, the question mark tells the Idris compiler that something in this program is missing that the developer didn't specify yet.
+The syntax using a question mark resembles a question to the compiler.
+
+\begin{figure}[h!]
+\begin{lstlisting}[language=Haskell,firstnumber=1]
+main : IO ()
+main = putStrLn ?greeting
+\end{lstlisting}
+\caption{Hole-Driven Development in Idris}
+\label{fig:idris-program-hole}
+\end{figure}
+
+Edwin Brady coined the phrase ``the compiler as your lab assistant'' \autocite{brady_type-driven_2017}.
+His imagination of a compiler is one of a counterpart one interacts or pair-programs with.
+One tells the compiler all the things that are currently in ones mind and as a reward one can ask questions and the compiler will try to answer those based on the knowledge already provided.
+In terms of psychology, this is a pretty human way of interacting with the computer.
+
+A practical example of this ideas looks like the following output of Idris' interactive command line interface.
+Using \verb|:t greeting| one can ask the compiler for the type of the hole ``greeting''.
+As an answer one gets \verb|greeting : String| which signals that the missing value is of type String, or in a non-technical terminus simply a text to complete the program definition.
+
+\begin{verbatim}
+*Hello> :t greeting
+--------------------------------------
+greeting : String
+\end{verbatim}
+
+In contrast to the previous example, if you just try to use \verb|greeting|, the Idris compiler tells you that you have a hole in your program labeled \emph{greeting} of type String.
+This shows the communication process Edwin Brady talks about.
+
+\begin{verbatim}
+*Hello> greeting
+?greeting : String
+\end{verbatim}
+
+``Holes allow you to develop programs \emph{incrementally}, writing the parts you know and asking the machine to help you [...]'' \autocite[21]{brady_type-driven_2017}.
+Stepping a little bit back and comparing this way of developing software to how software development processes evolved (see \cref{sub:traditional-vs-agile}), the similarities are unmistakable.
+Let's take a look at how holes are simulated in programming languages that don't support this feature natively before we get to psychological observations that were already discovered in the field of psychology of programming.
 
 \section[Research Question and Methodology]{Research Question and Methodology \protect{\estimatedpagecount{1.5}}}
 \todo[inline]{Lay out the process of approaching this thesis}
