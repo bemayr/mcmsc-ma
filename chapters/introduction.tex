@@ -259,12 +259,12 @@ The phases (depicted as arrows) in Figure~\ref{fig:throw-away-prototyping} highl
 \begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{images/throw-away-prototyping}
-    \caption{Throw-away prototyping and sketching: prototypes help gather early feedback before starting to develop the actual feature. Image source~\cite{mourzenko_answer_2014}.}
+    \caption{Throw-away prototyping and sketching: prototypes help gather early feedback before starting to develop the actual feature. Image source~\cite{mourzenko_why_2014}.}
     \label{fig:throw-away-prototyping}
 \end{figure}
 %
 In contrast to throw-away prototyping, the concept of evolutionary prototyping (as shown in Figure~\ref{fig:evolutionary-prototyping}) incorporates customer feedback iteratively and incrementally over the whole process of product development.
-As described in \cite{mourzenko_answer_2014}, code style, maintainability, design patterns, and testing count from the beginning of development, because starting with an early prototype the actual product is an evolution of it.
+As described in \cite{mourzenko_why_2014}, code style, maintainability, design patterns, and testing count from the beginning of development, because starting with an early prototype the actual product is an evolution of it.
 As depicted in Figure~\ref{fig:evolutionary-prototyping}, based on feedback and requirements new features are added as well as existing ones are adapted or removed, leading to the final product.
 This evolutionary approach clearly contradicts the original definition of prototype being a \emph{first type}.
 Furthermore, if a project is started with the premise of developing a prototype, developers should write code that adheres to the philosophy of prototyping, which intentionally excludes proper code style as well as software architecture.
@@ -273,7 +273,7 @@ If such a prototype should then be evolved into an evolutionary one, this basis 
 \begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{images/evolutionary-prototyping}
-    \caption{Evolutionary prototyping: features are aggregated to the prototype to build the final product. Image source~\cite{mourzenko_answer_2014}.}
+    \caption{Evolutionary prototyping: features are aggregated to the prototype to build the final product. Image source~\cite{mourzenko_why_2014}.}
     \label{fig:evolutionary-prototyping}
 \end{figure}
 
@@ -358,11 +358,11 @@ The more \emph{ill-defined} a problem presents itself, the better the top-down a
 %
 The opposite approach is depicted in Figure~\ref{fig:bottom-up}.
 One needs to already know what the "bottom" of the problem under investigation is to apply the bottom-up method.
-As described by \citeauthor{jones_answer_2011} \cite{jones_answer_2011}: "To use the bottom-up method you need to be able to efficiently determine what the "bottom" is, which usually means you need a heavily constrained problem space."
+As described by \citeauthor{jones_is_2011} \cite{jones_is_2011}: "To use the bottom-up method you need to be able to efficiently determine what the "bottom" is, which usually means you need a heavily constrained problem space."
 Already existing partial solutions are composed in such a way that they solve the whole problem.
 \emph{Well-defined} problems can usually be solved quite well using the bottom-up method, because if the problem space is known and solutions for these sub-problems exist, they "just" need to be assembled.
 %
-\begin{figure}[h]
+\begin{figure}
 \centering
 \hspace*{0.15\linewidth}
 \includesvg[width=0.75\textwidth]{images/bottom-up}
@@ -390,7 +390,7 @@ synthesis in this context relates to its philosophical meaning: “logical deduc
 
 Choice of technique would depend on “several factors such as the nature of the problem domain, previous modeling efforts, and personal preference.”
 
-\cite{jones_answer_2011}
+\cite{jones_is_2011}
 To use the bottom up method you need to be able to efficiently determine what the "bottom" is, which usually means you need a heavily constrained problem space. If you know what the lowest level calculations are going to be and the dependency order going upward, it makes sense to iteratively do them in the proper order and store those results. Factorials, naive Fibonacci and the Euler recurrence relation for partitions are all good examples of problems suited to this approach.
 
 Some problems don't have an easily determined bottom or dependency order for the calculations. Chess positions evaluations, for example, are usefully memoized by position, with the evaluation score stored so it need not be recalculated. Positions can recur at multiple levels of the search tree due to move transposition and repetition so saving evaluation results is worthwhile. But there's no way to know what the positions at the lowest levels of the tree are going to be without recursively descending (and taking into account intermediate pruning) so top down is really the only feasible approach.
@@ -578,37 +578,41 @@ By deliberately omitting certain expressions in programs, more information about
 The example in Listing~\ref{fig:idris-program-hole} was created by \citeauthor{brady_type-driven_2017} for his dependently typed functional programming language Idris \cite{brady_type-driven_2017}.
 Idris supports the concept of holes by prefixing expressions with the questionmark character (\texttt{?}), which turns these expressions into holes.
 In Line \verb|2| of Listing~\ref{fig:idris-program-hole} the function \verb|main| is defined that should print something (using the standard library function \verb|putStrLn|) to the console.
-The ``hole'' part of this program is \verb|?greeting| at line \ref{lst:idris-hole-definition}.
+The \emph{hole} part of this program is \verb|?greeting| at line \ref{lst:idris-hole-definition}.
 The hole expression signals the Idris compiler that something in this program is missing that the developer didn't specify yet.
 The syntax using a question mark can be understood as formulating a question to the compiler.
 
+\begin{program}
 \begin{GenericCode}
 main : IO ()
 main = putStrLn ?greeting/+\label{lst:idris-hole-definition}+/
+\end{GenericCode}
 \caption{Hole-Driven Development in Idris}
 \label{fig:idris-program-hole}
-\end{GenericCode}
+\end{program}
 
 When trying to evaluate the program depicted in Listing~\ref{fig:idris-program-hole}, the Idris compiler will list all holes, as shown in Listing~\ref{fig:idris-compiler-holes}, in this case \texttt{Main.greeting} is shown at line \ref{lst:idris-holes-listing}.
-For interacting with the compiler in this way, Edwin Brady coined the phrase ``the compiler as your lab assistant'' \cite{brady_type-driven_2017}.
+For interacting with the compiler in this way, Edwin Brady coined the phrase "the compiler as your lab assistant" \cite{brady_type-driven_2017}.
 His imagination of a compiler is one of a counterpart one interacts or pair-programs with.
 One tells the compiler all the things that are currently in one's mind and as a reward one can ask questions, which the compiler will try to answer, based on the knowledge already provided.
 Referring back to Section~\ref{sec:conversational-lens}, this conversational act resembles the human way of interacting with the compiler.
 One can then continue to ask about the holes and their types by querying the holes' names in the Idris REPL.
 The result of such an operation is shown in line \ref{lst:idris-holes-types}, which indicates that the hole \texttt{?greeting} has to be filled with an expression of type \texttt{String}.
 
+\begin{program}
 \begin{GenericCode}[numbers=none]
 Type checking ./Hello.idr
 Holes: Main.greeting/+\label{lst:idris-holes-listing}+/
 
 *Hello> greeting
 ?greeting : String/+\label{lst:idris-holes-types}+/
+\end{GenericCode}
 \caption{Idris Compiler analyzing Holes}
 \label{fig:idris-compiler-holes}
-\end{GenericCode}
+\end{program}
 
 This process helps the developer, filling in those holes by gradually combining the act of creating holes, inspecting information about them and then refining them.
-As Brady put it into words: "Holes allow you to develop programs \emph{incrementally}, writing the parts you know and asking the machine to help you [...]'' \cite[pp. 21]{brady_type-driven_2017}.
+As Brady put it into words: "Holes allow you to develop programs \emph{incrementally}, writing the parts you know and asking the machine to help you [...]" \cite[pp. 21]{brady_type-driven_2017}.
 The next section will combine the ideas presented in the introduction up to now, leading to this thesis' hypothesis.
 
 \section{Hypothesis, Research Question and Methodology}
