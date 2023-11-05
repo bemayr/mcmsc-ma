@@ -229,11 +229,11 @@ Introducing the \emph{Non-Cyclical (Hollywood) Model}, he proposes that: "Nothin
 Instead of defining (textual) requirements, customers should present their objectives and work together with the development team on agreeing upon them.
 One of his described techniques for achieving objectives is \emph{rapid prototyping}.
 For properly understanding prototyping it might make sense to take a look at the etymological origin of said word: \emph{prototype} is analyzable as \texttt{proto-} and \texttt{type}.
-The word's origin goes back to Ancient Greek \emph{\textgreek{πρωτότυπος}} (original; prototype), with the conjunction of \emph{\textgreek{πρῶτος}}, (first; earliest) and \emph{\textgreek{τῠ́πος}} (pressing; sort; type).
+The word's origin goes back to Ancient Greek \emph{\textgreek{πρωτότυπος}} (original; prototype), with the conjunction of \emph{\textgreek{πρῶτος}}, (first; earliest) and \emph{\textgreek{τῠπος}} (pressing; sort; type). % ῠ́π
 
 This is mainly how the concept of a prototype is understood in software development \cite{budde_what_1992}, with slight differences in interpretation.
 Although these interpretation differences are not big, their effects do not really align with the original concept of a prototype.
-We will refer back to the etymological origin of the word \meph{prototype} to depict some of those contradictions.
+We will refer back to the etymological origin of the word \emph{prototype} to depict some of those contradictions.
 
 Prototypes are used to create a shared understanding between developers, users, and management \cite{budde_what_1992}.
 They are used to identify difficulties, clarify problems and misunderstandings, and help in making design decisions.
@@ -256,11 +256,11 @@ Sketching and prototyping are usually two different things.
 Sketching is focused on the user interface and user experience and does not concern the technical implementation of a piece of software.
 The phases (depicted as arrows) in Figure~\ref{fig:throw-away-prototyping} highlight that developing features starts after their respective sketching or prototyping phases.
 %
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{images/throw-away-prototyping}
-\caption{Throw-away prototyping and sketching: prototypes help gather early feedback before starting to develop the actual feature. Image source~\cite{mourzenko_answer_2014}.}
-\label{fig:throw-away-prototyping}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/throw-away-prototyping}
+    \caption{Throw-away prototyping and sketching: prototypes help gather early feedback before starting to develop the actual feature. Image source~\cite{mourzenko_answer_2014}.}
+    \label{fig:throw-away-prototyping}
 \end{figure}
 %
 In contrast to throw-away prototyping, the concept of evolutionary prototyping (as shown in Figure~\ref{fig:evolutionary-prototyping}) incorporates customer feedback iteratively and incrementally over the whole process of product development.
@@ -270,11 +270,11 @@ This evolutionary approach clearly contradicts the original definition of protot
 Furthermore, if a project is started with the premise of developing a prototype, developers should write code that adheres to the philosophy of prototyping, which intentionally excludes proper code style as well as software architecture.
 If such a prototype should then be evolved into an evolutionary one, this basis is missing, making it exponentially harder to properly introduce a solid, scalable architecture that supports the requirements of a long-living product.
 %
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{images/evolutionary-prototyping.png}
-\caption{Evolutionary prototyping: features are aggregated to the prototype to build the final product. Image source~\cite{mourzenko_answer_2014}.}
-\label{fig:evolutionary-prototyping}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/evolutionary-prototyping}
+    \caption{Evolutionary prototyping: features are aggregated to the prototype to build the final product. Image source~\cite{mourzenko_answer_2014}.}
+    \label{fig:evolutionary-prototyping}
 \end{figure}
 
 \subsubsection{Wizard of Oz Prototyping}
@@ -356,7 +356,7 @@ The more \emph{ill-defined} a problem presents itself, the better the top-down a
 \label{fig:top-down}
 \end{figure}
 %
-The opposite approach is depicted in Figure~\cref{fig:bottom-up}.
+The opposite approach is depicted in Figure~\ref{fig:bottom-up}.
 One needs to already know what the "bottom" of the problem under investigation is to apply the bottom-up method.
 As described by \citeauthor{jones_answer_2011} \cite{jones_answer_2011}: "To use the bottom-up method you need to be able to efficiently determine what the "bottom" is, which usually means you need a heavily constrained problem space."
 Already existing partial solutions are composed in such a way that they solve the whole problem.
@@ -427,7 +427,7 @@ Bridging the gap between the psychology of programming and psychology of softwar
 Peter Naur argues that programming is not an activity of text production, rather it is an activity of creating a shared understanding while the activity of text production itself should be understood as a series of program modifications.
 He highlights the importance of a correct understanding of programming like the following: "If our understanding is inappropriate, we will misunderstand the difficulties that arise in the activity and our attempts to overcome them will give rise to conflicts and frustrations. \cite{naur_programming_1985}"
 After clarifying that he uses the term \emph{programming} to denote the whole activity of design and implementation (at the beginning of Chapter~\ref{cha:introduction} we differentiated between \emph{programming} and \emph{software development} with the latter one being synonymous to Naur's understanding) he introduces his Theory Building View based on Ryle's definition of the word \emph{theory}\addref.
-The possession of a theory is not defined by any particular knowledge of facts, but by being able to do things, accompanied by explanations, justifications and responses to queries about it \cite{barn_revisiting_2011}.
+The possession of a theory is not defined by any particular knowledge of facts, but by being able to do things, accompanied by explanations, justifications, and responses to queries about it \cite{barn_revisiting_2011}.
 
 Building upon this definition, Naur continues to argue that for bringing new programmers onto a team, they have to work in close contact with programmers who already possess the theory.
 Because there particular sequence of actions (method) that is underlying the process of theory building, this theory cannot be documented via textual artifacts.
@@ -435,7 +435,7 @@ With the essence of the program, its theory, being inextricably bound to human b
 Based on these insights, Naur argues that the assumption that software is easy and cheap to modify is a fallacy.
 Because it is not the source code of a program that has to be modified, but rather the theory (shared understanding) modification of software is e.g. comparable to the modification of buildings, which are known to be expensive and in fact, sometimes it is economically preferable to demolish the existing building and re-build it as a whole.
 Arguing that creating highly flexible programs diminishes the need for modification is the next fallacy, because the increase in complexity introduced by flexibility, leads to substantial costs already upfront.
-Accordign to Naur, because of programming being an act of theory building, we should emphasize ways of improving the sharing of understanding, hence the formation of theories.
+According to Naur, because programming is an act of theory building, we should emphasize ways of improving the sharing of understanding, hence the formation of theories.
 
 \subsubsection{Applying Philosophy to the Theory Building View}
 
@@ -465,10 +465,10 @@ A checklist is just an aid to memory, it exists to help you remember to perform 
 
 Human short-term memory can hold from four to seven pieces of information. \cite{shaw_memory_2016}
 
-Any non-trivial piece of software is going to have much more going on, so you need to decompose and comparmentalise the code structure unto small chunks that each fit in your brain.
+Any non-trivial piece of software is going to have much more going on, so you need to decompose and compartmentalise the code structure into small chunks that each fit in your brain.
 As Kent Beck puts it:
 "The goal of software design is to create chunks or slices that fit into a human mind. The software keeps growing, but the human mind maxes out, so we have to keep chunking and slicing differently if we want to keep making changes."
-How to do that is the most important isicpline of software engineering.
+How to do that is the most important discipline of software engineering.
 
 \cite{ormerod_human_1990}
 Since the number of processes involved in programming is large, attentional and memory resources must be divided up amongst competing processes, thereby limiting performance.
