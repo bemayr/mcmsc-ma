@@ -1,4 +1,5 @@
 \chapter{Introduction}
+\label{cha:introduction}
 \epigraph{How do we get people to understand programming?}{Bret Victor}
 
 The idea of learnable programming \cite{victor_learnable_2012} goes back to the early days of Smalltalk \cite{kay_early_1993}.
@@ -335,36 +336,58 @@ This research problem gets multiplied by the fact that conducting experimental r
 Although a lot of variables can be introduced as well as controlled in a lab situation, complex problems are also defined by the dynamics of their situation, complicating experimental designs and making their results less applicable to real-world scenarios \cite{lawan_what_2019}.
 
 
-\subsubsection{Top-Down vs. Bottom Up}
+\subsubsection{Top-Down vs. Bottom-Up}
+Top-down and bottom-up are methods to approach problems.
+Both approaches describe how to handle the de-composition as well as the composition of sub-problems.
+Especially the before mentioned \emph{complex problems} need strategies for solving them.
 
-\todo[inline]{explain the meaning of color and pattern in the figures}
+If a problem is defined quite openly and broad, applying the top-down approach proved to be fitting \cite{kung_comparing_2013}.
 
+As described by \citeauthor{kung_comparing_2013} \cite{kung_comparing_2013}, "Adoption of a top-down approach will generally start with a set of high-level requirements, such as a narrative."
+Thus, problems that benefit from approaching them in a top-down manner, do usually have a an open and broad problem definition, hence their problem as well as their solution scope still need to be explored.
+Figure~\ref{fig:top-down} depicts a visual representation of the top-down approach showing how the problem and solution space are explored starting from the top.
+The more \emph{ill-defined} a problem presents itself, the better the top-down approach works.
 %
 \begin{figure}[h]
 \centering
 \hspace*{0.15\linewidth}
 \includesvg[width=0.75\textwidth]{images/top-down}
-\caption{top down}
+\caption{Approaching a problem in a top-down way. The intensity of a rectangle's color conveys information about how well the (sub-)problem and solution space are already explored. Exploring the problem starts at the top and it is divided into smaller sub-problems.}
 \label{fig:top-down}
 \end{figure}
 %
-
+The opposite approach is depicted in Figure~\cref{fig:bottom-up}.
+One needs to already know what the "bottom" of the problem under investigation is to apply the bottom-up method.
+As described by \citeauthor{jones_answer_2011} \cite{jones_answer_2011}: "To use the bottom-up method you need to be able to efficiently determine what the "bottom" is, which usually means you need a heavily constrained problem space."
+Already existing partial solutions are composed in such a way that they solve the whole problem.
+\emph{Well-defined} problems can usually be solved quite well using the bottom-up method, because if the problem space is known and solutions for these sub-problems exist, they "just" need to be assembled.
 %
 \begin{figure}[h]
 \centering
 \hspace*{0.15\linewidth}
 \includesvg[width=0.75\textwidth]{images/bottom-up}
-\caption{bottom up}
+\caption{Approaching a problem in a bottom-up way. The intensity of a rectangle's color conveys information about how well the (sub-)problem and solution space are already explored. Solving the problem starts at the bottom, where already existing solutions are composed together, so that the whole problem can be solved.}
 \label{fig:bottom-up}
 \end{figure}
 %
+Although we just introduced a clear distinction between top-down and bottom-up approaches, in reality (regarding programming as well as software engineering) a combination of both is used.
+Requirements are seleten so clear that developers immediately know how to approach them bottom-up, but already existing solutions for cross-functional requirements like logging or authentication might be well known and can be directly applied.
+This leads to a mixture of top-down and bottom-up usage, where parts of the solution have to be explored with a general concept in mind, whereas other parts of the problem can already be solved with existing solutions.
+Applying this insight to progamming imposes the interesting question of how to combine both approaches for keeping track of what is already solved and what not.
+Keeping track of something can be seen as an act of conversation, \citeauthor{mccabe_towards_2023} applied this lens to modern development environments, the next chapter sums up their ideas and explains the motivation behind.
+
 
 \cite{kung_comparing_2013}
 Top-down approaches stress an initial focus on knowledge of higher-level constructs, such as identification of populations and collections of things and entity types, membership rules, and relationships between such populations. Adoption of a top-down approach will generally start with a set of high-level requirements, such as a narrative. These requirements start a process of identifying the types of things needed to represent data with as well as the attributes of those things, which may become attributes in tables.
-the analyst attempts to construct a domain ontology
+
+top-down: the analyst attempts to construct a domain ontology
+
 In many cases, an initial conceptual data model is drafted that does not include all data attributes.
+
 In contrast, bottom-up approaches view database design as proceeding from an initial analysis of lower-level conceptual units, such as attributes and functional dependencies and then moving towards an acceptable logical data model through logical groupings of associated attributes.
+
 synthesis in this context relates to its philosophical meaning: “logical deduction”
+
 Choice of technique would depend on “several factors such as the nature of the problem domain, previous modeling efforts, and personal preference.”
 
 \cite{jones_answer_2011}
@@ -377,61 +400,101 @@ Some problems don't have an easily determined bottom or dependency order for the
 \todo[inline]{"To use the bottom up method you need to be able to efficiently determine what the "bottom" is, which usually means you need a heavily constrained problem space."}
 
 
+\subsubsection{Conversational Lens regarding Complex Problem Solving in Development}
+\label{sec:conversational-lens}
+Modern development environments and analysis tools point out various possible bugs and vulnerabilities based on static code analysis.
+As research has shown, those results are commonly not respected \cite{mccabe_towards_2023}.
+Alan T. McCabe has analyzed why they are not used as much as they could be, with the most prominent reasons being:
+\begin{enumerate*}[label=(\roman*)]
+\item false-positives, leading to a lot of noise;
+\item poor understandability, causing frustration and non motivation to dig into these reports; and
+\item a lack of integration into the developer's workflow, forcing them to switch contexts and drop out of being in the flow.
+\end{enumerate*}
+Based on these discoveries \citeauthor{mccabe_towards_2023} approached the improvement of development tools through the conversational lens.
+Drawing from observations around the mechanics of human conversations, they try to apply human-like conversation approaches to the code analysis tools.
+However it is of high importance, that they do not want to anthropomorphize those tools, rather they wan't to align interactions in such a way that more accurate mental models can be built up.
+By targeting observability of compilation processes and "framing an interaction as a `conversation' between a human and their development environment" \cite{mccabe_towards_2023} the compiler's \emph{thought process} can be externalized and understood by the developer in a similar way as misunderstandings can be clarified when when talking with another human being.
+
+Edwin Brady shares a similar view on compilers, he imagines the compiler as the "lab assistant", in a way that the compiler should take part in a pair programming exercise, helping developers accomplish their goals.
+An example of how this works is shown in Section~\ref{sec:introducing-hole-driven-development}.
+
+
 \subsubsection{Programming as Theory Building}
 \label{sec:programming-as-theory-building}
-\todo[inline]{Deep dive into Peter Naur's perspective on programming and why theory building explains why software is hard to maintain.}
-\todo[inline]{Maybe bring the example of the Compiler for showing how communication is such an important aspect of software development.}
-\todo[inline]{\textbf{Basically sum up his paper in one and a half pages, cause it is so fundamental to this research.}}
-\todo[inline]{use \cite{northover_agile_2007}'s metaphor of the formula to explain a developer's theory and how it evolves over time}
-\todo[inline,color=green!40]{relevant literature: \cite{naur_programming_1985}}
+Applying the conversational lens to the greater context of developing software in teams and organizations leads to Peter Naur's influential paper \citetitle{naur_programming_1985}.
+Bridging the gap between the psychology of programming and psychology of software development, the findings of this paper constitute a major part of this thesis' hypothesis, hence there is a separate section dedicated to it.
 
+Peter Naur argues that programming is not an activity of text production, rather it is an activity of creating a shared understanding while the activity of text production itself should be understood as a series of program modifications.
+He highlights the importance of a correct understanding of programming like the following: "If our understanding is inappropriate, we will misunderstand the difficulties that arise in the activity and our attempts to overcome them will give rise to conflicts and frustrations. \cite{naur_programming_1985}"
+After clarifying that he uses the term \emph{programming} to denote the whole activity of design and implementation (at the beginning of Chapter~\ref{cha:introduction} we differentiated between \emph{programming} and \emph{software development} with the latter one being synonymous to Naur's understanding) he introduces his Theory Building View based on Ryle's definition of the word \emph{theory}\addref.
+The possession of a theory is not defined by any particular knowledge of facts, but by being able to do things, accompanied by explanations, justifications and responses to queries about it \cite{barn_revisiting_2011}.
+
+Building upon this definition, Naur continues to argue that for bringing new programmers onto a team, they have to work in close contact with programmers who already possess the theory.
+Because there particular sequence of actions (method) that is underlying the process of theory building, this theory cannot be documented via textual artifacts.
+With the essence of the program, its theory, being inextricably bound to human beings, the role of programmers changes from one that produces source code and documentation (an easily replaceable one) to one that possesses the vital theory about those artifacts.
+Based on these insights, Naur argues that the assumption that software is easy and cheap to modify is a fallacy.
+Because it is not the source code of a program that has to be modified, but rather the theory (shared understanding) modification of software is e.g. comparable to the modification of buildings, which are known to be expensive and in fact, sometimes it is economically preferable to demolish the existing building and re-build it as a whole.
+Arguing that creating highly flexible programs diminishes the need for modification is the next fallacy, because the increase in complexity introduced by flexibility, leads to substantial costs already upfront.
+Accordign to Naur, because of programming being an act of theory building, we should emphasize ways of improving the sharing of understanding, hence the formation of theories.
+
+\subsubsection{Applying Philosophy to the Theory Building View}
+
+In their contemporary philosophical analysis of agile software development, \citeauthor{northover_agile_2007} applied Karl Popper's philosophy of \emph{evolutionary epistemology} to software development \cite{northover_agile_2007}.
+According to Popper\addref, all advances in knowledge follow the following model:
 
 \[P_1 \rightarrow TS \rightarrow EE \rightarrow P_2\]
 
-%\cite{northover_agile_2007}
-%P1 is the initial problem, TS the proposed trial solution, EE the process of error elimination applied to TS, and P2 the resulting solution with new problems [16]. These four stages can be seen as a single development iteration in the iterative incremental methodological approach of XP
-%TS is equivalent to the solution proposed by the developer (the developer’s “theory”)
+$P_1$ is the initial problem, $TS$ is the proposed solution, $EE$ is the process of error elimination applied to $TS$, and $T_2$ the resulting solution containing new problems \addref.
+Applying this model to the context of iterative software development, \citeauthor{northover_agile_2007} interpret it as the following: $P_1$ is the initially identified subset of requirements, $TS$ corresponds to the solution proposed by the developer -- "the developer's `theory'" \cite{northover_agile_2007}, $EE$ are the testers' attempts on eliminating errors by creating test cases and $P_2$ corresponds to a tested subset of the software.
+
+With Naur's theory building view in mind, one could argue that by interpreting the model in the way \citeauthor{northover_agile_2007} did, such that developers are not included in the $EE$ stage, hardly allows them to improve their theory of the system.
+Only by including them into the error elimination phase ($EE$) enables them to refine and adapt their theories of the system.
+This interpretation is continued in \ref{sec:hypothesis}.
 
 
-% In a very simplistic view, programming can be seen as the act of converting requirements to source code.
-% With this task being carried out by people, one could look at psychology's research field of complex problem-solving and apply it to programming.
-% There is not a lot of active research being conducted in this area, but Weinberg \cite{Weinberg:1971} and Naur \cite{Naur:1985} did some fundamental research combining psychology's complex problem solving and the act of programming.
-% In his essay \emph{Programming as Theory Building} \citet{Naur:1985} hypothesized that programs are more than just their textual artifacts.
-% Instead, individuals, as well as teams create a shared understanding of the problem they have to solve.
-% Programming is about creating this understanding, hence improving programming is about improving the creation of this understanding, thus improving communication.
+\subsection{Cognitive Load}
 
-% Communication does not only happen in teams.
-% Someone, developing something that can not be accomplished in a few minutes, needs to communicate with oneself as well as the computer.
-% Decomposing requirements, keeping track of them, discovering bugs, and transforming code changes are just some of the tasks that might need some form of communication.
-% Quite a lot of this communication happens via code comments \cite{Ying.etal:2005}.
-% Comments are not only used for documentation purposes, but as well to make notes of things that have to be changed or considered.
-% In contrast to the parts of source code that are actually run, comments are informal and not bound to any syntax rules, making them hard to parse and interpret for machines.
-% This leads to comments being forgotten quite frequently \cite{Nie.etal:2019}.
-% Preventing their forgetting and actually making use of them for the act of programming is the main motivation for this research.
+\cite{seemann_code_2021}
+A fundamental problem with software development is that there's a lot going on. Our brains aren't good at keeping track of many things at the same time.
+We also have a tendency to skip doing things that don't seem important right now.
+The problem isn't that you don't know how to do a thing; it's that you forget to do it, even though you know that you ought to.
+This problem isn't isolated to programming. Pilots suffer from it, and they invented a simple solution to the problem: \emph{checklists}.
+It is important to understand that checklists are supposed to enable, support and liberate practitioners.
+Checklists are not intended to constrain you.
+A checklist is just an aid to memory, it exists to help you remember to perform trivial, but important actions, such as washing your hands before surgery.
 
-\subsubsection[Conversational Lens regarding Complex Problem Solving in Development]{Conversational Lens regarding Complex Problem Solving in Development \protect{\estimatedpagecount{1}}}
-\label{sec:conversational-lens}
-\todo[inline,color=purple!40]{"Programs are used not only for man-machine communication, but for man-man communication as well."}
-\todo[inline]{Sum up Alan's ideas regarding looking at programming through the conversational lens and how the idea of communication can be applied to IDEs.}
-\todo[inline]{Also put this conversational lens idea into perspective regarding conversations between people, like already done in the MuC paper and described in \ref{sec:programming-as-theory-building}.}
-\todo[inline,color=green!40]{relevant literature: \cite{mccabe_towards_2023}}
+Human short-term memory can hold from four to seven pieces of information. \cite{shaw_memory_2016}
 
-\subsection[Mental Load]{Mental Load \protect{\estimatedpagecount{2.5}}}
-\todo[inline]{Check what "Code that fits in your Head" can attribute to this section: p. 15: checklists; p. 111: memory}
-\todo[inline]{Dive a bit into the psychology of programming and its research on \emph{working memory capacity}}
-\todo[inline]{Present the research about Post-Its}
-\todo[inline,color=blue!40]{Maybe look into the psychological implications like stress, anxiety and other disorders}
-\todo[inline,color=green!40]{relevant literature: \cite{digiano_learning_nodate, seemann_code_2021}}
+Any non-trivial piece of software is going to have much more going on, so you need to decompose and comparmentalise the code structure unto small chunks that each fit in your brain.
+As Kent Beck puts it:
+"The goal of software design is to create chunks or slices that fit into a human mind. The software keeps growing, but the human mind maxes out, so we have to keep chunking and slicing differently if we want to keep making changes."
+How to do that is the most important isicpline of software engineering.
+
+\cite{ormerod_human_1990}
+Since the number of processes involved in programming is large, attentional and memory resources must be divided up amongst competing processes, thereby limiting performance.
+Resource theories may explain the source of some programming errors.
+For example, insufficient short-term memory resources have been suggested to account for errors made by novice Lisp programmers
+A resource account of programming errors implies that performance can be improved if the resource requirements of a task are decreased.
+
+\cite{digiano_learning_nodate}
+In the workplace and in the classroom, there is an increasi ng need for harnessing the collective intelligence of groups to learn faster, envision new possibilities, and reveal latent knowledge.
+Our research focuses on employing the Post -It metaphor to support emergent collaborative activity across multiple connected co-located machines.
+Properties that make Po st-Its desirable for flexible collaborative work include that they are:
+(Re)arrangable. Post -Its can be positioned and repositioned to convey meaning.
+Unique. As physical artifacts, Post -Its cannot be in more than one place at a time, suggesting turn -taking in editing or changing.
+Lastly, there is the awkwardness of archiving or publishing the results of a Post-It activity.
+
+\cite{dove_grouping_2018}
+results in them typically being used to represent a single idea.
+Finally, individual Post-It notes are of little value in themselves and, can therefore be easily discarded if the idea they contain is no longer considered important.
+As such, externalisations must evolve as complex problems develop and situations are transformed, and therefore be both expressive (mutable) and associative (combinable)
 
 
-
-
-
-\section[Hypothesis]{Hypothesis \protect{\estimatedpagecount{4}}}
+\section{Tackling Complexity}
 \todo[inline]{Create the interactive manifesto as the basis for researching incomplete programs, programs in agile are consistently in an incomplete state (refer to Seeman for this) and as such, we should not lie to ourselves, that it is not like that, rather embrace this and strive for solutions that help us developing incomplete programs.}
 \todo[inline]{Transition to the hypothesis section of this paper, because of it being a Proof of Concept}
 
-\subsection[About Todo-Comments]{About Todo-Comments \protect{\estimatedpagecount{2.5}}}
+\subsection{About Todo-Comments}
 \todo[inline]{Start with an introduction on scientific results regarding Todo comments}
 \todo[inline]{Do a short qualitative analysis regarding the various stackexchange posts on Todo-Comments}
 \todo[inline,color=blue!40]{If I manage to find, I intend to include some statistics on Todo-Comments}
@@ -446,69 +509,110 @@ Some problems don't have an easily determined bottom or dependency order for the
 % - https://stackoverflow.com/questions/335378/how-do-you-flag-code-so-that-you-can-come-back-later-and-work-on-it
 \todo[inline,color=green!40]{relevant literature: \cite{nie_natural_2018, ying_source_2005, nie_framework_2019, sridhara_automatically_2016, storey_todo_2008, storey_how_2009}}
 
-\subsection[Introducing Hole-Driven Development]{Introducing Hole-Driven Development \protect{\estimatedpagecount{1.5}}}
+
+Do TODO comments make sense? \url{https://softwareengineering.stackexchange.com/questions/125320/do-todo-comments-make-sense}
+
++ I tend to use // todo comments for things that have to happen, but I can't do immediately.
+o I use them liberally when I haven't completely fleshed out the implementation of a module but the contract is satisfactory for me (or others) to continue development on another related piece.
+o I search for them
+o Yep, given a listing in your IDE, they are helpful. I would say they're of very limited use otherwise, since the codebase may be enormous.
+o In my industry, developers are encouraged to make JIRA (or etc) entries instead of todo comments because not everybody gets a chance to see the // todo entries. But sometimes in large projects a custom attribute gets defined along the lines of:
+o In my experience it depends. The main factor is whether or not the team is disciplined enough to follow up on these "little" comments. If they do then yes they make sense. If they don't then these comments are just a waste of time and you may want to look into other options, e.g. story cards.
+- I usually encounter TODO's written by someone else that look like this: //TODO make this code work
+- they tend to rot over time.
+
+about recalling them:
+The key point is to use consistent tags such as TODO or FIXME so that they can be easily found with simple text search.
+Modern IDEs recognize the TODO comments and they are as such visible in their own panel/window/tab, so they are theoretically not lost !!! think about online VCS, GitHub, PRs
+
+about tags:
+As it is written in Wikipedia's article on comments, including the date and owner of the TODO is considered to be a good practice.
+I think the date and owner of the TODO is just noise. That's what version control (and the blame feature) are for (if you really need the information).
+
+about time:
+To be useful they should provide a means to bookmark your code for the (very) near future so that you can get back in the proper state of mind faster. In other words, you place them in your code only to remove them ASAP.
+
+
+Does anybody still use TODO for writing code later on? \url{https://softwareengineering.stackexchange.com/questions/316797/does-anybody-still-use-todo-for-writing-code-later-on}
+
+o If you are into TDD, I suggest you write up a test which will fail until the functionality gets implemented.
+
+Use of NotImplementedException \url{https://softwareengineering.stackexchange.com/questions/128389/use-of-notimplementedexception}
+
+about IDE dependence:
+o I would recommend using the NotImplementedException combined with TODO comments, that way you combine GUI help (with the tasks in VS) and program safety.
+o If you use Resharper, it shows NotImplementedExceptions in the same way as TODO comments. I think that's a nice feature.
+
+How to handle a TODO in a pull request? \url{https://softwareengineering.stackexchange.com/questions/362286/how-to-handle-a-todo-in-a-pull-request}
+
+o Write it down in your DoD that TODO, FIXME, or similar tags should be avoided.
+o Use a static code analysis tool such as SonarQube to automatically mark the build unstable.
+o Temporarily allow them if, and only if, there is a corresponding ticket in your issue tracker. Then, the code may look like TODO [ID-123] Description ...
+
+Personally, I think TODOs are sometimes reasonable, but one should not use them excessively. Taken from Robert C. Martin's "Clean Code: A Handbook of Agile Software Craftsmanship" (p. 59):
+TODOs are jobs that the programmer thinks should be done, but for some reason can't do at the moment. It might be a reminder to delete a deprecated feature or a plea for someone else to look at a problem. It might be a request for someone else to think of a better name or a reminder to make a change that is dependent on a planned event. Whatever else a TODO might be, it is not an excuse to leave bad code in the system.
+
+How do you flag code so that you can come back later and work on it? \url{https://stackoverflow.com/questions/335378/how-do-you-flag-code-so-that-you-can-come-back-later-and-work-on-it}
+o TODO comes up with a nasty brown background in vim - visual code smells
+o Mark them with // TODO, // HACK or other comment tokens that will show up in the task pane in Visual Studio.
+o Also, I add bookmarks in Visual Studio on lines that are incomplete.
+o I favor Jon T's general strategy, but I usually do it by just plain breaking the code temporarily - I often insert a deliberately undefined method reference and let the compiler remind me about what I need to get back to:
+- In particular, I haven't seen TODO comments ever decrease in quantity in any meaningful way. If I didn't have time to do it when I wrote the comment, I don't know why I'd have time later.
++ I have a ToDo(msg) macro that expands into constructing a static object at local scope whose constructor outputs a log message. That way, the first time I execute unfinished code, I get a reminder in my log output that tells me that I can defer the task no longer.
+
+
+\subsection{Introducing Hole-Driven Development}
+\label{sec:introducing-hole-driven-development}
 \todo[inline]{Start with the \emph{Fill in the Blank Exercise} analogy, then continue with an example}
 \todo[inline]{Quickly show the Idris example, but mainly reference the related work section}
 
-\label{sec:hole-driven-development}
-The term \emph{Hole-Driven Development} is not yet scientifically defined, but based on other programming concepts like \emph{Type-Driven Development} \autocite{brady_type-driven_2017} or \emph{Test-Driven Development} \autocite{mccracken_digital_1957}.
+The term \emph{Hole-Driven Development} is not yet scientifically defined, but based on other programming concepts like \emph{Type-Driven Development} \cite{brady_type-driven_2017} or \emph{Test-Driven Development} \cite{mccracken_digital_1957}.
 The main idea stems from the \emph{Agda} programming language\footnote{\url{https://wiki.portal.chalmers.se/agda/pmwiki.php}} where \emph{holes} are called \emph{goals}.
 Apart from Agda, other languages such as Haskell\footnote{\url{https://www.haskell.org/}} and Idris\footnote{\url{https://www.idris-lang.org/}} feature the concept of holes.
 The common properties of those languages is their functional nature and a very sophisticated type system.
 These two aspects lay the foundation for Hole-Driven Development as currently understood.
 
 Simply said, a \emph{hole} declares a missing part in an application.
-\textcite{gamari_haskell_2019} contains the up to now most comprehensive description of the concept of holes, while \textcite{brady_type-driven_2017} created the example shown in the following section.
+One can imagine the holes as the blanks in a fill-in-the-blanks exercise.
+By deliberately omitting certain expressions in programs, more information about these expressions can be provided by the compiler, which can aid the programmer in properly filling them.
+The example in Listing~\ref{fig:idris-program-hole} was created by \citeauthor{brady_type-driven_2017} for his dependently typed functional programming language Idris \cite{brady_type-driven_2017}.
+Idris supports the concept of holes by prefixing expressions with the questionmark character (\texttt{?}), which turns these expressions into holes.
+In Line \verb|2| of Listing~\ref{fig:idris-program-hole} the function \verb|main| is defined that should print something (using the standard library function \verb|putStrLn|) to the console.
+The ``hole'' part of this program is \verb|?greeting| at line \ref{lst:idris-hole-definition}.
+The hole expression signals the Idris compiler that something in this program is missing that the developer didn't specify yet.
+The syntax using a question mark can be understood as formulating a question to the compiler.
 
-\subsection{Example in Idris}
-\label{sub:hole-driven-development-in-idris}
-The Idris program in \cref{fig:idris-program-hole} demonstrates the simplest possible hole.
-In Line \verb|2| the function \verb|main| is defined that should print something (using the standard library function \verb|putStrLn|) to the console.
-The ``hole'' part of this program is \verb|?greeting|.
-Signaling a hole, the question mark tells the Idris compiler that something in this program is missing that the developer didn't specify yet.
-The syntax using a question mark resembles a question to the compiler.
-
-\begin{figure}[h!]
-\begin{lstlisting}[language=Haskell,firstnumber=1]
+\begin{GenericCode}
 main : IO ()
-main = putStrLn ?greeting
-\end{lstlisting}
+main = putStrLn ?greeting/+\label{lst:idris-hole-definition}+/
 \caption{Hole-Driven Development in Idris}
 \label{fig:idris-program-hole}
-\end{figure}
+\end{GenericCode}
 
-Edwin Brady coined the phrase ``the compiler as your lab assistant'' \autocite{brady_type-driven_2017}.
+When trying to evaluate the program depicted in Listing~\ref{fig:idris-program-hole}, the Idris compiler will list all holes, as shown in Listing~\ref{fig:idris-compiler-holes}, in this case \texttt{Main.greeting} is shown at line \ref{lst:idris-holes-listing}.
+For interacting with the compiler in this way, Edwin Brady coined the phrase ``the compiler as your lab assistant'' \cite{brady_type-driven_2017}.
 His imagination of a compiler is one of a counterpart one interacts or pair-programs with.
-One tells the compiler all the things that are currently in ones mind and as a reward one can ask questions and the compiler will try to answer those based on the knowledge already provided.
-In terms of psychology, this is a pretty human way of interacting with the computer.
+One tells the compiler all the things that are currently in one's mind and as a reward one can ask questions, which the compiler will try to answer, based on the knowledge already provided.
+Referring back to Section~\ref{sec:conversational-lens}, this conversational act resembles the human way of interacting with the compiler.
+One can then continue to ask about the holes and their types by querying the holes' names in the Idris REPL.
+The result of such an operation is shown in line \ref{lst:idris-holes-types}, which indicates that the hole \texttt{?greeting} has to be filled with an expression of type \texttt{String}.
 
-A practical example of this ideas looks like the following output of Idris' interactive command line interface.
-Using \verb|:t greeting| one can ask the compiler for the type of the hole ``greeting''.
-As an answer one gets \verb|greeting : String| which signals that the missing value is of type String, or in a non-technical terminus simply a text to complete the program definition.
+\begin{GenericCode}[numbers=none]
+Type checking ./Hello.idr
+Holes: Main.greeting/+\label{lst:idris-holes-listing}+/
 
-\begin{verbatim}
-*Hello> :t greeting
---------------------------------------
-greeting : String
-\end{verbatim}
-
-In contrast to the previous example, if you just try to use \verb|greeting|, the Idris compiler tells you that you have a hole in your program labeled \emph{greeting} of type String.
-This shows the communication process Edwin Brady talks about.
-
-\begin{verbatim}
 *Hello> greeting
-?greeting : String
-\end{verbatim}
+?greeting : String/+\label{lst:idris-holes-types}+/
+\caption{Idris Compiler analyzing Holes}
+\label{fig:idris-compiler-holes}
+\end{GenericCode}
 
-``Holes allow you to develop programs \emph{incrementally}, writing the parts you know and asking the machine to help you [...]'' \autocite[21]{brady_type-driven_2017}.
-Stepping a little bit back and comparing this way of developing software to how software development processes evolved (see \cref{sub:traditional-vs-agile}), the similarities are unmistakable.
-Let's take a look at how holes are simulated in programming languages that don't support this feature natively before we get to psychological observations that were already discovered in the field of psychology of programming.
+This process helps the developer, filling in those holes by gradually combining the act of creating holes, inspecting information about them and then refining them.
+As Brady put it into words: "Holes allow you to develop programs \emph{incrementally}, writing the parts you know and asking the machine to help you [...]'' \cite[pp. 21]{brady_type-driven_2017}.
+The next section will combine the ideas presented in the introduction up to now, leading to this thesis' hypothesis.
 
-\section[Research Question and Methodology]{Research Question and Methodology \protect{\estimatedpagecount{1.5}}}
+\section{Hypothesis, Research Question and Methodology}
 \todo[inline]{Lay out the process of approaching this thesis}
 \todo[inline]{It mainly consists of deducing the requirements based on literature (reference the according chapter in related work), and validating the results according to the already supported concepts of Hole-Driven Development}
 \todo[inline]{\emph{This work represents a proof of concept for applying the concept of hole-driven development to general-purpose programming languages, in this case \CS.}}
 \todo[inline]{\emph{Which aspects of existing Hole Implementations can be transferred to general-purpose (mainstream) programming languages? With the requirements being laid in Sec 2.4 out after analyzing those in Sec 2.}}
-
-\section[Structure of the Thesis]{Structure of the Thesis \protect{\estimatedpagecount{.5}}}
-\todo[inline]{Quickly describe the structure of the thesis.}
