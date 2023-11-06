@@ -495,12 +495,77 @@ Or as Kent Beck puts it\footnote{\url{https://twitter.com/KentBeck/status/135441
 After presenting some challenges of how complexity affects software development, this section introduces two concepts how complexity can be managed and cognitive load can be reduced.
 
 
-
 \subsection{About Todo-Comments}
 \label{sec:introduction-about-todo-comments}
+Comments are informal parts of source code that do not get executed, they often make up for a considerable amount of a program's source code \cite{nie_natural_2018}.
+If those comments are prefixed with \emph{TODO} or something alike (e.g. \emph{FIXME}, \emph{UNDONE}, \emph{HACK} or \emph{XXX} \cite{storey_how_2009}), they are considered as todo-comments \cite{ying_source_2005}.
+Such a prefix changes their meaning as Robert C. Martin explains \cite[p. 59]{martin_clean_2009}:
+%
+\begin{quote}
+    TODOs are jobs that the programmer thinks should be done, but for some reason can't do at the moment. It might be a reminder to delete a deprecated feature or a plea for someone else to look at a problem. It might be a request for someone else to think of a better name or a reminder to make a change that is dependent on a planned event. Whatever else a TODO might be, it is not an excuse to leave bad code in the system.
+\end{quote}
+%
+A quick analysis based on the search term "todo comments" on the Q\&A-platforms StackOverflow\footnote{\url{https://stackoverflow.com/}} and StackExchange (Software Engineering)\footnote{\url{https://softwareengineering.stackexchange.com/}} lead to $645$ ($500$ for the former and $145$ for the latter, query date: 2023/11/01) discussion entries regarding the topic of todo-comments, indicating an extensively discussed topic.
 
-Taken from Robert C. Martin's "Clean Code: A Handbook of Agile Software Craftsmanship" (p. 59):
-TODOs are jobs that the programmer thinks should be done, but for some reason can't do at the moment. It might be a reminder to delete a deprecated feature or a plea for someone else to look at a problem. It might be a request for someone else to think of a better name or a reminder to make a change that is dependent on a planned event. Whatever else a TODO might be, it is not an excuse to leave bad code in the system.
+This might also be based on the fact that in contrast to the formal parts of the source code, comments (hence todo-comments as well) represent the informal part about source code \cite{ying_source_2005, nie_framework_2019, sridhara_automatically_2016, storey_todo_2008}.
+Knowledge about them can be shared across different programming languages, because apart from the difference in characters indicating comments they do not really differ.
+This informal nature imposes challenges for software engineering tools like refactorings or static analyzers, but allows programmers to use them in various ways.
+They are used for many purposes other than describing code, such as a tool for communication in teams \cite{ying_source_2005}, as bookmarks \cite{storey_how_2009}, for denoting pending tasks \citeauthor{sridhara_automatically_2016} or recording which tests have yet to be defined \cite{storey_todo_2008}.
+This makes them extremely versatile and suits Don Knuths's literate programming idea \cite{knuth_literate_1984}, in which he suggests that "programs should not only be intended to be executed by computers, but also intended to be read by human \cite{ying_source_2005}."
+As promising as this idea sounds, their lack of formalness, resulting in lacking tooling support, leads to them becoming obsolete or "rot away".
+Analyzing the most popular answers of aforementioned quick analysis \cite{...} and combining them with existing empirical \cite{ying_source_2005, nie_framework_2019, storey_how_2009} research led to the following insights about todo-comments.
+
+\subsubsection{IDE Support}
+Proper IDE support is necessary for the effective use of todo-comments.
+Certain IDEs (e.g. Visual Studio, Eclipse, JetBrains) provide specific views, where todo-comments are aggregated and can be filtered and searched \cite{storey_how_2009}.
+Text editors like vim highlight todo-comments visually, resulting in visual code smells.
+Regarding the question "Do TODO comments make sense?" one developer answered \cite{karacic_todo_2015}: "Yep, given a listing in your IDE, they are helpful. I would say they're of very limited use otherwise, since the codebase may be enormous."
+It is important to note that those features are IDE specific, have to be implemented for each of them and do not work in online version control systems like GitHub or BitBucket, thus limiting the readability of code.
+Without IDE support developers report that it is important to use consistent prefixes for todo-comments, so they can be found via plain text search \cite{karacic_todo_2015}.
+
+\subsubsection{Metadata}
+Developers are debating whether it is good or bad practice to include tags (e.g. the author's initials or the todo's creation date) in the comment \cite{karacic_todo_2015}.
+Information about a todo's author or its creation date could also be extracted from version control, thus eliminating potential ambiguities.
+If a todo-comment targets a specific issue, they should be linked together via the issue number.
+\citeauthor{elliott_pep_2005} tried to introduce a standard for tagging todo-comments in Python \cite{elliott_pep_2005}, but the proposal has been dismissed because of no intention to follow this standard in Python's standard library.
+
+\subsubsection{Test-Driven Development}
+Developers argue that one should simply write a failing test case, rather than writing todo-comments \cite{snoop_does_2016}.
+This might work for well-defined problems and certain cases of todo-comments, but the explorative and versatile nature of todo comments includes many other use cases than describing missing or invalid functionality.
+
+\subsubsection{Static Code Analysis}
+Regarding the adoption, developers argue that: "The main factor is whether or not the team is disciplined enough to follow up on these "little" comments. [...] \cite{karacic_todo_2015}"
+Other developers argue that this discipline can be enforced by using static code analysis tools to detect the usage of todo-comments and prevent them from being merged into the main or release branches \cite{alecxe_how_2018}.
+These static analysis tools could also be configured in a way that allows todo-comments if and only if they refer to an issue number.
+
+\subsubsection{Creative Usage/Alternatives}
+Developers have come with quite creative solutions to some of the problems mentioned regarding todo-comments.
+The .NET standard library includes the class \texttt{NotImplementedException}, resembling an exception, that as the name indicates, should be thrown when the implementation is missing.
+Developers report that they are using this together with todo-comments \cite{squires_use_2012} so that
+\begin{enumerate*}[label=(\roman*)]
+\item the line of code surfaces in the IDE (because of the todo-comment)
+\item and surfaces at runtime (because an exception is thrown)
+\end{enumerate*}.
+ReSharper\footnote{\url{https://www.jetbrains.com/resharper/}}, an extension for Visual Studio automatically reports usages of \texttt{NotImplementedException} in the IDE, preventing developers from having to duplicate things.
+
+Another option for tagging a certain line of code to come back to it after an interruption is to introduce some breaking code, which gets surfaced by the compiler \cite{tackabury_how_2019}.
+A quick and easy solution, that unfortunately only works in compiled languages.
+One of the most creative ways of surfacing todo-comments at runtime was provided by Drew Hall \cite{tackabury_how_2019}, who created a C\+\+ macro "that expands into constructing a static object at local scope whose constructor outputs a log message".
+Using this approach, he is still be able to plain text search for the macro's name and gets the log messages for running the incomplete program, however the IDE does not report the usage of this macro.
+
+
+
+\cite{squires_use_2012}
+I would recommend using the NotImplementedException combined with TODO comments, that way you combine GUI help (with the tasks in VS) and program safety.
+
+If you use Resharper, it shows NotImplementedExceptions in the same way as TODO comments. I think that's a nice feature.
+
+\cite{tackabury_how_2019}
+I favor Jon T's general strategy, but I usually do it by just plain breaking the code temporarily - I often insert a deliberately undefined method reference and let the compiler remind me about what I need to get back to:
+
++ I have a ToDo(msg) macro that expands into constructing a static object at local scope whose constructor outputs a log message. That way, the first time I execute unfinished code, I get a reminder in my log output that tells me that I can defer the task no longer.
+
+
 
 
 \todo[inline]{Start with an introduction on scientific results regarding Todo comments}
