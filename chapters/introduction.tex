@@ -111,6 +111,11 @@ Based on the agile manifesto and the ideas of interactive programming, each of t
 If applicable, the interpretation also draws comparisons to how interactive programming might be beneficial for this specific principle.
 
 \begin{block}
+\begin{ThreePartTable}
+\begin{TableNotes}
+\footnotesize
+\item \textit{Note:} The character "---" denotes that applying the lens of tightening the feedback loop through live programming does not yield any meaningful results.
+\end{TableNotes}
 %\setlength{\tabcolsep}{10pt}     % separator between columns (standard = 6pt)
 %\renewcommand{\arraystretch}{1.50} % vertical stretch factor (standard = 1.0)
 %\caption{Applying the lens of tightening feedback loops through live programming to the agile principles \cite{beck_manifesto_2001}.}
@@ -139,7 +144,11 @@ If applicable, the interpretation also draws comparisons to how interactive prog
     \toprule
     \# & Agile Principle & Interpretation \\
     \midrule
-		\endhead
+    \endhead
+    
+    \insertTableNotes  % tell LaTeX where to insert the contents of "TableNotes"
+    \endlastfoot
+    
     (1) &
     Highest priority is given to satisfying the customer through early and continuous delivery of valuable software. &
     A clear example for tightening the feedback loop between the customer and development team.
@@ -199,9 +208,8 @@ If applicable, the interpretation also draws comparisons to how interactive prog
     \\
     \bottomrule
 \end{longtable}
+\end{ThreePartTable}
 \end{block}
-
-\todo[inline]{Add --- note to the table.}
 
 Summing up those principles, agile software development encourages lean development using iterative and evolutionary approaches.
 Close collaboration between software development and business teams should lead to higher customer satisfaction by actually incorporating their (possibly changing) needs, instead of emphasizing processes and documentation.
@@ -453,48 +461,48 @@ This interpretation is continued in \ref{sec:hypothesis}.
 
 
 \subsection{Cognitive Load}
+\label{sec:cognitive-load}
+The term \emph{cognitive load} is used in cognitive psychology to describe the amount of working memory used \cite{shaw_memory_2016}.
+The human memory is divided into working memory (sometimes also called shot-term memory) and long-term memory.
+Their capacity is on an entirely different scale \cite{seemann_code_2021} with the short-term memory being able to store around four to seven items \cite{shaw_memory_2016}.
+Applying a reductionistic machinistic view of humans one can compare this to the way of a computer's memory and storage model.
+Working memory can be accessed incredibly fast, but has a limited storage capacity, while permanent storage is slower, but can store a magnitude of information that can be held in memory.
 
-\cite{seemann_code_2021}
-A fundamental problem with software development is that there's a lot going on. Our brains aren't good at keeping track of many things at the same time.
-We also have a tendency to skip doing things that don't seem important right now.
-The problem isn't that you don't know how to do a thing; it's that you forget to do it, even though you know that you ought to.
-This problem isn't isolated to programming. Pilots suffer from it, and they invented a simple solution to the problem: \emph{checklists}.
-It is important to understand that checklists are supposed to enable, support and liberate practitioners.
-Checklists are not intended to constrain you.
-A checklist is just an aid to memory, it exists to help you remember to perform trivial, but important actions, such as washing your hands before surgery.
+Applying this knowledge to the act of developing software highlights some of its problems.
+Efficiently writing software demands a lot of information to be kept in memory, but firstly our brains aren't made for keeping track of many things at the same time and secondly we tend to skip doing things that aren't of high importance at the moment.
+As put into words by Mark Seemann \cite{seemann_code_2021}: "The problem isn't that you don't know how to do a thing; it's that you forget to do it, even though you know that you ought to."
+Empirical studies conducted in the field of resource theories \cite{ormerod_human_1990} have shown that during programming performance is limited, because attentional and memory resources have to be divided up amongst competing processes.
+It has been shown that this resource limitation is responsible for programming errors, thus suggesting that these errors could be reduced by decreasing the need for working memory, resulting in lower cognitive load.
 
-Human short-term memory can hold from four to seven pieces of information. \cite{shaw_memory_2016}
+Programming is by far not the only discipline where a lack of working memory influences performance.
+E.g. pilots or surgeons use checklists so that they don't forget tasks that might end up being lethal \cite{seemann_code_2021}.
+Another method of reducing cognitive load can be achieved using 3M's Post-Its™.
+Empirical studies \cite{digiano_learning_nodate, dove_grouping_2018} have shown that Post-Its™, perfectly fit collaborative activities, because of them
+\begin{enumerate*}[label=(\roman*)]
+\item being of limited size, leading to them capturing one single thought;
+\item being re-arrangable and re-groupable, which conveys meaning;
+\item being physically unique, which suggests turn-taking in editing or changing via natural affordances;
+\item and them being ephemeral, which reduces the cognitive bias of effort justification \cite{norton_ikea_2012}, leading to the Post-Its™ being discarded if no longer needed
+\end{enumerate*}.
 
-Any non-trivial piece of software is going to have much more going on, so you need to decompose and compartmentalise the code structure into small chunks that each fit in your brain.
-As Kent Beck puts it:
-"The goal of software design is to create chunks or slices that fit into a human mind. The software keeps growing, but the human mind maxes out, so we have to keep chunking and slicing differently if we want to keep making changes."
-How to do that is the most important discipline of software engineering.
+Applying these ideas back to programming, as any non-trivial software being of such a size that is not graspable by working memory alone, its code structure needs to be decomposable and compartmentizable so that these chunks can fit in the programmer's brains.
+Or as Kent Beck puts it\footnote{\url{https://twitter.com/KentBeck/status/1354418068869398538}}: "The goal of software design is to create chunks or slices that fit into a human mind. The software keeps growing, but the human mind maxes out, so we have to keep chunking and slicing differently if we want to keep making changes."
 
-\cite{ormerod_human_1990}
-Since the number of processes involved in programming is large, attentional and memory resources must be divided up amongst competing processes, thereby limiting performance.
-Resource theories may explain the source of some programming errors.
-For example, insufficient short-term memory resources have been suggested to account for errors made by novice Lisp programmers
-A resource account of programming errors implies that performance can be improved if the resource requirements of a task are decreased.
-
-\cite{digiano_learning_nodate}
-In the workplace and in the classroom, there is an increasi ng need for harnessing the collective intelligence of groups to learn faster, envision new possibilities, and reveal latent knowledge.
-Our research focuses on employing the Post -It metaphor to support emergent collaborative activity across multiple connected co-located machines.
-Properties that make Po st-Its desirable for flexible collaborative work include that they are:
-(Re)arrangable. Post -Its can be positioned and repositioned to convey meaning.
-Unique. As physical artifacts, Post -Its cannot be in more than one place at a time, suggesting turn -taking in editing or changing.
-Lastly, there is the awkwardness of archiving or publishing the results of a Post-It activity.
-
-\cite{dove_grouping_2018}
-results in them typically being used to represent a single idea.
-Finally, individual Post-It notes are of little value in themselves and, can therefore be easily discarded if the idea they contain is no longer considered important.
-As such, externalisations must evolve as complex problems develop and situations are transformed, and therefore be both expressive (mutable) and associative (combinable)
 
 
 \section{Tackling Complexity}
-\todo[inline]{Create the interactive manifesto as the basis for researching incomplete programs, programs in agile are consistently in an incomplete state (refer to Seeman for this) and as such, we should not lie to ourselves, that it is not like that, rather embrace this and strive for solutions that help us developing incomplete programs.}
-\todo[inline]{Transition to the hypothesis section of this paper, because of it being a Proof of Concept}
+\label{sec:tackling-complexity}
+After presenting some challenges of how complexity affects software development, this section introduces two concepts how complexity can be managed and cognitive load can be reduced.
+
+
 
 \subsection{About Todo-Comments}
+\label{sec:introduction-about-todo-comments}
+
+Taken from Robert C. Martin's "Clean Code: A Handbook of Agile Software Craftsmanship" (p. 59):
+TODOs are jobs that the programmer thinks should be done, but for some reason can't do at the moment. It might be a reminder to delete a deprecated feature or a plea for someone else to look at a problem. It might be a request for someone else to think of a better name or a reminder to make a change that is dependent on a planned event. Whatever else a TODO might be, it is not an excuse to leave bad code in the system.
+
+
 \todo[inline]{Start with an introduction on scientific results regarding Todo comments}
 \todo[inline]{Do a short qualitative analysis regarding the various stackexchange posts on Todo-Comments}
 \todo[inline,color=blue!40]{If I manage to find, I intend to include some statistics on Todo-Comments}
@@ -508,6 +516,42 @@ As such, externalisations must evolve as complex problems develop and situations
 % - https://stackoverflow.com/questions/16913055/how-can-i-mark-to-do-comments-in-xcode
 % - https://stackoverflow.com/questions/335378/how-do-you-flag-code-so-that-you-can-come-back-later-and-work-on-it
 \todo[inline,color=green!40]{relevant literature: \cite{nie_natural_2018, ying_source_2005, nie_framework_2019, sridhara_automatically_2016, storey_todo_2008, storey_how_2009}}
+
+\cite{nie_natural_2018}
+Natural language elements (e.g., API comments, todo comments) form a substantial part of software repositories. While developers routinely use many natural language elements (e.g., todo comments) for communication, the semantic content of these elements is often neglected by software engineering techniques and tools. Additionally, as software evolves and development teams re-organize, these natural language elements are frequently forgotten, or just become outdated, imprecise and irrelevant.
+
+\cite{ying_source_2005}
+We find that programmers not only use comments for describing the actual source code, but also use comments for many other purposes, such as “talking” to colleagues through the source code using a comment “Joan, please fix this method.”
+Accurate comments on source code can be useful to a programmer performing a change task. As Knuth suggested in the literate programming technique, programs should not only be intended to be executed by computers, but also intended to be read by human
+Many programmers use comments for purposes other than describing source code,
+Using the Java perspective in Eclipse, Java programmers can embed pre-defined task tag strings, such as “TODO”, in the comments on the source code and use the task view to browse a summary of the places in the code with a comment that contains a task tag.
+In addition, these comments typically contains ad-hoc meta-data, depends on the context of the code, have a implied scope, and are informal
+Another example of a current task is a task comment generated by the Eclipse code generator.
+From our study, we see that developers employ common convention to encode additional meta-data that is not explicitly supported by a Eclipse task tag.
+an alternative way to infer the author information is to associate the author information in the change log with the comment.
+This is not surprising because many task comments are meant for personal reminders and for temporarily use.
+
+\cite{nie_framework_2019}
+Additionally, having comments written in an informal way presents a challenge for some software engineering tools, such as refactorings
+imdone [31] extracts and maintains the list of pending todo comments at one place
+However, this is not surprising considering that todo comments are written to communicate among developers of the project.
+
+\cite{sridhara_automatically_2016}
+Among the different varieties of comments, TODO comments are used by developers to denote pending tasks.
+A developer may perform the task mentioned in the TODO comment but may forget to remove it, leading to obsolete comments.
+
+\cite{storey_todo_2008}
+
+\cite{storey_how_2009}
+reminding
+refinding
+we found that current source code annotations are often difficult to search, filter, and manage.
+Navigation to these comments is typically not supported by either the IDE or the programming language.
+However, this feature appears to be rarely used. From our survey, we found that the task annotation vocabulary was customized by only 11 of 81 developers, and then only one or two new keywords were defined. Some developers were even unaware Task Tags can be customized.
+In summary, bookmarks should support both reminding and refinding, but because of a lack of metadata, poor visibility, and poor synchronization with code, they suffer from serious problems that limit their usefulness.
+Short-term and long-term reminding
+creating ephemeral tags to help them return to the location they were working on prior to an interruption
+Examples include reminders that identify code that needs to be completed, refactored, or tested.
 
 
 Do TODO comments make sense? \url{https://softwareengineering.stackexchange.com/questions/125320/do-todo-comments-make-sense}
@@ -576,10 +620,10 @@ Simply said, a \emph{hole} declares a missing part in an application.
 One can imagine the holes as the blanks in a fill-in-the-blanks exercise.
 By deliberately omitting certain expressions in programs, more information about these expressions can be provided by the compiler, which can aid the programmer in properly filling them.
 The example in Listing~\ref{fig:idris-program-hole} was created by \citeauthor{brady_type-driven_2017} for his dependently typed functional programming language Idris \cite{brady_type-driven_2017}.
-Idris supports the concept of holes by prefixing expressions with the questionmark character (\texttt{?}), which turns these expressions into holes.
+Idris supports the concept of holes by prefixing expressions with the question mark character (\texttt{?}), which turns these expressions into holes.
 In Line \verb|2| of Listing~\ref{fig:idris-program-hole} the function \verb|main| is defined that should print something (using the standard library function \verb|putStrLn|) to the console.
 The \emph{hole} part of this program is \verb|?greeting| at line \ref{lst:idris-hole-definition}.
-The hole expression signals the Idris compiler that something in this program is missing that the developer didn't specify yet.
+The hole expression signals the Idris compiler that something in this program is missing that the developer hasn't specified yet.
 The syntax using a question mark can be understood as formulating a question to the compiler.
 
 \begin{program}
@@ -594,7 +638,7 @@ main = putStrLn ?greeting/+\label{lst:idris-hole-definition}+/
 When trying to evaluate the program depicted in Listing~\ref{fig:idris-program-hole}, the Idris compiler will list all holes, as shown in Listing~\ref{fig:idris-compiler-holes}, in this case \texttt{Main.greeting} is shown at line \ref{lst:idris-holes-listing}.
 For interacting with the compiler in this way, Edwin Brady coined the phrase "the compiler as your lab assistant" \cite{brady_type-driven_2017}.
 His imagination of a compiler is one of a counterpart one interacts or pair-programs with.
-One tells the compiler all the things that are currently in one's mind and as a reward one can ask questions, which the compiler will try to answer, based on the knowledge already provided.
+One tells the compiler all the things that are currently in one's mind and as a reward, one can ask questions, which the compiler will try to answer, based on the knowledge already provided.
 Referring back to Section~\ref{sec:conversational-lens}, this conversational act resembles the human way of interacting with the compiler.
 One can then continue to ask about the holes and their types by querying the holes' names in the Idris REPL.
 The result of such an operation is shown in line \ref{lst:idris-holes-types}, which indicates that the hole \texttt{?greeting} has to be filled with an expression of type \texttt{String}.
@@ -616,7 +660,32 @@ As Brady put it into words: "Holes allow you to develop programs \emph{increment
 The next section will combine the ideas presented in the introduction up to now, leading to this thesis' hypothesis.
 
 \section{Hypothesis, Research Question and Methodology}
+\label{sec:hypothesis}
 \todo[inline]{Lay out the process of approaching this thesis}
 \todo[inline]{It mainly consists of deducing the requirements based on literature (reference the according chapter in related work), and validating the results according to the already supported concepts of Hole-Driven Development}
 \todo[inline]{\emph{This work represents a proof of concept for applying the concept of hole-driven development to general-purpose programming languages, in this case \CS.}}
 \todo[inline]{\emph{Which aspects of existing Hole Implementations can be transferred to general-purpose (mainstream) programming languages? With the requirements being laid in Sec 2.4 out after analyzing those in Sec 2.}}
+
+
+%
+\begin{quote}
+    We are uncovering better ways of developing software by doing it and helping others do it.
+    Through this work we have come to value:
+    %
+    \begin{itemize}
+        \item \emph{Individuals and interactions} over processes and tools.
+        \item \emph{Building the shared theory} over processes and tools.
+        
+        \item \emph{Working software} over comprehensive documentation.
+        \item \emph{Tangible experiences} over comprehensive documentation.
+        
+        \item \emph{Customer collaboration} over contract negotiation.
+        \item \emph{Customer collaboration} for contract negotiation.
+
+        \item \emph{Responding to change} over following a plan.
+        \item \emph{Mutual exploration} over following a plan.
+    \end{itemize}
+    %
+    That is, while there is value in the items on the right, we value the items on the left more.
+\end{quote}
+%
