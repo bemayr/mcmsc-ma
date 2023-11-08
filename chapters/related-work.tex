@@ -1,5 +1,10 @@
 \chapter[Related Work]{Related Work \protect{\estimatedpagecount{15}}}
+\label{cha:related-work}
 \epigraph{We should think of the compiler as being our lab assistant.}{Edwin Brady}
+
+Following Edwin Brady's philosophy of compiler's being our lab assistant, this section will provide an overview of existing solutions targeting the problem of rotting todo-comments as well as existing implementations of hole-driven development.
+After presenting this existing implementations, we will highlight established, novel as well as creative work-arounds and alternatives for simulating holes in broadly used languages.
+This chapter will be concluded with a list of properties, intrinsic to managing todo-comments as well as working with holes while developing software.
 
 \section[Tackling Todo-Comments]{Tackling Todo-Comments \protect{\estimatedpagecount{4}}}
 \todo[inline,color=blue!40]{Mention again that Todo-Comments tend to rot}
@@ -7,6 +12,53 @@
 \todo[inline]{Hightlight PEP--350 Codetags and TrigIt, because of their novel approaches regarding Todo-Comments}
 
 \subsubsection{PEP--350 Codetags}
+One of the most elaborate ideas regarding the handling of todo-comments was introduced by Micah Elliot \cite{elliott_pep_2005}.
+The Python Enhancement Proposal (PEP) \emph{PEP 350 -- Codetags} was aimed at standardizing code comments acting as tags.
+PEPs are design documents, which inform the Python community about newly proposed features for the Python ecosystem.
+They act as the primary mechanism for discussing and iterating on those ideas by collecting community input.
+Note that, them being mainly proposals, they do not have to be accepted.
+
+As Described by \citeauthor{elliott_pep_2005} \cite{elliott_pep_2005}: "Programmers widely use ad-hoc code comment markup conventions to serve as reminders of sections of code that need closer inspection or review. Examples of markup include FIXME, TODO, XXX, BUG, but there many more in wide use in existing software."
+This definition resembles the idea of todo-comments, introduced in \ref{sec:introduction-about-todo-comments}.
+Todo-comments can be seen as a "very lightweight programming micro-paradigm" \cite{elliott_pep_2005} and can be useful for project management, documentation , change tracking and project health monitoring.
+\cite{elliott_pep_2005} described the philosophy of codetags as such,
+\begin{enumerate*}[label=(\roman*)]
+\item information should be contained inside the source code,
+\item it should not be duplicated,
+\item documentation based on this information should be auto-generated,
+\item the developers are the documentation team, and
+\item plain text is the best format for writing anything
+\end{enumerate*}.
+Based on this philosophy, their motivation consists of \cite{elliott_pep_2005}:
+\begin{itemize}
+  \item Various productivity tools can be built around codetags. These tools can generate documentation like roadmaps, track their history, provide statistics and insights regarding codetags, lint them and enable them to be edited in any text editor.
+  \item They encourage consistency, because some kind of formality is introduced into otherwise informal textual comments.
+  \item They encourage the adherence to the DRY principle, because no separate roadmap document has to be maintained if it is generated based on these codetags.
+  \item How to write codetags must be easy to remember, concise and intuitive. Their format must be simple.
+  \item Their usage is not required or imposed.
+  \item Generating reports based on their usage gives a global view of the code.
+  \item They can be used to incrementally capture requirements and stories when they come up during development.
+  \item Their extremely lightweight process does not disturb developers. Codetags can either be linked to existing issues in ticket management systems or they allow their creation to be deferred until developers can devote to their creation without interfering with programming.
+\end{itemize}
+
+The actual definition of Python's codetags consists of a special syntax definition (please refer to the specification section of \cite{elliott_pep_2005} for more information) for the different parts of informal comments, thus introducing a decent kind of formality.
+Program~\ref{fig:pep-350-codetags-example} shows the usage of codetags.
+The code comment starts with the mnemonic \texttt{FIXME}, and provides actual information about the comment after the colon.
+At the end of a codetag, additional fields can be specified inside angle brackets.
+This specific codetag is assigned to a pair of programmers, identified by their initials \texttt{MDE} and \texttt{CLE}, the date of expected completion is denoted by \texttt{d:14w} and the item's priority is 2, identified by \texttt{p:2}. 
+%
+\begin{program}[h]
+\begin{PythonCode}
+# FIXME: Seems like this loop should be finite. <MDE,CLE d:14w p:2>
+while True: ...
+\end{PythonCode}
+\caption{Example of the usage of a PEP 350 -- Codetag}
+\label{fig:pep-350-codetags-example}
+\end{program}
+%
+Unfortunately, the PEP 350 proposal was rejected, because there was no desire to make the stand library conform to the standard, although the community was interested and some projects adopted it \cite{elliott_pep_2005}.
+
+
 % - \url{https://medium.com/hackernoon/never-forget-anything-before-after-and-while-coding-98d187ae4cf1#.czqio0b4x}
 \subsubsection{TrigIt}
 \subsubsection{TagSEA \cite{storey_how_2009}}
@@ -78,6 +130,7 @@
 %  - \#Controlling the behavior of FiXme shows the idea of Release/Debug mode
 
 \section{Properties of Holes}
+\label{sec:relevant-properties}
 \todo[inline]{Refer to Cyrus Omar's talk about Hazel regarding the properties of Holes as a basis}
 \todo[inline]{Then cautiously add the other properties of Holes discovered in the literature research}
 

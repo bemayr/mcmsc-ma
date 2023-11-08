@@ -234,7 +234,7 @@
 			\setlength{\unitlength}{1cm}%
 			\parbox[c][5cm][c]{12cm}{%
 				\centering\LARGE\bfseries%%
-				\setlength{\baselineskip}{25pt}%
+				\setlength{\baselineskip}{22pt}%
 				\@title%
 			}
 			\vskip 15mm%

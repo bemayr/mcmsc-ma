@@ -305,6 +305,7 @@ The etymological origin of the Wizard of Oz methodology can be traced back to th
 
 
 \section{Problem Statement}
+\label{sec:problem-statement}
 As stated in \citetitle{anonymous_what_1967}, programming is primarily a communication process \cite{anonymous_what_1967}.
 Even if programming is not seen as a mainly human-centered activity, translating thoughts into a language understood by machines is a form of communication, namely \emph{Human Computer Interaction} (HCI) \cite{myers_past_2009}.
 As already described in Section~\ref{sec:context} analyzing the broader context of programming, namely software development emphasizes the relevance of communication as well.
@@ -582,38 +583,34 @@ This process helps the developer, filling in those holes by gradually combining 
 As Brady put it into words: "Holes allow you to develop programs \emph{incrementally}, writing the parts you know and asking the machine to help you [...]" \cite[pp. 21]{brady_type-driven_2017}.
 The next section will combine the ideas presented in the introduction up to now, leading to this thesis' hypothesis.
 
+
 \section{Hypothesis, Research Question and Methodology}
 \label{sec:hypothesis}
-\todo[inline]{Lay out the process of approaching this thesis}
-\todo[inline]{It mainly consists of deducing the requirements based on literature (reference the according chapter in related work), and validating the results according to the already supported concepts of Hole-Driven Development}
-\todo[inline]{\emph{This work represents a proof of concept for applying the concept of hole-driven development to general-purpose programming languages, in this case \CS.}}
-\todo[inline]{\emph{Which aspects of existing Hole Implementations can be transferred to general-purpose (mainstream) programming languages? With the requirements being laid in Sec 2.4 out after analyzing those in Sec 2.}}
+Providing the context for this thesis, we started with the concept of learnable programming.
+By applying liveness and interactivity, programming environments such as Smalltalk enable programmers to iteratively explore problems.
+As we have seen through the analogy of aiming at a target using a water hose, this is enabled by tight feedback loops, which in turn provide continuous feedback and eliminate that one has to stop to re-aim.
+At the higher level of software development methods, people made similar observations, leading to the agile movement, which favors close customer collaboration and accepting uncertainty over rigid processes.
+Prototypes can be used to improve the phase of requirements analysis, with the potential risk of creating evolutionary prototypes without proper software architecture, which turn into the actual product time by time.
 
-1.1
-- learnable programming
-- smalltalk: align way of thinking with program
-- live programming + interactive programming
-- tighter feedback loops
-- how to not stop aiming?
-- align with agile manifesto (ideas) -> center around humans
-- accept uncertainty, don't deny reality
-- foster and enable face-to-face communication
-- accept evolutionary prototyping
-- enable wizard of oz prototyping
+In Section~\ref{sec:problem-statement} we argued that programming is mainly a communication process.
+Developers communicate with stakeholders to identify requirements, with each other to propose solutions and with themselves as well as their tools while implementing them.
+This process can be seen as a back and forth between exploring the problem and its solution space.
+As described by Peter Naur, this theory building activity can not be solved by applying one specific method, but certain approaches can help in reaching the target.
+One such example is the combination of top-down and bottom-up methods regarding complex problem solving.
+As their analysis showed, the human brain is not bad at solving problems, but keeping track of its partial solution once a certain threshold of complexity is reached.
 
-1.2
-- programming as a communication process
-- understanding requirements through live programming
-- focus on problem and solution space exploration (completed problem solving)
-- enable top-down and bottom-up methods, while keeping track of their artifacts
-- enable soliloquy/self-talk aided by the compiler (conversational lense)
-- improving the formation of theories (theory building)
-- Seemann: problem is that you forget what you ought to do -> reduce cognitive load -> bridge space between notes and issues by introducing Post-Its in code
-- checklists that write themselves
+\subsubsection{Hypothesis}
+Based on this analysis, we hypothesize that accepting and embracing incomplete programs while applying ideas rooted in live programming enables software development teams to improve their shared understanding (theory) and aids individual developers in coping with high cognitive load, imposed by complex programming problems.
+By combining the informal simplicity and flexibility of todo-comments with the tool support enabled by hole-driven development, we theorize that prototyping can be improved in so far, that prototypes gain interactivity while compiler-supported checklists aid in evolving them.
+By accepting the existence of evolutionary prototypes, instead of trying eliminate them, we plan on introducing primitives that improve their development while emphasizing quality by explicitly highlighting prototypical parts.
+% the need for solid software architecture
 
-1.3
-interpret todo-comments as holes
-prevent todo-comment rotting
-using todo-comments at compile time as well as runtime
-enabling hole support in general purpose programming language
-lift holes from compile time into runtime
+\subsubsection{Research Question}
+Building upon this hypothesis, this thesis' research question is defined as: \emph{Analyzing hole-driven development and existing soltions regarding the handling of todo-comments, which of these aspects can be transferred to widely used general purpose programming languages?}
+
+\subsubsection{Methodology}
+Based on existing ideas regarding the handling of todo-comments as well as hole-driven development (where an overview is given in Chapter~\ref{cha:related-work}) we deduced a list of their properties (presented in Section~\ref{sec:relevant-properties}).
+This list acted as the basis for our implementation presented in Chapter~\ref{cha:implementation} where we show how these properties can be implemented in the general purpose programming language \CS.
+We chose \CS for the development of this proof of concept because of its high usage \cite{stack_overflow_stack_2023, tiobe_software_bv_tiobe_2023} and the author's familiarity with this language.
+Furthermore, recent language features like Analyzers\footnote{\url{}} and Source Generators\footnote{\url{}} enable the development of plug-ins independent of the integrated development environment (IDE) used.
+In Chapter~\ref{cha:summary} this proof of concept is discussed, in terms of its limitations, areas of application, potential additions as well as ideas for further research.
