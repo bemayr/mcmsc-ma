@@ -2,11 +2,12 @@
 \label{cha:introduction}
 \epigraph{How do we get people to understand programming?}{Bret Victor}
 
+\noindent
 Bret Victor's opening quote represents the basis for learnable programming \cite{victor_learnable_2012}, whose ideas go back to the early days of Smalltalk \cite{kay_early_1993}.
 In his essay \emph{The Early History of Smalltalk} \cite{kay_early_1993}, Alan Kay looks back at the events that led to the creation of Smalltalk.
-More important, he gives insight into the context of why Smalltalk turned out how it did.
+More importantly, he gives insight into why Smalltalk turned out how it did.
 Smalltalk was intended to be a learning environment for children; its strong object orientation was a side-effect of this idea \cite{kay_early_1993}.
-It turned out that objects, message passing, and compositionality allowed people (not only children) using Smalltalk to align their ways of thinking with the way their programs were structured.
+It turned out that objects, message passing, and compositionality allowed people (not only children) to use Smalltalk to align their ways of thinking with how their programs were structured.
 Applying the conversational lens of programming environments (see Section~\ref{sec:conversational-lens}) to Smalltalk, one could argue that speaking the same language results in a shared mental model between the program and the programmer.
 Or as Weinberg described the status quo (in 1971): "When we talk to our computers, unhappily, we are usually speaking in different tongues." \cite{weinberg_psychology_1971}
 Unfortunately, not a lot of effort has been put into aligning those tongues over the last 50 years.
@@ -14,7 +15,7 @@ Unfortunately, not a lot of effort has been put into aligning those tongues over
 Programming environments that foster this style of communication are usually called \emph{live programming} \cite{aguiar_live_2019, church_liveness_2010} or \emph{interactive programming} \cite{czaplicki_interactive_2013, mccabe_towards_2023}.
 Usually, such systems possess the following properties \cite{burg_1st_2013}:
 \begin{description}
-    \item[Liveness] They give the programmer immediate feedback while a program is edited. This feedback can target the program's output, structure, or both.
+    \item[Liveness] They give the programmer immediate feedback while editing a program. This feedback can target the program's output, structure, or both.
     \item[Structure] Environments that are aware of a program's structure understand and preserve this structure. They operate at the level of structure, not on raw text, simplifying program modification.
     \item[Tangibility] Normally, program execution happens behind the scenes and provides little to no capabilities for live inspection. Tangible programming makes a program's execution transparent, tangible, and explorable.
     \item[Concreteness] It is way easier for people to start with concrete examples and generalize later on.
@@ -322,6 +323,7 @@ This section is aimed at clarifying this problem statement, as well as providing
 %As stated in \textcite{curtis_psychology_1990} mainly organizational processes characterize software development.
 
 \subsection{Programming Seen as Complex Problem Solving}
+\label{sec:programming-as-complex-problem-solving}
 \emph{Complex problem solving} is a research discipline in psychology that is concerned with how humans solve complex problems.
 There are a lot of arguments about the definition of \emph{a complex problem}, with an overview presented in \cite{dorner_complex_2017}.
 As defined by \citeauthor{funke_complex_2012}, a complex problem is defined by:
@@ -541,8 +543,8 @@ Using this approach, he is still able to use the plain text search based on the 
 \subsection{Introducing Hole-Driven Development}
 \label{sec:introducing-hole-driven-development}
 The term \emph{Hole-Driven Development} is not yet scientifically defined, but based on other programming concepts like \emph{Type-Driven Development} \cite{brady_type-driven_2017} or \emph{Test-Driven Development} \cite{mccracken_digital_1957}.
-The main idea stems from the \emph{Agda} programming language where \emph{holes} are called \emph{goals} \addref.
-Apart from Agda, other languages such as Haskell and Idris also feature the concept of holes.
+The main idea stems from the \emph{Coq} programming language where \emph{holes} are called \emph{goals} \cite{the_coq_development_team_proof_2023}.
+Apart from Coq, other languages such as Agda, Haskell, Idris, and Hazel also feature the concept of holes.
 The common properties of those languages are that they are functional and statically typed and therefore have a very sophisticated type system.
 These two aspects lay the foundation for Hole-Driven Development as currently understood.
 

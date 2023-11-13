@@ -2,6 +2,7 @@
 \label{cha:related-work}
 \epigraph{We should think of the compiler as being our lab assistant.}{Edwin Brady}
 
+\noindent
 Following Edwin Brady's philosophy of compilers being our lab assistants, this section will provide an overview of existing solutions targeting the problem of rotting todo comments as well as existing implementations of hole-driven development.
 After presenting these existing implementations, we will highlight established, novel, and creative workarounds and alternatives for simulating holes in broadly used languages.
 This chapter will conclude with a list of properties intrinsic to managing todo-comments as well as working with holes while developing software.
@@ -215,23 +216,131 @@ Various plug-ins regarding the usage of todo comments have been developed, the f
 \section{Languages with native Holes support}
 \label{sec:languages-with-native-holes-support}
 Continuing with the next way of tackling complexity as described in Section~\ref{sec:tackling-complexity}, the concept of holes exists natively in a few languages.
-Although they are sometimes called goals, their main purpose is to aid developers by turning the act of programming into an incremental fill-in-the hole exercise.
+Although they are sometimes called goals, their main purpose is to aid developers by turning the act of programming into an incremental fill-in-the-hole exercise.
 As described in Section~\ref{sec:introducing-hole-driven-development} Hole-Driven Development is loosely based on programming concepts like Type-Driven Development \cite{brady_type-driven_2017} or Test-Driven Development \cite{mccracken_digital_1957} and describes how programming can look like if developers are guided by holes.
-In this section we will look at hole implementations in existing programming languages.
+In this section, we will look at hole implementations in existing programming languages.
 
 \subsubsection{Coq}
-%https://www.cs.cornell.edu/courses/cs3110/2018sp/a5/coq-tactics-cheatsheet.html
-%https://pjreddie.com/coq-tactics/
-%https://coq.inria.fr/refman/proofs/writing-proofs/proof-mode.html#postponing-the-proof-of-some-goals
-%https://lpcic.github.io/coq-elpi/tutorial_coq_elpi_tactic.html
+Coq is an interactive theorem prover that supports dependent types \cite{the_coq_development_team_proof_2023}.
+Developers can formalize mathematical concepts, while Coq helps them to generate machine-checked proofs of theorems interactively.
+In contrast to proofs conducted by humans, machine-checked proofs give users much more confidence.
+According to the Coq reference manual: "Users generate proofs by entering a series of tactics that constitute steps in the proof." \cite{the_coq_development_team_proof_2023}
+Coq also allows users to extract verified programs to programming languages such as OCaml and Haskell.
+
+In terms of hole-driven development, Coq is of interest due to its proof mode.
+This proof mode is used to prove theorems.
+A proof's state consists of one or more unproven goals.
+Reaching these goals can be accomplished by applying tactics \cite{redmon_coq_2021} based on the proof's local context (e.g., hypotheses, variables, and local definitions) and the global environment (e.g., definitions and proven theorems).
+
+\begin{program}[ht]
+\begin{GenericCode}
+Goal exists n, n = 0.
+    1 goal
+      
+      ============================
+      exists n : nat, n = 0
+eexists ?[n].
+    1 focused goal (shelved: 1)
+      
+      ============================
+      ?n = 0
+Show n.
+    goal n is:
+      
+      ============================
+      nat
+\end{GenericCode}
+\caption{Using goals in Coq's proof mode. (Program source:~\cite{the_coq_development_team_proof_2023})}
+\label{prg:coq-goals}
+\end{program}
+
+As shown in Program~\ref{prg:coq-goals}, proving theorems is accomplished by interactively iterating on goals and hypotheses.
+Line~\verb|1| states the goal, such as there exists a number \verb|n| that equals 0.
+Goals in Coq are incomplete parts of the intended proof, which must be fulfilled; thus, they are holes.
+Line~\verb|2| displays that there is one open goal, while Line~\verb|5| shows the conclusion of this goal.
+In Line~\verb|6|, we apply the tactic \verb|eexists|, which creates a focused goal called \verb|n|.
+Coq allows goals to be shelved and focused so that developers can manage the existence of multiple goals.
+Line~\verb|11| displays the goal \verb|n|, showing that this goal has to be proven using a natural number (Line~\verb|15|).
+
+This interactive process highlights how holes (or goals in Coq's terms) can support reducing cognitive load (compare Section~\ref{sec:cognitive-load}) by enabling a back-and-forth between bottom-up and top-down problem-solving strategies (compare Section~\ref{sec:programming-as-complex-problem-solving}).
 
 \subsubsection{Agda}
-%https://whatisrt.github.io/dependent-types/2020/02/18/agda-vs-coq-vs-idris.html
-%https://agda.readthedocs.io/en/latest/getting-started/a-taste-of-agda.html#holes-and-case-splitting
+Similar to Coq, Agda is another dependently typed proof assistant, but instead of constructing proofs using tactics, they are written in a functional programming style \cite{knispel_agda_2020}.
+In addition, Agda also supports the concept of holes, sometimes also called goals \cite{the_agda_team_holes_2023}.
+
+Program~\ref{prg:agda-holes} shows the usage of holes and interactive proving in Agda \cite{the_agda_team_holes_2023}.
+In Line~\verb|1|, we define the first clause of proving associativity with a right-hand side of \verb|?|, which indicates a hole.
+After reloading the file and entering interactive proving mode, Agda turns \verb|?| into \verb|{ }0| (see Line~\verb|5| of Program~\ref{prg:agda-holes}), which is now a hole and "stands as a placeholder for a part of the program that is still incomplete and can be refined or resolved interactively" \cite{the_agda_team_holes_2023}.
+Agda automatically assigns numbers to the holes.
+Agda also knows how natural numbers are represented and therefore is able to split Line~\verb|5| to Lines~\verb|9| and \verb|10| when instructed to case-split on variable \verb|x|.
+Note how the Agda system introduced the cases \verb|zero| and \verb|(suc x)| for \verb|x| as well as added a new hole in Line~\verb|10| called \verb|{ }1|.
+Getting rid of holes is as simple as replacing them with their implementation, as Line~\verb|14| shows compared to Line~\verb|9|, which uses the term \verb|refl| denoting \emph{reflexivity}.
+We will stop here because proving associativity is not the goal of this thesis, but this example shows how holes can be used to de-compose and compose proofs in Agda.
+
+\begin{program}[ht]
+\begin{GenericCode}
++-assoc-proof x y z = ?
+
+=== reload the file to enter interactive proving mode ===
+
++-assoc-proof x y z = { }0
+
+=== case-splitting on x ===
+
++-assoc-proof zero y z = {  }0
++-assoc-proof (suc x) y z = {  }1
+
+=== applying reflexivity to hole 0 ===
+
++-assoc-proof zero y z = refl
++-assoc-proof (suc x) y z = {  }1
+\end{GenericCode}
+\caption{Using holes and case-splitting in Agda. (Program source:~\cite{the_agda_team_holes_2023})}
+\label{prg:agda-holes}
+\end{program}
 
 \subsubsection{Haskell}
+The most widely used and general-purpose programming language that supports holes is Haskell \cite{tiobe_software_bv_tiobe_2023, stack_overflow_stack_2023}.
+
+\cite{gamari_haskell_2019}
+\cite{gissurarson_suggesting_2018}
+\cite{redmond_toward_2021}
+
 While Haskell is the most general purpose 
 \todo[inline,color=blue!40]{maybe do some research regarding Liquid Haskell}
+\todo[inline]{compiler flag that allows running incomplete programs}
+
+\begin{program}[ht]
+\begin{GenericCode}
+module FreeMonad where
+
+data Free f a
+  = Pure a
+  | Free (f (Free f a))
+
+instance Functor f => Monad (Free f) where
+  return a     = Pure a
+  Pure a >>= f = f a
+  Free f >>= g = Free _
+\end{GenericCode}
+\caption{Using holes and case-splitting in Agda. (Program source:~\cite{the_agda_team_holes_2023})}
+\label{prg:agda-holes}
+\end{program}
+
+\begin{program}[ht]
+\begin{GenericCode}
+Found hole `_' with type f (Free f b)
+
+Relevant bindings include
+  >>= :: Free f a -> (a -> Free f b) -> Free f b
+    (bound at holes.hs:28:3)
+  f :: f (Free f a) (bound at holes.hs:29:8)
+  g :: a -> Free f b (bound at holes.hs:29:14)
+In the first argument of `Free', namely `_'
+\end{GenericCode}
+\caption{Using holes and case-splitting in Agda. (Program source:~\cite{the_agda_team_holes_2023})}
+\label{prg:agda-holes}
+\end{program}
 
 \subsubsection{Hazel}
 %https://www.youtube.com/watch?v=UkDSL0U9ndQ
@@ -241,14 +350,21 @@ While Haskell is the most general purpose
 %regarding machine learning: having a theory of incomplete programs allows us to do it this way
 %splicing: putting holes inside text
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/hazel}
+    \caption{Using Livelits to fill holes visually in Hazel. (Image source:~\cite{omar_filling_2021})}
+    \label{fig:hazel-livelits}
+\end{figure}
+
 \subsubsection{Idris}
 
 \section{Simulating Holes in other Languages}
 \label{sec:simulating-holes}
-By reducing the concept of holes as defined in the previously seen statically typed functional languages to its core, one could argue that the idea of using holes exists in various other languages as well.
+By reducing the concept of holes as defined in the previously seen statically typed functional languages to its core, one could argue that the idea of using holes also exists in various other languages.
 Providing means of writing incomplete code is very helpful for quickly iterating on unfinished code.
-As such, this aspect of holes already found its way into general purpose programming languages, albeit without the compiler support provided by the languages mentioned in Section~\ref{sec:languages-with-native-holes-support}.
-In this section, we will present some of these ad-hoc solutions and show their usage.
+As such, this aspect of holes already found its way into general-purpose programming languages, albeit without the compiler support provided by the languages mentioned in Section~\ref{sec:languages-with-native-holes-support}.
+This section will present some of these ad-hoc solutions and show their usage.
 
 \subsubsection{\CS}
 One widely used way of writing incomplete \CS\-code that can still be compiled is using \texttt{NotImplementedException} \cite{microsoft_notimplementedexception_2020} for indicating that a piece of code is not yet implemented or "still in development" \cite{microsoft_notimplementedexception_2020}.
@@ -279,7 +395,7 @@ Part \emph{(a)} of Figure~\ref{fig:graphite-active-code-completion} shows that i
 Viewing these empty expressions as holes, one can argue that for all empty expressions that match the type of an existing palette, a hole is implicitly created, which can be filled using a specialized user interface.
 Part \emph{(b)} of Figure~\ref{fig:graphite-active-code-completion} shows the code generated by selecting a color.
 
-Prior to implementing Graphite, \citeauthor{omar_active_2012} conducted a survey of 473 professional developers regarding their experiences and opinions regarding code completion \cite{omar_active_2012}.
+Before implementing Graphite, \citeauthor{omar_active_2012} surveyed 473 professional developers regarding their experiences and opinions regarding code completion \cite{omar_active_2012}.
 These professional developers described one interesting aspect regarding the usage of palettes and prototypes by explaining that using "palettes that generate constant data may be most useful in the prototyping phase. It can be noted that when transitioning from a prototype to production-quality software, the code generated by a palette or tool may be used as a template to be refactored as needed." \cite{omar_active_2012}
 
 \subsubsection{Scala}
@@ -350,6 +466,7 @@ These properties (prefixed with \emph{HP} for \emph{hole property}) constitute t
 \begin{properties}
     \item The notation of holes should be as concise as possible, which improves writability and reduces visual clutter.\label{hp:concise}
     \item Writing holes should be idiomatic, preserving native language features and concepts, which reduces the learning curve.\label{hp:idiomatic}
+    \item Programs containing holes should be executable, thus enabling the ideas of interactive programming.\label{hp:executable}
     \item Holes can be described using (prose) messages; they aid in reminding developers of their thoughts later on.\label{hp:prose-message}
     \item Holes can be marked using custom tags, which enables the creation of custom taxonomies and simplifies their refinding in large codebases.\label{hp:taggable}
     %\item \label{hp:gradually-refinable}

@@ -1,28 +1,129 @@
-\chapter[Implementation]{Implementation \protect{\estimatedpagecount{20}}}
+\chapter{Implementation}
 \label{cha:implementation}
 \epigraph{What runs, the code or the comments?}{Brian Kernighan}
 
-\todo[inline]{Mention the idea of using idiomatic \CS, so that legacy projects can be supported}
-\todo[inline]{Show the pathway on how this developed...}
+\noindent
+The code.
+With comments being non-executable meta information, Brian Kernighan's question has to be answered with: "the code".
+\begin{itemize}
+    \item But does it have to be this way?
+    \item Is it possible to run comments?
+    \item Does it make sense?
+    \item Can we blur the lines?
+\end{itemize}
+As we have seen in Chapters~\ref{cha:introduction} and \ref{cha:related-work}, while the original idea of hole-driven development is closely linked to statically typed functional, in this chapter we introduce \emph{Holey}\footnote{More information regarding usage and source code can be found at \url{https://holey.dev}.}, our approach on bridging the gap between the type-theoretic formal aspects of hole-driven development and practically applying its ideas to widely used general-purpose programming languages.
 
 \section{Types of Holes}
+Until this section, we divided our analysis between todo comments and holes or hole-like alternatives.
+Suppose we apply the analogy of a fill-in-the-blanks exercise to programming in general.
+In that case, we can conclude that there is little difference between todo comments, holes, or hole-like alternatives.
+They are all blanks that have to be filled in.
+But they are not the same; they do have different applications as well as different capabilities.
+When we started working on applying hole-driven ideas to \CS, we created our own \emph{DSL} (domain-specific language) for writing holes based on analyzing existing solutions.
+After working with this DSL and comparing it with literature and best practices, we quickly realized that while it could enable hole-driven development, it was far off idiomatic \CS-code.
+As we identified the idiomatic usage as one of the main properties of holes (compare \ref{hp:idiomatic}), we reverted this approach and examined how existing \CS-features can be re-used as holes.
+In this section, we will introduce our classification of the most widely used and applicable types of holes while explaining their usage and their use cases. 
+
 \subsection{Todo-Comment}
-\todo[inline]{Explain the necessity of Todo-Comments, how they can look like and why it makes sense to support them in their purest way}
+As todo comments are widely used and supported \cite{jetbrains_todo_2023}.
+By re-inventing them, legacy code could not be supported, and developers would have to learn a new concept or syntax.
+Additional tools for managing todo comments as presented in Section~\ref{sec:tackling-todo-comments} would not be compatible as well.
+They are concise to write (\ref{hp:concise}), idiomatic to \CS (\ref{hp:idiomatic}), and allow developers to specify tasks in prose text (\ref{hp:prose-message}).
+
+However, as asked by Brian Kernighan: "What runs, the code or the comments?"
+Comments are not intended to be executed; they provide meta-information during development time but not at runtime.
+As such, it is essential that they are not missed, which is enabled by emphasizing their existence at compile time (compare Section~\ref{sec:compile-warning}, \ref{hp:compile-warnings}).
+Although using approaches like source generators (compare Section~\ref{sec:source-generators}, they could actually influence the execution of a program; hence, they could be executed, Holey provides the abstraction of \emph{side effects} (see Section~\ref{sec:side-effects} for this kind of requirement.
+
+Program~\ref{prg:holey-todo-comment} shows the usage of todo comments in \CS.
+Nothing about their syntax or usage is specific to Holey.
+However, if todo comments exist in a code base using Holey, they get reported as compiler warnings (see Section~\ref{sec:compiler-warnings} due to them being unaddressed.
+
+\begin{program}[ht]
+\begin{CsCode}
+public interface ISidecarConnection
+{
+	// TODO: get rid of this initialize method; it should be in another interface
+	void Initialize();
+}
+\end{CsCode}
+\caption{Usage of a Todo Comment in Holey}
+\label{prg:holey-todo-comment}
+\end{program}
 
 \subsection{Hole-Comment}
-\todo[inline]{Explain the difference between Hole-Comments and Todo-Comments and what lifts a Todo-Comment in the Hole-Comment state}
-https://goldin.io/blog/stop-using-todo
+The category of hole comment is introduced based upon existing solutions regarding the usage of todo comments like PEP 350 -- Codetags and TagSea (compare Section~\ref{sec:tackling-todo-comments}).
+By adding a configurable tag (\ref{hp:taggable}) in brackets after the todo-identifier, todo comments are interpreted as hole comments.
+An example of this can be seen in Program~\ref{prg:holey-hole-comment} Line~\verb|3| where adding \verb|[Refactor]| to the existing todo comment marks it as something that needs refactoring.
+As described by \citeauthor{goldin_stop_2022}, if a todo comment indicates a certain action, it should be specified \cite{goldin_stop_2022}.
+This enables developers to categorize todo comments and prioritize them.
+
+At compile time, hole comments are reported using the "information" severity.
+This decision was made because they already contain information about how they should be handled.
+We hypothesize that this distinction also helps when converting legacy code bases because by addressing the warnings raised by todo comments one by one, they can be either left as todo comments, provided with additional information for later handling, or directly addressed by getting rid of them.
+
+\begin{program}[ht]
+\begin{CsCode}
+public interface ISidecarConnection
+{
+	// TODO [Refactor]: get rid of this initialize method; it should be in another interface
+	void Initialize();
+}
+\end{CsCode}
+\caption{Usage of a Hole Comment in Holey}
+\label{prg:holey-hole-comment}
+\end{program}
 
 \subsection{Missing Implementation}
-\todo[inline]{Reference the opening quote of this chapter}
-% - https://softwareengineering.stackexchange.com/a/323503
-\todo[inline]{Explain the concept of stub-generation by the IDE, why it makes sense, but why it is scary that those NotImplementedExceptions are only discovered at runtime}
-\todo[inline,color=blue!40]{Maybe do a small excursion into the land of checked exceptions and the difference between \CS and Java}
+As explained in Section~\ref{sec:simulating-holes}, \texttt{NotImplementedException} is an exception class in \CS's standard library that denotes that some implementation is still under development.
+Program~\ref{prg:holey-notimplemented} shows the usage of the \texttt{NotImplementedException} where on Line~\verb|6| the default case in a switch-expression is denoted as not implemented.
+By not handling all cases, the software\footnote{In this case, the software is Holey itself, which we also develop using the hole-driven approach suggested by Holey.} can already be executed and tested without the need of handling all edge cases.
+Not handling edge cases works during development but will probably crash at runtime.
+Although IDEs such as Rider show usages of \texttt{NotImplementedException} in the todo window \cite{jetbrains_todo_2023}, they do not surface at compile time.
+Similar to todo comments, Holey makes \texttt{NotImplementedException}s visible at compile time by reporting their usages as warnings.
+We decided to choose "warning" as the severity for throwing a \texttt{NotImplementedException} because although the program can be run, it will definitely crash once a non-implemented program path is encountered.
+
+\begin{program}[ht]
+\begin{CsCode}
+holeInformation switch
+{
+	HoleInformation.EmptyEffect emptyEffect // ...
+	HoleInformation.Value value => // ...
+	HoleInformation.Effect effect => // ...
+	_ => throw new NotImplementedException(\$"{holeInformation.Type} is not handled")
+}
+\end{CsCode}
+\caption{Usage of \texttt{NotImplementedException} in Holey}
+\label{prg:holey-notimplemented}
+\end{program}
 
 \subsection{Side-Effect}
+\label{sec:hole-type-side-effect}
+In addition to supporting idiomatic, built-in \CS features, Holey adds the notation of side effect holes.
+They correspond most closely to the original definition of holes by resembling executable (\ref{hp:executable}) parts of source code, whose runtime behavior (\ref{hp:runtime-behavior}) can be specified while being further described by a textual message (\ref{hp:prose-message}).
+
+
 \todo[inline]{Show the missing piece of runtime holes and which power they provide.}
 \todo[inline,color=blue!40]{Maybe already dive into the idea of abstract I/O and that getters and setters are enough to model side-effects}
 
+\ref{hp:concise}
+\ref{hp:nestable}
+
+\begin{program}[ht]
+\begin{CsCode}
+using Holey;
+
+var value = Hole.Todo("value", 42);
+var lazyValue = Hole.Todo(
+	"lazy value",
+	() => Environment.GetEnvironmentVariable("VAR")
+);
+Hole.Todo("execute some effect");
+await Hole.Todo("save asynchronously", Task.Delay(500));
+\end{CsCode}
+\caption{Usage of side effects in Holey}
+\label{prg:holey-side-effects}
+\end{program}
 
 \section[Architecture]{Architecture \protect{\estimatedpagecount{2}}}
 \todo[inline]{Explain the overall architecture of the combination of a library, the analyzers and the VS Plugin}
@@ -47,13 +148,18 @@ https://goldin.io/blog/stop-using-todo
 \todo[inline]{Explain how Roslyn Analyzers offer IDE-independent support}
 
 \subsection[Analyzers]{Analyzers \protect{\estimatedpagecount{3}}}
+\ref{hp:editor-independence}
+\ref{hp:compile-warnings}
 \todo[inline]{Explain the implemented Analyzers}
 \todo[inline]{Explain why it makes sense that debug and release mode are handled separately and how this was accomplished}
-\todo[inline]{Connect this to TreatWarningsAsErrors}
+\todo[inline]{Connect this to TreatWarningsAsErrors \ref{hp:severity-modes}}
 \todo[inline]{Explain the difference to simple linters}
+
+type extraction: \ref{hp:matchable-via-types}
 
 \subsection{Code Fixes}
 \todo[inline]{Show the power and usability improvements that Code Fixes in combination with Analyzers provide}
+\ref{hp:supported-editor-actions}
 
 \section{Bridging Compile- and Runtime}
 \todo[inline]{Explain why it is necessary to bridge between compile- and runtime}
@@ -89,3 +195,4 @@ https://goldin.io/blog/stop-using-todo
 \subsubsection{Dynamic Form Generation}
 \todo[inline]{Quickly dive into dynamic form generation and show all the code (because it is just one line per application)}
 \todo[inline,color=blue!40]{Maybe also mention that the JSON Schema adapter can be switched to a custom one}
+\ref{hp:visually-editable}
