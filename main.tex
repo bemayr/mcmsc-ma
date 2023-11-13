@@ -27,8 +27,6 @@
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage{epigraph}
 \usepackage{svg}
-\usepackage{threeparttablex} % for "ThreePartTable" environment
-\usepackage{booktabs}        % for well-spaced horizontal rules
 \usepackage{seqsplit}
 %%%-----------------------------------------------------------------------------
 
@@ -37,6 +35,10 @@
 \newcommand{\CS}{C\nolinebreak\hspace{-.05em}\raisebox{.6ex}{\scriptsize\bf \#}}
 \newcommand{\CC}{C\nolinebreak\hspace{-.05em}\raisebox{.4ex}{\tiny\bf +}\nolinebreak\hspace{-.10em}\raisebox{.4ex}{\tiny\bf +}}
 \newcommand{\textgreek}[1]{\begingroup\fontencoding{LGR}\selectfont#1\endgroup}
+
+\newlist{properties}{enumerate}{2}
+\setlist[properties,1]{label=HQ\arabic*.,ref=HQ\arabic*}
+\setlist[properties,2]{label=(\alph*),ref=\thequestionsi(\alph*)}
 
 %%%-----------------------------------------------------------------------------
 \begin{document}
@@ -50,14 +52,14 @@
 \title{%
   Towards Hole-Driven Development in General Purpose Programming Languages \\
   \texorpdfstring{\vskip .5cm \large A Proof of Concept in \CS}{-- A Proof of Concept in C\#}}
-\author{Bernhard Mayr}
+\author{Bernhard Mayr, BSc., BSc.}
 \programname{Mobile Computing}
 
 %\programtype{Fachhochschul-Bachelorstudiengang} % select/edit
 \programtype{Fachhochschul-Masterstudiengang}
 
 \placeofstudy{Hagenberg}
-\dateofsubmission{2023}{06}{27} % {YYYY}{MM}{DD}
+\dateofsubmission{2023}{11}{20} % {YYYY}{MM}{DD}
 
 \advisor{FH-Prof. DI Stephan Selinger} % optional
 
@@ -69,8 +71,6 @@
 
 \maketitle
 \tableofcontents
-
-\listoftodos
 
 %\include{front/preface} % A preface is optional
 \include{front/abstract}

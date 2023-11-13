@@ -532,7 +532,7 @@ This work is published under the conditions of the
 		}%			
 		{%	final thesis:
 			\@advisorpage%
-			\@copyrightpage%
+			%\@copyrightpage%
 			\@declarationpage%
 		}%
 }
