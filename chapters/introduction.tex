@@ -3,7 +3,7 @@
 \epigraph{How do we get people to understand programming?}{Bret Victor}
 
 \noindent
-Bret Victor's opening quote represents the basis for learnable programming \cite{victor_learnable_2012}, whose ideas go back to the early days of Smalltalk \cite{kay_early_1993}.
+Bret Victor's opening quote represents the basis for \emph{learnable programming} \cite{victor_learnable_2012}, whose ideas go back to the early days of Smalltalk \cite{kay_early_1993}.
 In his essay \emph{The Early History of Smalltalk} \cite{kay_early_1993}, Alan Kay looks back at the events that led to the creation of Smalltalk.
 More importantly, he gives insight into why Smalltalk turned out how it did.
 Smalltalk was intended to be a learning environment for children; its strong object orientation was a side-effect of this idea \cite{kay_early_1993}.
@@ -596,28 +596,30 @@ The next section will combine the ideas presented in the introduction up to now,
 Providing the context for this thesis, we started with the concept of learnable programming.
 By applying liveness and interactivity, programming environments such as Smalltalk enable programmers to explore problems iteratively.
 As we have seen through the analogy of aiming at a target using a water hose, this is enabled by tight feedback loops, which in turn provide continuous feedback and eliminate the need to stop to re-aim.
+
 At the higher level of software development methods, people made similar observations, leading to the agile movement, which favors close customer collaboration and accepting uncertainty over rigid processes.
-Prototypes can be used to improve the phase of requirements analysis, with the potential risk of creating evolutionary prototypes without proper software architecture, which turn into the actual product time by time.
+Prototypes can be used to improve the phase of requirements analysis, with the potential risk of creating evolutionary prototypes without proper software architecture, which turn into the actual product slice by slice.
 
 In Section~\ref{sec:problem-statement} we argued that programming is mainly a communication process.
 Developers communicate with stakeholders to identify requirements, with each other to propose solutions, and with themselves as well as their tools while implementing them.
-This process can be seen as a back-and-forth between exploring the problem and its solution space.
-As described by Peter Naur, this theory-building activity can not be solved by applying one specific method, but certain approaches can help in reaching the target.
+This process can be seen as a back-and-forth between exploring the problem space and its solution space.
+As described by Peter Naur \cite{naur_programming_1985}, this theory-building activity can not be solved by applying one specific method, but certain approaches can help in reaching the target.
 One such example is the combination of top-down and bottom-up methods regarding complex problem-solving.
-As their analysis showed, the human brain is not bad at solving problems but keeping track of its partial solution once a certain threshold of complexity is reached.
+As their analysis showed, the human brain is good at solving problems but bad at keeping track of its partial solutions once a certain threshold of complexity is reached.
 
 \subsubsection{Hypothesis}
 Based on this analysis, we hypothesize that accepting and embracing incomplete programs while applying ideas rooted in live programming enables software development teams to improve their shared understanding (theory) and aids individual developers in coping with the high cognitive load imposed by complex programming problems.
 By combining the informal simplicity and flexibility of todo comments with the tool support enabled by hole-driven development, we theorize that prototyping can be improved in so far that prototypes gain interactivity while compiler-supported checklists aid in evolving them.
-By accepting the existence of evolutionary prototypes, instead of trying to eliminate them, we plan on introducing primitives that improve their development while emphasizing quality by explicitly highlighting prototypical parts.
+By accepting the existence of evolutionary prototypes, instead of trying to eliminate them, we focus on introducing primitives that improve the development of such prototypes while emphasizing quality by explicitly highlighting prototypical parts.
 % the need for solid software architecture
 
 \subsubsection{Research Question}
-Building upon this hypothesis, this thesis' research question is defined as: \emph{Analyzing hole-driven development and existing solutions regarding the handling of todo comments, which of these aspects can be transferred to widely used general purpose programming languages?}
+Building upon this hypothesis, this thesis' research question is defined as: \emph{Analyzing hole-driven development and existing solutions regarding the handling of todo comments, which of these concepts can be transferred to widely used general-purpose programming languages?}
 
 \subsubsection{Methodology}
-Based on existing ideas regarding the handling of todo comments as well as hole-driven development (where an overview is given in Chapter~\ref{cha:related-work}), we deduced a list of their properties (presented in Section~\ref{sec:relevant-properties}).
-This list acted as the basis for our implementation presented in Chapter~\ref{cha:implementation} where we show how these properties can be implemented in the general purpose programming language \CS.
-We chose \CS for the development of this proof of concept because of its high usage \cite{stack_overflow_stack_2023, tiobe_software_bv_tiobe_2023} and the author's familiarity with this language.
+Based on existing ideas regarding the handling of todo comments as well as hole-driven development (an overview is given in Chapter~\ref{cha:related-work}).
+In Section~\ref{sec:relevant-properties}, we deduce a list of their properties.
+This list acts as the basis for our implementation presented in Chapter~\ref{cha:implementation}, where we show how these properties can be implemented, for instance, in the general-purpose programming language \CS.
+We chose \CS\ for the development of this proof of concept because of its high usage \cite{stack_overflow_stack_2023, tiobe_software_bv_tiobe_2023} and the author's familiarity with this language.
 Furthermore, recent language features like Analyzers\footnote{\url{https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/overview}} and Source Generators\footnote{\url{https://learn.microsoft.com/en-us/dotnet/csharp/roslyn-sdk/source-generators-overview}} enable the development of plug-ins independent of the integrated development environment (IDE) used.
-In Chapter~\ref{cha:summary}, this proof of concept is discussed in terms of its limitations, areas of application, potential additions as well as ideas for further research.
+In Chapter~\ref{cha:summary}, this proof of concept is discussed in terms of its areas of application, potential additions, limitations, as well as ideas for further research.
