@@ -14,6 +14,7 @@ With comments being non-executable meta information, Brian Kernighan's question 
 As we have seen in Chapters~\ref{cha:introduction} and \ref{cha:related-work}, while the original idea of Hole-Driven Development is closely linked to statically typed functional programming languages, in this chapter we introduce \emph{Holey}\footnote{More information regarding usage and source code can be found at \url{https://holey.dev}.}, our approach on bridging the gap between the type-theoretic formal aspects of Hole-Driven Development and practically applying its ideas to widely used general-purpose programming languages.
 
 \section{Types of Holes}
+\label{sec:holey-types-of-holes}
 Until this section, we divided our analysis between todo comments and holes or hole-like alternatives.
 If we apply the analogy of a fill-in-the-blanks exercise to programming in general, we can conclude that there is little difference between todo comments, holes, and hole-like alternatives.
 They are all blanks that have to be filled in.
@@ -31,7 +32,7 @@ Furthermore, todo comments are concise to write (\ref{hp:concise}), idiomatic to
 
 However, as asked by Brian Kernighan: "What runs, the code or the comments?"
 Comments are not intended to be executed; they provide meta-information during development time but not at runtime.
-As such, it is essential that they are not missed, which is enabled by emphasizing their existence at compile time (compare Section~\ref{sec:analyzers}, \ref{hp:compile-warnings}).
+As such, it is essential that they are not missed, which is enabled by emphasizing their existence at compile time (compare Section~\ref{sec:holey-roslyn-analyzers}, \ref{hp:compile-warnings}).
 Although using approaches like source generators (compare Section~\ref{sec:source-generators}), they could actually influence the execution of a program; hence, they could be executed, Holey provides the abstraction of \emph{side effects} (compare Section~\ref{sec:hole-type-side-effect} for this kind of requirement.
 
 Program~\ref{prg:holey-todo-comment} shows the usage of todo comments in \CS.
@@ -46,7 +47,7 @@ public interface ISidecarConnection
 	void Initialize();
 }
 \end{CsCode}
-\caption{Usage of a Todo Comment in Holey}
+\caption{Usage of a Todo Comment in Holey.}
 \label{prg:holey-todo-comment}
 \end{program}
 
@@ -69,7 +70,7 @@ public interface ISidecarConnection
 	void Initialize();
 }
 \end{CsCode}
-\caption{Usage of a Hole Comment in Holey}
+\caption{Usage of a Hole Comment in Holey.}
 \label{prg:holey-hole-comment}
 \end{program}
 
@@ -92,7 +93,7 @@ holeInformation switch
 	_ => throw new NotImplementedException(\$"{holeInformation.Type} is not handled")
 }
 \end{CsCode}
-\caption{Usage of \texttt{NotImplementedException} in Holey}
+\caption{Usage of \texttt{NotImplementedException} in Holey.}
 \label{prg:holey-notimplemented}
 \end{program}
 
@@ -125,7 +126,7 @@ await Hole.Todo("save the form data asynchronously", Task.Delay(500));
 record User(string Name, int Age);
 var user = Hole.Todo("load user data", value => value.Prompt<User>());
 \end{CsCode}
-\caption{Usage of side-effects in Holey}
+\caption{Usage of side-effects in Holey.}
 \label{prg:holey-side-effects}
 \end{program}
 
@@ -167,7 +168,7 @@ These extension can be defined as custom \CS-libraries and allow Holey to be cus
 
 \section{Architecture}
 \label{sec:holey-architecture}
-At its core Holey is a \CS-library which is supported by .NET-analyzers (compare Section~\ref{sec:analyzers}).
+At its core Holey is a \CS-library which is supported by .NET-analyzers (compare Section~\ref{sec:holey-roslyn-analyzers}).
 To improve learnability and backwards-compatibility, these analyzers support the inspection of todo comments as well as usages of \verb|NotImplementedException|.
 In addition to those, the analyzers also report usage information about the holes provided by the library as well as configurable usage of hole comments.
 This library and its accompanying analyzers are supported by a Visual Studio extension and an external Sidecar application.
@@ -188,10 +189,13 @@ Figure~\ref{fig:holey-architecture} depicts the interaction between these compon
 \subsection{Enabling Configuration}
 \label{sec:holey-enabling-configuration}
 As explained in Section~\ref{sec:hole-type-side-effect}, Holey provides side-effect holes which affect the runtime behavior of the software under development.
-
-According to \ref{hp:executable} and \ref{hp:runtime-behavior} runtime behavior affecting holes should be configurable, 
-
-Program~\ref{prg:holey-enabling-configuration}
+According to \ref{hp:executable} and \ref{hp:runtime-behavior} runtime behavior affecting holes should be configurable.
+As such, Holey provides multiple ways of configuration, depicted in Program~\ref{prg:holey-enabling-configuration}:
+\begin{itemize}
+    \item The library supports logging via standard .NET logging interfaces (compare Section~\ref{sec:holey-supporting-logging}). This allows consumers to log information originating from Holey to be either logged with the rest of the application's logging concerns or completely separately.
+    \item Hole supports reporting (compare \ref{sec:reporting}) which can be used to inspect holes at runtime. E.g., users of Holey could display toast notification for discovered holes. This allows incomplete applications to be started (\ref{hp:executable}), but highlights their lacking functionality at runtime.
+    \item Holey offers multiple extensibility points. Developers can e.g., create custom side-effect holes that get their input from mocked dummy systems; allow such input to be serialized as inputs for tests or create custom re-usable reporting user interfaces.
+\end{itemize}
 
 \begin{program}[ht]
 \begin{CsCode}
@@ -200,97 +204,242 @@ Holes
 	.UseReporting(/*...*/)
 	.UseExtensions(/*...*/);
 \end{CsCode}
-\caption{Configuring the runtime behavior of Holey}
+\caption{Configuring the runtime behavior of Holey.}
 \label{prg:holey-enabling-configuration}
 \end{program}
 
-While developing this configuration system we discovered that 
-
-\todo[inline]{Explain the difficulties of bridging the static context and DI}
+One difficulty that arose from designing the syntax for side-effect holes as concise as possible was the failing support for dependency injection when using static methods.
+This makes it harder to create an extensible library.
+We overcome this problem by using a static instance of a dependency injection container which provides the necessary dependencies for extensions and can be configured differently when testing the library.
 
 \subsection{Supporting Logging}
-\todo[inline]{Dive into .NET's mess of ILogger, ILogger<T> and ILoggerFactory and their usage in libraries}
-\todo[inline]{Explain how this could be solved using StashBox}
+\label{sec:holey-supporting-logging}
+Microsoft provides a common abstraction for logging built around the \verb|ILogger|-interface \cite{microsoft_logging_2023}.
+They define three interfaces with different responsibilities \cite{bahreini_should_2018}:
+%
+\begin{description}
+    \item[\texttt{ILogger}] This interface abstract functionality for writing a log message of a given \emph{Log Level}.
+    \item[\texttt{ILoggerProvider}] Providers are responsible for creating \verb|ILogger| instances. They are not supposed to be used directly.
+    \item[\texttt{ILoggerFactory}] One or more logging providers can be registered with a logging factory, which in turn uses all of those providers when creating an \verb|ILogger| instance.
+\end{description}
+
+For using these interfaces in dependency injection, Microsoft recommends two different ways \cite{microsoft_logging_2023}.
+One can either inject \texttt{\seqsplit{ILoggerFactory}} and use its \texttt{\seqsplit{CreateLogger(string <category>)}}-method or directly inject a typed \texttt{\seqsplit{ILogger<T>}} instance.
+Both methods are responsible for setting the logger's category to the fully qualified class name of the class it is used in.
+However, injecting a \texttt{\seqsplit{ILoggerFactory}} violates the single responsibility principle \cite{bahreini_should_2018}, because a class should not be responsible for creating its own logger.
+Injecting the fully qualified \texttt{\seqsplit{ILogger<T>}} instance adds unnecessary noise.
+In theory a class should depend on the non-generic interface \texttt{\seqsplit{ILogger}} while its classname is set as its category.
+
+Program~\ref{prg:holey-supporting-logging} shows how we solved this problem.
+We are using Stashbox\footnote{\url{https://z4kn4fein.github.io/stashbox/}}, a lightweight, fast, and portable dependency injection framework for .NET for injecting dependencies throughout Holey.
+In Line~\verb|1| we register the non-generic \verb|ILogger| interface and use the parent's type information (compare Lines~\verb|6| and \verb|10|) to set the logger's category when creating it via the configured logger factory.
+By using this approach, classes can expect an instance of \verb|ILogger| with the pre-configured category while the dependency resolution throws an exception if an instance of \verb|ILogger| is requested outside of a class scope.
+
+\begin{program}[ht]
+\begin{CsCode}
+Container.Register<ILogger>(
+	config =>
+		config
+			.WithFactory<TypeInformation>(
+				typeInfo =>
+					typeInfo.ParentType is null
+						? throw new InvalidOperationException(
+							\$"An ILogger can only be injected into a class, because it uses this class' FullName as its scope."
+						)
+						: loggerFactory.CreateLogger(typeInfo.ParentType.FullName)
+			)
+			.ReplaceExisting()
+);
+\end{CsCode}
+\caption{Using the Stashbox dependency injection framework to provide properly configured \texttt{ILogger}-instances to Holey's extensions.}
+\label{prg:holey-supporting-logging}
+\end{program}
 
 \subsection{Enabling Language Independence}
-\todo[inline]{Explain the modularity and how the \CS-solution might be transferred to other languages (e.g. Python, Java, TS)}
-\todo[inline]{mention what is needed for other languages to adopt holes}
-todo comments
-exceptions
-linters
+During the multiple rewrites we realized that simplifying the concept of Hole-Driven Development to a few simple primitives provides another impactful advantage: language independence.
+Holey's underlying concept is not tied to a specific programming language at all.
+Although we conducted our proof-of-concept implementation in \CS, supporting other languages should definitely be possible.
+Adopting Holey's interpretation of Hole-Driven Development in other languages requires these functionalities:
+
+\begin{description}
+    \item[Todo Comments] By re-using todo comments we managed to create an idiomatic and backwards-compatible solution regarding the most basic form of adapting holes. If a language supports comments and somehow allows them to be tagged as \emph{to be done}, it supports todo comments.
+    \item[Exceptions] Simulating empty holes is accomplished by throwing an exception. If a concept like \CS's \verb|NotImplementedException| already exists in a language, it should be re-used, otherwise a custom exception type could be defined.
+    \item[Custom Control Structures] Supporting side-effect holes requires the language to be somehow extendable, defining a function is enough. If this function should interact with some external tool, some way of I/O is necessary. Integration with Holey's Sidecar application is simplified a lot if there are existing libraries for handling JSON Schema and Websocket connections.
+    \item[Linters] One of the vital parts of Hole-Driven Development is compile-time information of holes. This can be either achieved by compiler plug-ins, as shown in our proof-of-concept, or even in non-compiled languages by static code analysis. One such solution could be the definition of custom linting rules highlighting the usage of holes.
+\end{description}
 
 \section{Providing IDE Support}
 \label{sec:providing-ide-support}
-\todo[inline]{Give a quick introduction into Roslyn Analyzers}
-\todo[inline]{Explain how Roslyn Analyzers offer IDE-independent support}
-
+As analyzed in Section~\ref{sec:languages-with-native-holes-support}, one important property of holes is that they generate warnings or errors at compile time (\ref{hp:compile-warnings}) which increases their visibility during development and allows them to be used as checklists.
+%
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.97\textwidth]{images/ide-reporting}
-    \caption{TODO}
+    \caption{Usage of Holey in Visual Studio. The IDE provides proper error reporting in the source code itself and in Visual Studio's Error List.}
     \label{fig:providing-ide-support}
 \end{figure}
+%
+Figure~\ref{fig:providing-ide-support} depicts Holey's support for compile time hole reporting.
+Its upper part shows the usage of the hole types described in Section~\ref{sec:holey-types-of-holes}.
+While the todo comment and the thrown \verb|NotImplementedException| are underlined, the hole comment and the side effect holes are only indicated by three small grey dots below them.
+This difference in their visual indication is explained by taking a look at the bottom part of Figure~\ref{fig:providing-ide-support}.
+This panel shows Visual Studio's Error List, which provides more information about the holes, such as their severity, code and description.
+As explained in Section~\ref{sec:holey-types-of-holes}, different types of holes are reported with different severities (information vs warning).
+The code identifies a certain type of hole and its suffix is modeled semantically after the HTTP status codes \cite{mozilla_http_2023}.
+The description either reports some information on what to change (in the case of the todo comment) or resembles the hole's description prefixed by an icon denoting the hole's type.
+This allows the Error List to be used as a checklist which gets created automatically based on the program's holes.
 
-\subsection{Analyzers}
-\label{sec:analyzers}
-\ref{hp:editor-independence}
-\ref{hp:compile-warnings}
-\todo[inline]{Explain the implemented Analyzers}
-\todo[inline]{Explain why it makes sense that debug and release mode are handled separately and how this was accomplished}
-\todo[inline]{Connect this to TreatWarningsAsErrors \ref{hp:severity-modes}}
-\todo[inline]{Explain the difference to simple linters and define them}
+\subsection{Roslyn Analyzers}
+\label{sec:holey-roslyn-analyzers}
+The screenshot depicted in Figure~\ref{fig:providing-ide-support} shows Holey's usage in \emph{Microsoft Visual Studio Community 2022} without any additional plug-ins.
+This is enabled by the usage of Roslyn \emph{analyzers} \cite{microsoft_code_2023}.
+Roslyn is the name of the .NET Compiler Platform, which allows developers to write compiler integrations called Analyzers that inspect \CS\ or Visual Basic code for style, quality, maintainability, design, and other issues.
 
-type extraction: \ref{hp:matchable-via-types}
+By directly integrating such analysis features into the compiler platform, different IDEs are automatically supported (\ref{hp:editor-independence}).
+Analyzers allow developers to inspect the source code and report diagnostics which get turned into compiler errors.
+
+Depending on the configured build mode, we report different diagnostic severities in Holey (\ref{hp:severity-modes}).
+This allows the application to be tested and prototyped in debug mode, but once release mode is enabled, warnings are issued for all still existing holes.
+If we would directly raise errors, we would rule out use-cases were holes are intended to be in a release build.
+As such raising warnings can be combined with the \CS\ compiler flag \verb|TreatWarningsAsErrors| \cite{microsoft_c_2023} which, as its name suggest, turns warning into errors and should be enabled for proper release builds.
+
+Another property of holes which can be (partially) supported by analyzers is the heavy usage of types to guide their implementation (\ref{hp:matchable-via-types}).
+Roslyn analyzers provide the semantic model of the analyzed application which can be used to get information about its \emph{meaning}.
+Figure~\ref{fig:reporting-types} shows our proof-of-concept in this regard.
+Based on the hole's scope we query all possible variables and methods as well as their types.
+As we also know the hole's expected type (compare Section~\ref{sec:source-generators}), we could combine these information and use it towards basic suggestions for program synthesis.
+Apart from proving that it is technically possible, we did not pursue these efforts any further as it would have expanded the scope of this thesis too much.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/reporting-types}
+    \caption{Extracting Type Information from Holes to proof the Possibility of adding Program Synthesis.}
+    \label{fig:reporting-types}
+\end{figure}
 
 \subsection{Code Fixes}
-\todo[inline]{Show the power and usability improvements that Code Fixes in combination with Analyzers provide}
-\ref{hp:supported-editor-actions}
+\label{sec:holey-code-fixes}
+Based on analyzers (compare Section~\ref{sec:holey-roslyn-analyzers}), Roslyn provides another powerful, editor-independent feature called \emph{code fixes}.
+By providing a code fix for a reported diagnostic, IDEs can suggest an automatic rewrite of the violating code.
+Using this feature, it is possible to provide editor actions (\ref{hp:supported-editor-actions}) that are again editor independent (\ref{hp:editor-independence}).
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.9\textwidth]{images/code-fixes}
-    \caption{TODO}
+    \caption{Showcasing how Roslyn's Code Fixes are used to enhance the Editing Experience of Holes.}
     \label{fig:holey-code-fixes}
 \end{figure}
 
+Figure~\ref{fig:holey-code-fixes} shows these code fixes in action.
+By pressing "Ctrl + .", Visual Studio provides its lightbulb suggestions, they can also be activated by clicking on the lightbulb in the left margin.
+As it can be seen in Figure~\ref{fig:holey-code-fixes}, activating these suggestions opens an overlay which shows the difference between the existing code and the suggested fix.
+Additionally to the analyzers we developed code fixes where applicable.
+E.g., in the case of \verb|NotImplementedException| this enables developers to automatically convert them to side effect holes, without having to perform tedious text manipulations by hand.
+Such code fixes have also been developed for converting todo comments and removing holes while replacing them with their current implementation.
+
 \section{Bridging Compile- and Runtime}
-\todo[inline]{Explain why it is necessary to bridge between compile- and runtime}
+\label{sec:holey-bridging-compile-and-runtime}
+Holes can be seen as a bridge between compile time and runtime.
+They provide information about their existence while developers are writing code and enable additional functionality (at least their inspection) at runtime.
+This enables interesting extension capabilities (compare Section~\ref{sec:holey-extensibility}), but introduces the interesting challenge of how to gather information about the source code at runtime.
+In this section we describe how we are able to gather information that is of interest to us, such as:
+\begin{description}
+    \item[Description] The textual description of the hole is a string literal. Ideally it explains why the hole exists or how it should be implemented. At compile time it is interesting to know the description for reporting diagnostics which allow the creation of checklists and at runtime it might be interesting to report holes as they are executed.
+    \item[Location] The location of a hole is used to identify it and consists of its filename, line- and column number. It can also be used to create tooling which links to the holes and acts upon them.
+    \item[Type] The type of a hole enables different visualization and interaction capabilities for tools.
+    \item[(Expression)] Only side effect holes do have expressions. They represent the optional second parameter of side effect holes and can be empty in the case of an empty effect. Information about this expression can be visualized or used in extensions. It also lays the foundation for future tooling that might be built upon Holey (compare Section~\ref{sec:summary-applications}).
+    \item[(Return Type)] Only side effect holes that provide values do have a meaningful return type. It can also be visualized, used for extensions and provides the basis for program synthesis, as described in Section~\ref{sec:holey-roslyn-analyzers}.
+\end{description}
 
-\subsection{Stack Traces}
-\todo[inline]{Dig into the concept of Stacktraces and why they might be (but in reality can't) be used to get information about the running code}
-
-\subsection{Compiler Generated Attributes}
-\todo[inline]{Explain the usage of .NET's compiler generated attributes}
-\todo[inline]{Also mention the downside of having to specify generics when strings are used}
+\subsection{Compiler Info Attributes}
+\label{sec:holey-compiler-info-attributes}
+The \CS-compiler provides multiple attributes for determining caller information of methods \cite{microsoft_attributes_2022}.
+These attributes can be applied to method parameters and the compiler automatically inserts literals as their default values into the \emph{Intermediate Language}.
+This behavior prevents those attributes from being affected by obfuscation.
+Parameters, where these attributes are applied, have to be optional and match their corresponding types.
+According to Microsoft, the information provided by those attributes helps with tracing, debugging, and helps to create diagnostic tools.
+As holes can be seen as diagnostic tools, using these attributes allows us to use compile time information at runtime, as Program~\ref{prg:holey-compiler-info-attributes} shows.
+The method signature, depicted in Program~\ref{prg:holey-compiler-info-attributes}, is taken from the simplest form of a value providing side effect hole which returns a variable or a literal.
+By applying the compiler info attributes prefixed with \verb|Caller| to the last four optional arguments, we can gather information regarding the hole's location and get its expression.
+One downside of this approach is the missing attribute \verb|CallerColumnNumber| which prevents us from uniquely identifying two side effect holes which were put on to the same line of code.
 
 \begin{program}[ht]
 \begin{CsCode}
-Holes
-	.UseLoggerFactory(/*...*/)
-	.UseReporting(/*...*/)
-	.UseExtensions(/*...*/);
+public static TValue Todo<TValue>(
+	string description,
+	TValue value,
+	[CallerFilePath] string? callerFilePath = null,
+	[CallerLineNumber] int? callerLineNumber = null,
+	[CallerMemberName] string? callerMemberName = null,
+	[CallerArgumentExpression("value")] string? valueExpression = null
+) { /*...*/ }
 \end{CsCode}
-\caption{Configuring the runtime behavior of Holey}
-\label{prg:holey-enabling-configuration}
+\caption{Using Compiler Infor Attributes to extract Information about the Source Code at Runtime.}
+\label{prg:holey-compiler-info-attributes}
 \end{program}
+
+
+\subsection{Stack Traces}
+\label{sec:holey-stack-traces}
+One way to mitigate the downside of the missing column number is the usage of stack frames.
+When executing a hole, we create a new stack frame using \texttt{\seqsplit{new StackFrame(skipFrames: 1, fNeedFileInfo: true)}}.
+Providing \verb|1| for the first parameter allows us to skip the calling method of the hole; thus indicating the location of the actual hole.
+Setting the second parameter to \verb|true| captures source information which is needed later on for getting the actual column number via \texttt{\seqsplit{GetFileColumnNumber()}}.
+A downside of this approach is the limitation of being only available in debug builds.
+Because holes are intended to be used mainly for prototyping and ideation, this is not too much of a limitation.
+Especially, because it only affects the special case of two side effect holes on the same line of code for non-debug builds.
+In this case we decided to throw an Exception to surface this limitation.
+
+Another way to overcome the problem of not being able to uniquely identify holes could be the creation of an additional analyzer (compare Section~\ref{sec:holey-roslyn-analyzers}) that prevents the existence of two side effect holes on one line of code.
+
 
 \subsection{Source Generators}
 \label{sec:source-generators}
-\todo[inline]{Briefly explain \CS's version of source generators vs. T4 templates}
-\todo[inline]{Explain how compile-time information can be lifted into runtime}
+In addition to compiler info attributes and using stack frame information we created a proof of concept of another approach for bridging compile time and runtime information.
+In addition to analyzers and code fixes, Roslyn provides a third feature of inspecting code at compile time.
+Source Generators \cite{microsoft_source_2023} allow \CS-developers to inspect code during compilation and emit new \CS\ source files on the fly.
+They are compiled together with the rest of the compilation's code.
+These files are added to the user's compilation which implies that existing code cannot be changed.
+Source generators are invoked when the application is being built using the \CS-compiler, this means that no additional tools have to be installed.
+Simply adding a NuGet-package which contains a source generator is enough to get started. 
+
+Program~\ref{prg:holey-source-generators} shows an excerpt of some generated code when using Holey with source generators\footnote{Holey can also be used without source generators if they are not supported due to old .NET versions. This enables Holey to help with converting legacy applications.}.
+Holey's source generator generates a static class called \texttt{\seqsplit{Holes}} inside the assembly's default namespace, which prevents name clashes.
+This class defines an array of all discovered holes (Program~\ref{prg:holey-source-generators} Line~\verb|3|) and an initialization function if .NET 5 or later is used.
+This restriction has to be applied, because versions prior .NET 5 do not support the \texttt{\seqsplit{[ModuleInitializer]}}-attribute \cite{microsoft_module_2023}.
+Applying thi attribute to a static method declares it as a module initializer, which is run once the assembly is loaded.
+In the case of Holey, this module initializer adds the hole definitions collected by the source generator to a static lookup table defined in Holey's core library.
+This design allows multiple assemblies to use Holey at the same time while all of the hole definitions can be centrally collected.
+If a version prior to .NET 5 is used and developers want to have the advanced features of source generation, they have to add the hole definitions to the lookup table manually.
+
+Lines~\verb|5| and \verb|6| of Program~\ref{prg:holey-source-generators} are quite verbose, because they define the information gathered about side effect holes of Section~\ref{prg:holey-side-effects} during source generation.
+They define the information of side effect holes that is of interest to us (compare Section~\ref{sec:holey-bridging-compile-and-runtime}).
+At runtime, Holey tries to enhance the information gathered via compiler info attributes and stack frames with the information provided by source generation.
+The holes' locations act as identifiers to match these information together.
 
 \begin{program}[ht]
 \begin{CsCode}
-Holes
-	.UseLoggerFactory(/*...*/)
-	.UseReporting(/*...*/)
-	.UseExtensions(/*...*/);
+internal static class Holes
+{
+    static readonly HoleInformation[] holeDefinitions = new HoleInformation[]
+    {
+        new HoleInformation.Value(ValueHoleType: HoleInformation.Value.HoleType.Value, Location: new HoleLocation.FromRoslyn(@"D:\code\holey\dotnet\src\Holey.Playground\HoleTypesExample.cs", 31, 12), Description: "use the proper PI constant", CallerInformation: new CallerInformation.FromRoslyn("Run", "TODO: get parent type name"), ExpressionType: "", ExpressionLiteral: "3.1415", ReturnType: "Double"),
+        new HoleInformation.Effect(EffectHoleType: HoleInformation.Effect.HoleType.Effect, Location: new HoleLocation.FromRoslyn(@"D:\code\holey\dotnet\src\Holey.Playground\HoleTypesExample.cs", 32, 4), Description: "visualize pi", CallerInformation: new CallerInformation.FromRoslyn("Run", "TODO: get parent type name"), ExpressionLiteral: "\t\t\t\t() => AnsiConsole.MarkupLine(\$\"pi is approximately: [rapidblink]{pi}[/]\")\r\n"),
+        /*...*/
+    };
+
+#if NET5_0_OR_GREATER
+    [ModuleInitializer]
+    static void Init() => Lookup.AddHoles(holeDefinitions);
+#endif
+}
 \end{CsCode}
-\caption{Configuring the runtime behavior of Holey}
-\label{prg:holey-enabling-configuration}
+\caption{Output of Holey's Source Generator analyzing Holes at Compile Time for providing this Information at Runtime.}
+\label{prg:holey-source-generators}
 \end{program}
 
 \section{Extensibility}
+\label{sec:holey-extensibility}
 
 Holey can be extended in various ways.
 
