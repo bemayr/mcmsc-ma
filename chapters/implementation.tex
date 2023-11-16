@@ -162,7 +162,7 @@ Laziness and asynchrony can also be combined which enables asynchronous holes th
 One of the features that makes Holey and its side-effect holes so powerful is its extensibility.
 Line~\verb|12| of Program~\ref{prg:holey-side-effects} shows how side-effects can be extended.
 Both values and effects can be provided by extension methods.
-The method \verb|Prompt<T>()| in Line~\verb|12| shows such an extension by prompting for a user via Holey's Sidecar (compare \ref{sec:sidecar}) application.
+The method \verb|Prompt<T>()| in Line~\verb|12| shows such an extension by prompting for a user via Holey's Sidecar (compare \ref{sec:holey-sidecar}) application.
 These extension can be defined as custom \CS-libraries and allow Holey to be customized for specific use-cases.
 
 
@@ -424,7 +424,7 @@ internal static class Holes
     static readonly HoleInformation[] holeDefinitions = new HoleInformation[]
     {
         new HoleInformation.Value(ValueHoleType: HoleInformation.Value.HoleType.Value, Location: new HoleLocation.FromRoslyn(@"D:\code\holey\dotnet\src\Holey.Playground\HoleTypesExample.cs", 31, 12), Description: "use the proper PI constant", CallerInformation: new CallerInformation.FromRoslyn("Run", "TODO: get parent type name"), ExpressionType: "", ExpressionLiteral: "3.1415", ReturnType: "Double"),
-        new HoleInformation.Effect(EffectHoleType: HoleInformation.Effect.HoleType.Effect, Location: new HoleLocation.FromRoslyn(@"D:\code\holey\dotnet\src\Holey.Playground\HoleTypesExample.cs", 32, 4), Description: "visualize pi", CallerInformation: new CallerInformation.FromRoslyn("Run", "TODO: get parent type name"), ExpressionLiteral: "\t\t\t\t() => AnsiConsole.MarkupLine(\$\"pi is approximately: [rapidblink]{pi}[/]\")\r\n"),
+        new HoleInformation.Effect(EffectHoleType: HoleInformation.Effect.HoleType.Effect, Location: new HoleLocation.FromRoslyn(@"D:\code\holey\dotnet\src\Holey.Playground\HoleTypesExample.cs", 32, 4), Description: "visualize pi", CallerInformation: new CallerInformation.FromRoslyn("Run", "TODO: get parent type name"), ExpressionLiteral: "() => AnsiConsole.MarkupLine(\$\"pi is approximately: [rapidblink]{pi}[/]\")"),
         /*...*/
     };
 
@@ -440,29 +440,133 @@ internal static class Holes
 
 \section{Extensibility}
 \label{sec:holey-extensibility}
-
-Holey can be extended in various ways.
-
-
-\todo[inline]{Focus on the importance of Extensibility for such an abstract concept/library}
+As our main intention for Holey is to show that Hole-Driven Development is applicable to \CS, we focused on making Holey as extendable as possible.
+We expect this to motivate other developers and researchers to come up with ideas on how Holey can improved, where it might be applicable and which of its ideas can be translated to other languages and tools.
+During development the strong focus on simplicity and composability proved to be essential for Holey being extensible.
+At first we created numerous packages for providing compatibility with existing fake data generation and stubbing libraries, until we discovered that our abstraction of side effects proved to be enough (compare Section~\ref{sec:holey-fake-data-generation}).
+In this section we show where Holey can be extended as well as which extensions are possible.
+We hope to inspire other researchers to propose and implement additional extensions by adopting the idea of Hole-Driven Development.
 
 \subsection{Reporting}
 \label{sec:reporting}
-\todo[inline]{Explain how custom reporters can be utilized}
+The most basic form of extending Holey is by implementing custom reporters which make side effect holes visible at runtime.
+This is different from logging as it allows developers to add visualizations for detected holes, while logging provides information about what is happening in Holey internally and can only be customized in so far, that the log level can be configured.
 
-\subsection{Mocking}
-\todo[inline]{Explain the pathway to prototype-mocking as well as why custom packages aren't necessary anymore}
-\todo[inline]{Once again mention the concept of abstract I/O and how powerful this is}
-\todo[inline]{Transition to the Sidecar Application}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/cli-reporting}
+    \caption{TODO}
+    \label{fig:holey-cli-reporting}
+\end{figure}
+
+Figure~\ref{fig:holey-cli-reporting} shows how such a custom reporter can look like.
+In this case, the application using Holey is a command line application and a reporter is registered that formats the type, location and expression of side effect holes and prints it to the console.
+This highlights if a hole is executed at runtime.
+Holey enables custom reporters to be registered for the following events:
+\begin{description}
+    \item[Hole Encountered] Before a hole is executed, it gets encountered. This event provides all the information gathered about the hole during runtime and compile time. Figure~\ref{fig:holey-cli-reporting} depicts this kind of event.
+    \item[Value Provided] Reporters can be registered if values are provided. In addition to the hole's information this event also provides information about the provided value.
+    \item[Async Value Provided] When a value is provided asynchronously, the following events can be analyzed: started, completed, faulted, and canceled.
+    \item[Effect Happened] Analogous to provided values, reporters enable the visualization of executed effects. In comparison the provided values, effects provide no return value, hence this event only reports information about the hole.
+    \item[Async Effect Happened] Similar to async values, the following events of async effects can be reported: started, completed, faulted, and canceled.
+\end{description}
+Figure~\ref{fig:holey-sidecar} in Section~\ref{sec:holey-sidecar} shows a more complex scenario of utilizing Holey's reporters.
+The bottom left pane reports all previously mentioned events.
+Supplied values are displayed as collapsable JSON objects while asynchronous values and effects automatically update their list entries with the async state.
+This example also demonstrates that reporting holes is not limited to the application itself, but can be done in an additional application connected to the application under development (e.g., an IDE plug-in).
+
+\subsection{Fake Data Generation}
+\label{sec:holey-fake-data-generation}
+As side effect holes are incomplete parts of a program which can provide some temporary behavior, they can be perfectly complemented by fake data generators.
+Providing temporary data or behavior via holes gives the following advantages:
+\begin{itemize}
+    \item By not necessarily relying on constant values the programs behavior is more similar to the real world.
+    \item Because of the compile time support for holes, these incomplete parts of the program can be found easier later on.
+    \item These implementations can be re-used, e.g., as inputs for test cases.
+\end{itemize}
+
+After we simplified side effect holes to simply return a value or return an effect (with their respective lazy and asynchronous counterparts) we realized that we gained support for all standard faking and mocking libraries by providing such a simple interface.
+If one thinks of the responsibilities of fake data generation libraries or mocking and stubbing libraries, they are mainly used for the arrange phase of tests.
+They either provide some test data or mock an interface to test against.
+\emph{Test-Driven Development} (TDD) is a perfect fit for specified requirements, but as soon as process of creating software involves more ideation and prototyping phases, the rigid structure of TDD can hinder development.
+
+Holey's approach on Hole-Driven Development allows developers to use the same tools (e.g. Bogus\footnote{\url{https://github.com/bchavez/Bogus}} or NSubstitute\footnote{\url{https://nsubstitute.github.io/}} known from TDD to use for prototyping.
+Program~\ref{prg:holey-supporting-mocking-libraries} shows the usage of the fake data generation libraries Bogus and AutoBogus\footnote{\url{https://github.com/nickdodd79/AutoBogus}} to provide dynamic values in side effect holes.
+While in the first example showcasing Bogus, developers have to specify rules for generating properties by hand, the second example shows how AutoBogus is capable of automatically generating an instance of the record \texttt{User} by applying heuristics based on the property names and types.
+While the latter automatic mode of generating test data is extremely comfortable and concise, it lacks the parametrization capabilities and authenticity of manually specifying rules for dummy data generation.
+
+By using Holey's sidecar application (compare Section~\ref{sec:holey-sidecar}), developers and users can specify dummy data at runtime via an external application; thus it enables them to simulate the real world even more genuine.
+
+\begin{program}[ht]
+\begin{CsCode}
+// === Bogus ===
+private static readonly Faker faker = new("en");
+internal record Weather(int Celsius, float Humidity, string Description);
+var weather = Hole.Todo(
+	"get the weather from a weather service",
+	() =>
+		new Weather(
+			Celsius: faker.Random.Number(-20, 40),
+			Humidity: faker.Random.Float(20, 99.9f),
+			Description: faker.PickRandom("sunny", "cloudy", "rainy")
+		)
+);
+
+// === AutoBogus ===
+AutoFaker.Configure(builder => builder.WithConventions());
+internal record User(Guid Id, string FirstName, string LastName, string EMail);
+var user = Hole.Todo(
+    "load the user from the database",
+    () => AutoFaker.Generate<User>()
+);
+\end{CsCode}
+\caption{Using the libraries Bogus and AutoBogus to generate fake data for side effect holes.}
+\label{prg:holey-supporting-mocking-libraries}
+\end{program}
 
 \subsection{Sidecar Application}
-\label{sec:sidecar}
-\todo[inline]{Briefly explain that the Sidecar Application is no fundamental part of Holey, but it can be created solely on Holey's extensibility options}
+\label{sec:holey-sidecar}
+An extension we developed to show the capabilities of Holey's extension system is the Sidecar application\footnote{A hosted version of the Sidecar is available at \url{https://sidecar.holey.dev}, but it can also be self-hosted as it is a static web app.}.
+This application is not directly built into Holey, but solely built on its extension capabilities such as reporters, querying all existing holes and extending side effect holes.
+Its name \emph{Sidecar} is inspired by sidecar pattern of microservice architectures, which allow an additional application to be attached to a parent application which provides supporting features \cite{microsoft_sidecar_nodate}.
+An example of using this extension is shown in Program~\ref{prg:holey-sidecar-prompting}.
+Line~\verb|1| adds the using needed for supporting prompting for values via the Sidecar application.
+After adding this using, one can use the extension method \texttt{\seqsplit{Prompt<T>()}} to prompt for a value of type \verb|T|.
+This method pauses the application and uses the \emph{json-everything}\footnote{\url{https://json-everything.net}} library to create a JSON Schema based on the type passed to \texttt{\seqsplit{Prompt<T>()}} via the generic type parameter.
+%
+\begin{program}[ht]
+\begin{CsCode}
+using Holey.Extension.Sidecar.Logic.Prompting;
+internal record Weather(
+	[property: Required] int Celsius,
+	[property: Required] float Humidity,
+	[property: Required] string Description
+);
+var weather = Hole.Todo(
+	"prompt the user for the weather",
+	value => value.Prompt<Weather>()
+);
+\end{CsCode}
+\caption{Usage of Holey's Sidecar Extension to interactively prompt a Value.}
+\label{prg:holey-sidecar-prompting}
+\end{program}
+%
+This JSON Schema is then sent to the Sidecar application which renders a form using \emph{react-jsonschema-form}\footnote{\url{https://github.com/rjsf-team/react-jsonschema-form}}.
+The result of this process can be seen in the bottom right pane of Figure~\ref{fig:holey-sidecar}.
+Once again, by building a composable library and using composable libraries we managed to convert a type to a JSON Schema in one line of code and render the form in another one.
+Now the user of the Sidecar application can enter the desired values (\ref{hp:visually-editable}) which get sent back to the parent application and temporarily act as the hole's value.
+The small crystal ball to the right of the form's title tries to magically auto-fill the form and can be used to speed-up testing.
+It follows the same concept as AutoBogus (compare Section~\ref{sec:holey-fake-data-generation}) but is based on the JavaScript library \emph{json-schema-faker}\footnote{\url{https://github.com/json-schema-faker/json-schema-faker}}.
+As this data generation is conducted on the client, Hole-Driven Development libraries for other languages would automatically benefit from this feature as well.
 
-\subsubsection{Communication}
-\todo[inline]{Explain the abstracted communication channels and that they are not tied to anything else}
+One aspect of developing the Sidecar application was keeping it as independent as possible.
+Multiple applications can connect at the same time, their programming languages do not affect the Sidecar and it can be connected in multiple ways.
+For this thesis we showed that it can be connected via Websockets on the local network, via proxied Websockets via PartyKit\footnote{\url{https://www.partykit.io}} and via iFrames using \texttt{\seqsplit{postMessage}} as its communication channel.
+These communication channels can also be mixed and matched and are passed to the Sidecar application via URL params as shown in the address bar of Figure~\ref{fig:holey-sidecar}.
 
-\subsubsection{Dynamic Form Generation}
-\todo[inline]{Quickly dive into dynamic form generation and show all the code (because it is just one line per application)}
-\todo[inline,color=blue!40]{Maybe also mention that the JSON Schema adapter can be switched to a custom one}
-\ref{hp:visually-editable}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/sidecar}
+    \caption{Holey Sidecar Application listing discovered Holes, Hole interactions and a dynamically rendered Form for prompting the Weather.}
+    \label{fig:holey-sidecar}
+\end{figure}
