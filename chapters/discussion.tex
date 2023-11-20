@@ -19,7 +19,7 @@ This led us to the following research question: \emph{Analyzing hole-driven deve
 
 After analyzing existing solutions regarding todo comments, programming languages with support for holes, and how hole-like concepts are simulated in other programming languages, we derived a list of properties intrinsic to holes (Section~\ref{sec:relevant-properties}).
 By implementing \emph{Holey} and carefully applying the ideas of these hole properties, our proof of concept showed that existing concepts of Hole-Driven Development can be either implemented, simulated, or rebuilt based upon existing features in the general-purpose programming language \CS.
-Although native support for holes is unattainable for ad-hoc solutions, approaching prototyping and software quality with Hole-Driven Development in mind enabled novel aspects in terms of gradually refining requirements and decomposing them by writing code.
+Although native language integrations for holes is unattainable for ad-hoc solutions, approaching prototyping and software quality with Hole-Driven Development in mind enabled novel aspects in terms of gradually refining requirements and decomposing them by writing code.
 
 
 \section{Contributions}
@@ -33,7 +33,7 @@ We do not want to weaken the definition of Hole-Driven Development.
 Still, we believe that the concept of holes can impact how we approach software development if it were more easily accessible.
 
 By implementing Holey in \CS, we showed that Hole-Driven Development approaches can be realized in widely used general-purpose programming languages.
-While creating our version in \CS, we collected necessary language and ecosystem features that enable Hole-Driven Development in other programming languages (compare Section~\ref{sec:holey-enabling-language-independence}).
+While creating our version in \CS, we collected necessary language and ecosystem features that enable Hole-Driven Development in other programming languages (see Section~\ref{sec:holey-enabling-language-independence}).
 
 As we focused on the simplicity and extensibility of Holey, we showed that only a few simple primitives suffice for implementing powerful language-independent extensions such as the Sidecar application.
 By also making the individual parts of the Sidecar application composable, we are curious to see what other researchers and practitioners come up with in extending Holey.
@@ -43,21 +43,21 @@ We present some of our future ideas in Section~\ref{sec:discussion-future-ideas}
 \section{Applications}
 \label{sec:discussion-applications}
 As already described thoroughly in Chapter~\ref{cha:introduction}, we see the main application of Hole-Driven Development in shortening the feedback loops in experimental and prototypical development environments.
-It could also help in scenarios where evolutionary prototypes (compare Section~\ref{sec:prototyping}) have to be evolved into releasable products.
+It can also help in scenarios where evolutionary prototypes have to be evolved into releasable products.
 Hole-Driven Development could be used to quickly create prototypes for stakeholder communication while its compile time information prevents prototypical code from being released into production.
 
 Another possible application is the usage of Holey combined with its Sidecar application during ideation sessions with technology-interested stakeholders.
-Reaching a shared understanding (a theory) could be fostered by testing how a prototype behaves collaboratively.
-Ideas could be explored interactively, and edge cases could be explored together.
+Reaching a shared understanding (a theory) can be fostered by testing how a prototype behaves collaboratively.
+Ideas can be explored interactively, and edge cases can be explored together.
 
-Hole-Driven Development could be used as a communication tool in pair-programming scenarios.
-It could provide the basis for multiple developers to iterate together on a code base.
-In Edwin Brady's sense of "the compiler as a lab assistant" \cite{brady_type-driven_2017}, Holey could also act as temporary todo notes or checklists that aid the development in a way that suits individual developers.
+Hole-Driven Development can be used as a communication tool in pair-programming scenarios.
+It can provide the basis for multiple developers to iterate together on a code base.
+In Edwin Brady's sense of "the compiler as a lab assistant" \cite{brady_type-driven_2017}, Holey can also act as temporary todo notes or checklists that aid the development in a way that suits individual developers.
 One such workflow might be the continuous introduction and removal of holes until a feature is developed with the addition that additional refactoring tasks or ideas alongside are introduced at holes to stay in the flow.
-Once the feature is finished, these holes could be converted to tickets so that technical debt becomes visible and can be planned for.
+Once the feature is finished, these holes can be converted to tickets so that technical debt becomes visible and can be planned for.
 
-Hole-Driven Development could also be utilized in educational settings.
-As already suggested by Martin Odersky with Scala's \verb|???|-operator \cite{odersky_adding_2011}, tasks could be prepared in the form of holes, and students would have to implement those.
+Hole-Driven Development can also be utilized in educational settings.
+As already suggested by Martin Odersky with Scala's \verb|???|-operator \cite{odersky_adding_2011}, tasks could be prepared in the form of holes, and students would have to implement these.
 Starting with executable holes would allow them to experiment with the program already in its initial state, thus reducing the hurdles of starting with nothing.
 If the holes are explained well, the assignment could be to make the program runnable in release mode (without any warnings or errors).
 
@@ -85,30 +85,31 @@ Furthermore, no studies regarding Holey's effect on performance have yet been co
 
 \section{Future Research}
 \label{sec:discussion-future-research}
-Addressing the limitations of Section~\ref{sec:discussion-limitations}, follow-up studies regarding the applicability of Hole-Driven Development in general-purpose programming languages and the usability of Holey should be conducted.
+Addressing the limitations listed in Section~\ref{sec:discussion-limitations}, follow-up studies regarding the applicability of Hole-Driven Development in general-purpose programming languages and the usability of Holey should be conducted.
 Ideally, they should be designed using a mixed-methods approach to measure the impact of Holey's usage on software quality as well as quality-of-life improvements for the developers.
-We do not believe that Holey should be measured strictly in terms of performance improvements regarding the outcome of programming because, as explained in Chapter~\ref{cha:introduction} there is so much more to software development than programming.
+We do not believe that Holey should be measured strictly in terms of performance improvements regarding the outcome of programming because, as explained in Chapter~\ref{cha:introduction}, there is so much more to software development than programming.
 The qualitative aspect of such a study could also target the understanding of Hole-Driven Development in general and address the lack of clarity and knowledge around this topic.
 
 Continuing the idea of Holey, future research should be conducted regarding the transferability of Holey's ideas to other programming languages.
 It would be interesting to compare its applicability to programming languages with different paradigms and investigate how other paradigms enable or prevent the implementation of specific properties of holes.
 Another area of research might be the application of Hole-Driven Development to data science.
-Composing data pipelines and extracting features is typically highly explorative; as such, applying ideas of Hole-Driven Development might be beneficial.
+Composing data pipelines and extracting features is typically highly explorative.
+Therefore, applying ideas of Hole-Driven Development might be beneficial.
 
 Regarding Holey itself, it would be interesting to see how it behaves in other integrated development environments as well as other platforms (e.g., mobile apps, websites, Office plug-ins).
-Holey's Sidecar application could provide the basis for future feasibility studies, especially in regard to integrations with low-code or no-code platforms.
-Section~\ref{sec:discussion-future-ideas} lists some ideas regarding future research in this area.
+Holey's Sidecar application could provide the basis for future feasibility studies, especially with regard to integrating low-code or no-code platforms.
+The next section lists some ideas regarding future research in this area.
 
 
 \section{Future Ideas}
 \label{sec:discussion-future-ideas}
-As many sections of this thesis described the openness of problem spaces and explorative ways of approaching them, we want to conclude it with a list of ideas that emerged while writing this thesis but would have gone beyond the scope of this thesis.
+As many sections of this thesis described the openness of problem spaces and explorative ways of approaching them, we want to conclude with a list of ideas that emerged while writing this thesis but would have gone beyond the scope of this thesis.
 As such, these ideas can be seen as this thesis' holes:
 \begin{itemize}
     \item Holey's Sidecar application could be extended with support for record and replay, which would allow developers to automatically simulate their applications while still being able to explore them (credits: Anton Risberg Alaküla).
     \item The existing infrastructure of the Sidecar extension could be used to provide bidirectional Observable values for controlling and inspecting applications remotely. Additionally, these inputs and outputs could be displayed as a graph on an open canvas (credits: Dominik Angerer).
     \item \emph{tree-sitter}\footnote{\url{https://tree-sitter.github.io/tree-sitter}} should be inspected to determine how language-agnostic a tool such as Holey could be built.
-    \item The \emph{Static Analysis Results Interchange Format} (SARIF) should be analyzed on whether it might provide benefits for the interchangeability of holes.
+    \item The \emph{Static Analysis Results Interchange Format} (SARIF\footnote{\url{https://sarifweb.azurewebsites.net/}}) should be analyzed on whether it might provide benefits for the interchangeability of holes.
     \item Engraft \cite{horowitz_engraft_2023}, an API for Live, Rich, and Composable Programming could be integrated into Holey's Sidecar application, which would bridge between text-based programming and interactive low-code programming in a language-agnostic way.
     \item Large language models could be used for program synthesis using a hole's description as the prompt (credits: Clayton Lewis).
 \end{itemize}
