@@ -30,14 +30,13 @@
 \usepackage{seqsplit}
 %%%-----------------------------------------------------------------------------
 
-\newcommand{\addref}{\todo[color=red!40]{Add reference.}}
 \newcommand{\estimatedpagecount}[1]{\todo[color=blue!40]{Estimated Pages: #1}}
 \newcommand{\CS}{C\nolinebreak\hspace{-.05em}\raisebox{.6ex}{\scriptsize\bf \#}}
 \newcommand{\CC}{C\nolinebreak\hspace{-.05em}\raisebox{.4ex}{\tiny\bf +}\nolinebreak\hspace{-.10em}\raisebox{.4ex}{\tiny\bf +}}
 \newcommand{\textgreek}[1]{\begingroup\fontencoding{LGR}\selectfont#1\endgroup}
 
 \newlist{properties}{enumerate}{2}
-\setlist[properties,1]{label=HP\arabic*.,ref=HP\arabic*}
+\setlist[properties,1]{label=\textbf{HP\arabic*.},ref=HP\arabic*}
 \setlist[properties,2]{label=(\alph*),ref=\thequestionsi(\alph*)}
 
 %%%-----------------------------------------------------------------------------
@@ -72,7 +71,7 @@
 \maketitle
 \tableofcontents
 
-%\include{front/preface} % A preface is optional
+\include{front/preface} % A preface is optional
 \include{front/abstract}
 \include{front/kurzfassung}
 
